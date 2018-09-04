@@ -27,6 +27,7 @@ alias rmake='cmake -DCMAKE_BUILD_TYPE=Release'
 alias gag='git exec ag'
 alias issue='push_issue'
 alias missue='create_issue'
+alias cissue='checkout_issue'
 
 # Update dotfiles
 dfu() {
