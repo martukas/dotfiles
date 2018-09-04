@@ -2,6 +2,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+export PATH=~/.dotfiles/bin:${PATH}
+
 # Alias definitions:
 # Color and ls stuff and chmod shorthand regardless of interactivity
 if [ -f ~/.bash_aliases ]; then

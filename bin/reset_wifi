@@ -1,0 +1,3 @@
+sudo /etc/init.d/network-manager stop
+sudo rm /var/lib/NetworkManager/NetworkManager.state
+sudo /etc/init.d/network-manager start

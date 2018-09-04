@@ -32,3 +32,9 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# IDE #
+######################
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml

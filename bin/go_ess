@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ssh -t martin.shetty@ssh2.esss.dk './gohome.sh'

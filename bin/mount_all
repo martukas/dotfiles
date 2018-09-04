@@ -1,0 +1,5 @@
+#!/bin/bash
+
+sshfs -o IdentityFile=~/.ssh/id_rsa martin.shetty@login.esss.dk:/users/martin.shetty ~/data/ESS/cluster
+sshfs -o IdentityFile=~/.ssh/id_rsa martin.shetty@login.esss.dk:/nfs/groups/nmx ~/data/ESS/nmx
+sshfs -o IdentityFile=~/.ssh/id_rsa martin.shetty@login.esss.dk:/nfs/groups/multigrid ~/data/ESS/multigrid
