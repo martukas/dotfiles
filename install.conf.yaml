@@ -19,6 +19,7 @@
     ~/.gitignore_global:
     ~/.shell:
     ~/essdaq/daquiri/daquiri/.idea: 'code/daquiri/idea'
+    ~/essdaq/efu/event-formation-unit/.idea: 'code/event-formation-unit/idea'
 
 - shell:
   - git submodule sync --recursive
