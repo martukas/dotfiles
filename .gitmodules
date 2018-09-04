@@ -1,0 +1,28 @@
+[submodule "dotbot"]
+	path = dotbot
+	url = https://github.com/anishathalye/dotbot
+	branch = master
+[submodule "bash-git-prompt"]
+	path = common/bash-git-prompt
+	url = https://github.com/magicmonty/bash-git-prompt.git
+	branch = master
+[submodule "gdb/qt5printers"]
+	path = linux-only/gdb/qt5printers
+	url = https://github.com/Lekensteyn/qt5printers.git
+	branch = master
+[submodule "shell/plugins/dircolors-solarized"]
+	path = shell/plugins/dircolors-solarized
+	url = https://github.com/seebi/dircolors-solarized.git
+	branch = master
+[submodule "linux-only/logiops"]
+	path = linux-only/logiops
+	url = https://github.com/PixlOne/logiops.git
+	branch = master
+[submodule "superpack"]
+	path = superpack
+	url = https://github.com/martukas/superpack.git
+	branch = main
+[submodule "private"]
+	path = private
+	url = git@github.com:martukas/dotfiles-private.git
+	branch = main

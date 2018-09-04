@@ -1,0 +1,43 @@
+#- clean:
+#    ~/:
+#      force: true
+#    ~/.config:
+#      recursive: true
+
+# link for linux only
+
+- create:
+    ~/fromage/:
+
+- defaults:
+    link:
+      create: true
+      relink: true
+- link:
+    ~/.gdb: 'linux-only/gdb'
+    ~/.gdbinit: 'linux-only/gdbinit'
+    ~/.config/autostart:
+      glob: true
+      path: linux-only/config/autostart/**
+    ~/.config/KeePass/KeePass.config.xml:
+      path: private/linux/config/KeePass/KeePass.config.xml
+      force: true
+    ~/.config/redshift.conf:
+      path: linux-only/config/redshift.conf
+    ~/.config/mimeapps.list:
+      path: linux-only/config/mimeapps.list
+      force: true
+    ~/dev/ess/essdaq/daquiri/daquiri/.idea: 'code/daquiri/idea'
+    ~/dev/ess/essdaq/efu/event-formation-unit/.idea: 'code/event-formation-unit/idea'
+    ~/dev/ess/h5cpp/.idea: 'code/h5cpp/idea'
+    ~/dev/ess/qplot/.idea: 'code/qplot/idea'
+    ~/dev/nist_arl/daquiri-qpx/.idea: 'code/daquiri-qpx/idea'
+    ~/dev/nist_arl/uncertain/.idea: 'code/uncertain/idea'
+
+- shell:
+  - description: "[Linux] Guake config"
+    command: dconf load /apps/guake/ < linux-only/dconf-guake-dump.txt
+    quiet: true
+    stdin: false
+    stdout: true
+    stderr: false

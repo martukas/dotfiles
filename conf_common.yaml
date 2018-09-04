@@ -1,0 +1,27 @@
+#- clean:
+#    ~/:
+#      force: true
+#    ~/.config:
+#      recursive: true
+
+# link for all platforms with git & bash
+- defaults:
+    link:
+      create: true
+      relink: true
+
+- link:
+    ~/.bash-git-prompt: 'common/bash-git-prompt'
+    ~/.bash: 'common/bash'
+    ~/.bashrc: 'common/bashrc'
+    ~/.bash_logout: 'common/bash_logout'
+    ~/.bash_profile:
+      path: common/bash_profile
+      force: true
+    ~/.dotfiles: ''
+    ~/.gitconfig:
+      path: common/gitconfig
+      force: true
+    ~/.gitignore_global: 'common/gitignore_global'
+    ~/.shell: 'common/shell'
+    ~/.ssh/config: 'private/common/ssh/config'

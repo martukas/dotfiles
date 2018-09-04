@@ -1,0 +1,17 @@
+Host jenkins.respira.works
+     User martin
+     ForwardAgent yes
+     Compression yes
+     ServerAliveInterval=30
+
+Host data.respira.works
+     User martin
+     ForwardAgent yes
+     Compression yes
+     ServerAliveInterval=30
+
+Host fromage.respira.works
+     User martin
+     ForwardAgent yes
+     Compression yes
+     ServerAliveInterval=30
