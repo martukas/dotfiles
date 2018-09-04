@@ -18,6 +18,7 @@
     ~/.gitconfig_local:
     ~/.gitignore_global:
     ~/.shell:
+    ~/essdaq/daquiri/daquiri/.idea: 'code/daquiri/idea'
 
 - shell:
   - git submodule sync --recursive
