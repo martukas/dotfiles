@@ -7,6 +7,7 @@
 
 - link:
     ~/.dotfiles: ''
+    ~/.bash-git-prompt:
     ~/.bashrc:
     ~/.bash_logout:
     ~/.bash_aliases:
