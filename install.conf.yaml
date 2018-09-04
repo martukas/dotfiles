@@ -6,6 +6,7 @@
 - clean: ['~', '~/.config']
 
 - link:
+    ~/.bash:
     ~/.bashrc:
     ~/.bash-git-prompt:
     ~/.bash_logout:
@@ -16,6 +17,7 @@
     ~/.gitconfig:
     ~/.gitconfig_local:
     ~/.gitignore_global:
+    ~/.shell:
 
 - shell:
   - git submodule sync --recursive
