@@ -4,8 +4,9 @@ BRANCH="$(git symbolic-ref --short HEAD)"
 NUMBER=$(echo "$BRANCH" | tr -dc '0-9')
 
 if [[ $BRANCH == *"issue"* ]] && [ -n "${NUMBER}" ]; then
+  message="$@"
   git add -A
-  git commit -m "$1; updates #$NUMBER'"
+  git commit -m "\"$message; updates #$NUMBER\""
   git push
 else
   echo "not an issue branch!"
