@@ -20,6 +20,9 @@
     ~/.shell:
     ~/essdaq/daquiri/daquiri/.idea: 'code/daquiri/idea'
     ~/essdaq/efu/event-formation-unit/.idea: 'code/event-formation-unit/idea'
+    ~/.config/autostart: "config/autostart/"
+    ~/.config/mimeapps.list: "config/mimeapps.list"
+    ~/.config/redshift.conf: "config/redshift.conf"
 
 - shell:
   - git submodule sync --recursive
