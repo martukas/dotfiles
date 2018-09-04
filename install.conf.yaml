@@ -6,16 +6,16 @@
 - clean: ['~', '~/.config']
 
 - link:
-    ~/.dotfiles: ''
-    ~/.bash-git-prompt:
     ~/.bashrc:
+    ~/.bash-git-prompt:
     ~/.bash_logout:
-    ~/.bash_aliases:
+    ~/.bash_profile:
+    ~/.dotfiles: ''
+    ~/.gdb:
+    ~/.gdbinit:
     ~/.gitconfig:
     ~/.gitconfig_local:
     ~/.gitignore_global:
-    ~/.gdb:
-    ~/.gdbinit:
 
 - shell:
   - git submodule sync --recursive

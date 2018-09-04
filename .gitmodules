@@ -7,3 +7,6 @@
 [submodule "gdb/qt5printers"]
 	path = gdb/qt5printers
 	url = https://github.com/Lekensteyn/qt5printers.git
+[submodule "shell/plugins/dircolors-solarized"]
+	path = shell/plugins/dircolors-solarized
+	url = https://github.com/seebi/dircolors-solarized.git
