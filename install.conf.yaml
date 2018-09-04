@@ -1,25 +1,21 @@
-- clean: ['~']
+- defaults:
+    link:
+      create: true
+      relink: true
+
+- clean: ['~', '~/.config']
 
 - link:
+    ~/.dotfiles: ''
     ~/.bashrc:
-        path: bashrc
-        create: false
-        relink: false
-        force: false
     ~/.bash_logout:
-        path: bash_logout
-        create: false
-        relink: false
-        force: false
     ~/.bash_aliases:
-        path: bash_aliases
-        create: false
-        relink: false
-        force: false
     ~/.gitconfig:
-        path: gitconfig
-        create: false
-        relink: false
-        force: false
+    ~/.gitconfig_local:
+    ~/.gitignore_global:
 
-
+- shell:
+  - git submodule sync --recursive
+  - git update-submodules # after linking ~/.gitconfig
+  - >
+    git cleanall -f
