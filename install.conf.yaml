@@ -33,6 +33,7 @@
     ~/essdaq/efu/event-formation-unit/.idea: 'code/event-formation-unit/idea'
     ~/dev/daquiri-qpx/.idea: 'code/daquiri-qpx/idea'
     ~/dev/h5cpp/.idea: 'code/h5cpp/idea'
+    ~/dev/qplot/.idea: 'code/qplot/idea'
 
 - shell:
   - git submodule sync --recursive
