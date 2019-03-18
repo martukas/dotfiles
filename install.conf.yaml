@@ -25,6 +25,10 @@
     ~/.CLion2019.1/config/codestyles/Default.xml: CLion/config/codestyles/Default.xml
     ~/.CLion2019.1/config/keymaps/Default copy.xml: CLion/config/keymaps/Default copy.xml
     ~/.CLion2019.1/config/tools/External Tools.xml: CLion/config/tools/External Tools.xml
+    ~/.CLion2019.1/config/options/code.style.schemes.xml: CLion/config/options/code.style.schemes.xml
+    ~/.CLion2019.1/config/options/filetypes.xml: CLion/config/options/filetypes.xml
+    ~/.CLion2019.1/config/options/ide.general.xml: CLion/config/options/ide.general.xml
+    ~/.CLion2019.1/config/options/keymap.xml: CLion/config/options/keymap.xml
     ~/essdaq/daquiri/daquiri/.idea: 'code/daquiri/idea'
     ~/essdaq/efu/event-formation-unit/.idea: 'code/event-formation-unit/idea'
     ~/dev/daquiri-qpx/.idea: 'code/daquiri-qpx/idea'
