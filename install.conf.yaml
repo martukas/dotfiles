@@ -18,12 +18,17 @@
     ~/.gitconfig_local:
     ~/.gitignore_global:
     ~/.shell:
-    ~/essdaq/daquiri/daquiri/.idea: 'code/daquiri/idea'
-    ~/essdaq/efu/event-formation-unit/.idea: 'code/event-formation-unit/idea'
-    ~/dev/daquiri-qpx/.idea: 'code/daquiri-qpx/idea'
     ~/.config/autostart: "config/autostart/"
     ~/.config/mimeapps.list: "config/mimeapps.list"
     ~/.config/redshift.conf: "config/redshift.conf"
+    ~/.CLion2019.1/config/codestyles/mgs_style.xml: CLion/config/codestyles/mgs_style.xml
+    ~/.CLion2019.1/config/codestyles/Default.xml: CLion/config/codestyles/Default.xml
+    ~/.CLion2019.1/config/keymaps/Default copy.xml: CLion/config/keymaps/Default copy.xml
+    ~/.CLion2019.1/config/tools/External Tools.xml: CLion/config/tools/External Tools.xml
+    ~/essdaq/daquiri/daquiri/.idea: 'code/daquiri/idea'
+    ~/essdaq/efu/event-formation-unit/.idea: 'code/event-formation-unit/idea'
+    ~/dev/daquiri-qpx/.idea: 'code/daquiri-qpx/idea'
+    ~/dev/h5cpp/.idea: 'code/h5cpp/idea'
 
 - shell:
   - git submodule sync --recursive
