@@ -20,7 +20,7 @@
     ~/.shell:
     ~/essdaq/daquiri/daquiri/.idea: 'code/daquiri/idea'
     ~/essdaq/efu/event-formation-unit/.idea: 'code/event-formation-unit/idea'
-    ~/dev/backporting/daquiri-qpx/.idea: 'code/daquiri-qpx/idea'
+    ~/dev/daquiri-qpx/.idea: 'code/daquiri-qpx/idea'
     ~/.config/autostart: "config/autostart/"
     ~/.config/mimeapps.list: "config/mimeapps.list"
     ~/.config/redshift.conf: "config/redshift.conf"
