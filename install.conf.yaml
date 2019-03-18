@@ -34,6 +34,7 @@
     ~/dev/daquiri-qpx/.idea: 'code/daquiri-qpx/idea'
     ~/dev/h5cpp/.idea: 'code/h5cpp/idea'
     ~/dev/qplot/.idea: 'code/qplot/idea'
+    ~/dev/uncertain/.idea: 'code/uncertain/idea'
 
 - shell:
   - git submodule sync --recursive
