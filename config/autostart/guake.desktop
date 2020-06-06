@@ -6,6 +6,7 @@ Name=guake
 Comment=guake
 Exec=guake
 OnlyShowIn=XFCE;
+RunHook=0
 StartupNotify=false
 Terminal=false
 Hidden=false
