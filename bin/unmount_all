@@ -2,6 +2,5 @@
 
 if [[ ! $(sudo echo 0) ]]; then exit; fi
 
-sudo umount ~/data/cluster/detector
-sudo umount ~/data/cluster/home
+sudo umount ~/dev/bigcheese/home
 #umount ~/data/ESS/multigrid
