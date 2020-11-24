@@ -29,6 +29,11 @@ alias issue='push_issue'
 alias missue='create_issue'
 alias cissue='checkout_issue'
 
+# python BS in windows
+if [[ "$OSTYPE" == "msys" ]]; then
+	alias python='winpty python.exe'
+fi
+
 # Update dotfiles
 dfu() {
     (
