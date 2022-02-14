@@ -1,5 +1,5 @@
 #!/bin/bash
 
-sshfs -p 31052 -o IdentityFile=~/.ssh/id_rsa martin@192.168.1.12:/home/martin ~/dev/bigcheese/home
+sshfs -p 31052 -o IdentityFile=~/.ssh/id_rsa martin@jenkins.respira-ci.works:/home/martin ~/dev/bigcheese/home
 
 

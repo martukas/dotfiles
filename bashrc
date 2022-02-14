@@ -79,3 +79,6 @@ fi
 if [ -f ~/.bashrc_local_after ]; then
     source ~/.bashrc_local_after
 fi
+
+# added by travis gem
+[ ! -s /home/martin/.travis/travis.sh ] || source /home/martin/.travis/travis.sh
