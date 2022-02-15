@@ -82,3 +82,13 @@ fi
 
 # added by travis gem
 [ ! -s /home/martin/.travis/travis.sh ] || source /home/martin/.travis/travis.sh
+
+case "$OSTYPE" in
+  solaris*) echo "Running SOLARIS: no custom dotfile scripts for this OS" ;;
+  darwin*)  echo "Running OSX: no custom dotfile scripts for this OS" ;; 
+  linux*)   echo "Running LINUX: no custom dotfile scripts for this OS" ;;
+  bsd*)     echo "Running BSD: no custom dotfile scripts for this OS" ;;
+  msys*)    echo "Running WINDOWS..." && source ~/.bash/windows_only.bash ;;
+  cygwin*)  echo "Running ALSO WINDOWS..." && source ~/.bash/windows_only.bash ;;
+  *)        echo "unknown OS: $OSTYPE" ;;
+esac
