@@ -15,7 +15,6 @@
     ~/.gdb:
     ~/.gdbinit:
     ~/.gitconfig:
-    ~/.gitconfig_local:
     ~/.gitignore_global:
     ~/.shell:
     ~/.config/autostart: "config/autostart/"
