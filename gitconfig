@@ -105,6 +105,7 @@
 
 [user]
 	useConfigOnly = true
+	name = Martin Shetty
 	email = 1972005+martukas@users.noreply.github.com
 
 [commit]

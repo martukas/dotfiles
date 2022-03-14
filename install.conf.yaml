@@ -20,6 +20,7 @@
     ~/.config/autostart: "config/autostart/"
     ~/.config/mimeapps.list: "config/mimeapps.list"
     ~/.config/redshift.conf: "config/redshift.conf"
+    ~/.config/Notepadqq/Notepadqq.ini: "config/Notepadqq/Notepadqq.ini"
 #    ~/.CLion2019.1/config/codestyles/mgs_style.xml: CLion/config/codestyles/mgs_style.xml
 #    ~/.CLion2019.1/config/codestyles/Default.xml: CLion/config/codestyles/Default.xml
 #    ~/.CLion2019.1/config/keymaps/Default copy.xml: CLion/config/keymaps/Default copy.xml
