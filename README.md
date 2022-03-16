@@ -8,3 +8,4 @@ my dotfiles
 * viewnior
 * notepadqq
 * glogg
+* keepassx
