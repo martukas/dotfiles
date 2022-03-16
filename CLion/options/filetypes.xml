@@ -1,0 +1,17 @@
+<application>
+  <component name="FileTypeManager" version="18">
+    <extensionMap>
+      <mapping pattern="qmake_output" type="AUTO_DETECTED" />
+      <mapping pattern=".clang-tidy-ignore" type="PLAIN_TEXT" />
+      <mapping ext="gcda" type="PLAIN_TEXT" />
+      <mapping ext="gcno" type="PLAIN_TEXT" />
+      <mapping ext="a" type="PLAIN_TEXT" />
+      <removed_mapping ext="bat" approved="true" type="PLAIN_TEXT" />
+      <removed_mapping ext="cmd" approved="true" type="PLAIN_TEXT" />
+      <removed_mapping ext="csv" approved="true" type="CSV/TSV" />
+      <removed_mapping ext="ignore" approved="true" type="IgnoreLang file" />
+      <removed_mapping ext="log" approved="true" type="PLAIN_TEXT" />
+      <removed_mapping ext="tsv" approved="true" type="CSV/TSV" />
+    </extensionMap>
+  </component>
+</application>
