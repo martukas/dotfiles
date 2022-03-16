@@ -19,6 +19,7 @@
     ~/.shell:
     ~/.config/:
       glob: true
+      force: true
       path: config/**
     ~/.config/JetBrains/CLion2022.1/:
       glob: true
