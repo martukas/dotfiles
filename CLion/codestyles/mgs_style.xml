@@ -1,4 +1,5 @@
 <code_scheme name="mgs_style" version="173">
+  <option name="RIGHT_MARGIN" value="100" />
   <CMakeCodeStyleSettings>
     <option name="FORCE_COMMANDS_CASE" value="1" />
   </CMakeCodeStyleSettings>

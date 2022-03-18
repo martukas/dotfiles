@@ -105,16 +105,24 @@
 
 [user]
 	useConfigOnly = true
+	name = Martin Shetty
 	email = 1972005+martukas@users.noreply.github.com
+
+[commit]
+	gpgSign = true
+
+[github]
+	user = martukas
 
 [core]
 	excludesfile = ~/.gitignore_global
 
-# Allow local customizations in the .gitconfig_local file
-[include]
-	path = ~/.gitconfig_local
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+
+# Allow local customizations in the .gitconfig_local file
+[include]
+	path = ~/.gitconfig_local

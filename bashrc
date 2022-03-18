@@ -66,9 +66,13 @@ if ! shopt -oq posix; then
   fi
 fi
 
+export GPG_TTY="$( tty )"
+
 GIT_PROMPT_ONLY_IN_REPO=1
 source ~/.bash-git-prompt/gitprompt.sh
 
+# added by travis gem
+[ ! -s /home/martin/.travis/travis.sh ] || source /home/martin/.travis/travis.sh
 
 # Allow local customizations in the ~/.shell_local_after file
 if [ -f ~/.shell_local_after ]; then
@@ -79,9 +83,6 @@ fi
 if [ -f ~/.bashrc_local_after ]; then
     source ~/.bashrc_local_after
 fi
-
-# added by travis gem
-[ ! -s /home/martin/.travis/travis.sh ] || source /home/martin/.travis/travis.sh
 
 case "$OSTYPE" in
   solaris*) echo "Running SOLARIS: no custom dotfile scripts for this OS" ;;
