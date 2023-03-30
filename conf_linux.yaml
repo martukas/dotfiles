@@ -17,18 +17,20 @@
     link:
       create: true
       relink: true
+      force: true
 - link:
-    ~/.config/autostart:
-      glob: true
-      path: linux-only/config/autostart/**
     ~/.config/KeePass/KeePass.config.xml:
       path: private/linux/config/KeePass/KeePass.config.xml
-      force: true
+    ~/.config/autostart:
+      path: linux-only/config/autostart/**
+      glob: true
+      force: false
+    ~/.config/flameshot/flameshot.ini:
+      path: linux-only/config/flameshot/flameshot.ini
     ~/.config/redshift.conf:
       path: linux-only/config/redshift.conf
     ~/.config/mimeapps.list:
       path: linux-only/config/mimeapps.list
-      force: true
 
 # code style stuff, better not clutter
 - defaults:

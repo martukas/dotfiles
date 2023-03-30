@@ -28,6 +28,7 @@ if [[ "$OS" == "GNU/Linux" ]]; then
     case ${answer:0:1} in
       y | Y)
         sudo apt --install-suggests install aptitude snapd silversearcher-ag
+        sudo apt -y purge parole
         sudo python -m pip install --upgrade pip
         python -m pip install --upgrade pipenv
 
