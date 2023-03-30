@@ -6,9 +6,6 @@
 
 # link for linux only
 
-- create:
-    ~/fromage/:
-
 - defaults:
     link:
       create: true

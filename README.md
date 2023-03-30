@@ -42,6 +42,7 @@ Sometimes you may need to update submodules in this repo. Try `upgrade.sh`, but 
 * wget bootstrap files now that repo is public
 * custom hosts file for machine aliases
 * Linux:
+  * docker via apt
   * flameshot config
   * synaptic
   * baobab

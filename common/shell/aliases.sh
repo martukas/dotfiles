@@ -35,13 +35,25 @@ if [[ "$OSTYPE" == "msys" ]]; then
 	alias python='winpty python.exe'
 fi
 
-# Update dotfiles
+# Dotfiles update
 dfu() {
   if [[ "$OSTYPE" == "msys" ]]; then
-    cd ~/.dotfiles && git pull && ./install.ps1
+    pushd ~/.dotfiles && git pull && ./install.ps1 && popd
   else
-    cd ~/.dotfiles && git pull && ./install.sh
+    pushd ~/.dotfiles && git pull && ./install.sh && popd
   fi
+}
+
+# Dotfiles upgrade submodules
+df-upgrade() {
+  pushd ~/.dotfiles
+  git submodule update --remote private
+  git submodule update --remote dotbot
+  git submodule update --remote superpack
+  git submodule update --remote common/bash-git-prompt
+  git submodule update --remote linux-only/logiops
+  git submodule update --remote linux-only/gdb/qt5printers
+  popd
 }
 
 # Use pip without requiring virtualenv
