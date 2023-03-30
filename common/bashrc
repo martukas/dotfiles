@@ -26,7 +26,6 @@ source ~/.shell/bootstrap-bin.sh
 source ~/.shell/aliases.sh
 
 if [ -f ~/.dotfiles/private/common/private_profile.sh ]; then
-    echo -n "[Private]"
     source ~/.dotfiles/private/common/private_profile.sh
 fi
 
@@ -108,8 +107,8 @@ export PATH=~/.npm-global/bin:$PATH
 
 case "$OSTYPE" in
   darwin*)  echo "Running OSX: no custom dotfile scripts for this OS" ;;
-  linux*)   echo -n "[Linux]" && source ~/.dotfiles/linux-only/linux_profile.sh ;;
-  msys*)    echo -n "[Windows/msys]" && source ~/.dotfiles/win10-only/windows_profile.sh ;;
-  cygwin*)  echo -n "[Windows/cygwin]" && source ~/.dotfiles/win10-only/windows_profile.sh ;;
+  linux*)   source ~/.dotfiles/linux-only/linux_profile.sh ;;
+  msys*)    source ~/.dotfiles/win10-only/windows_profile.sh ;;
+  cygwin*)  source ~/.dotfiles/win10-only/windows_profile.sh ;;
   *)        echo "Unknown OS: $OSTYPE" ;;
 esac

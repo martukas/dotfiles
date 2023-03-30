@@ -18,33 +18,29 @@ In this case, download the files in the [bootstrap](bootstrap) directory.
 
 Then run either `bootstrap.ps1` or `bootsrtap.sh` as per OS type.
 
-This will also set up ssh credentials for me and clone this repo with privileges. Further configuration and installation steps are provided by the below...
+This will also set up ssh credentials for me and clone this repo with privileges. Follow the steps, and after a potential reboot, run either `install.ps1` or `install.sh` as per shell type to set up initial symlinks. These will also run [SuperPack](https://github.com/martukas/superpack) to offer you installation of packages appropriate for your system.
 
 ## Routine use:
 
-Just run either `install.ps1` or `install.sh` as per shell type.
-
-This will also run [SuperPack](https://github.com/martukas/superpack) to offer you installation of packages appropriate for your system.
-
-For convenience, there are defined [aliases](common/shell/aliases.sh):
-* dfu - dotfiles update, pulls and runs appropriate install script
-* df-upgrade - upgrades all submodules to latest versions in remote repos
+To update locally, there are convenience [aliases](common/shell/aliases.sh):
+* `dfu` - dotfiles update, pulls and runs appropriate install script
+* `df-upgrade` - upgrades all submodules to latest versions in remote repos
 
 Updating repo:
+* The usual add-commit-push, or the `commit-push` alias
 * symlinked files will stay up to date
 * occasionally run `update.sh` to extract and save settings for guake
 * `dirty` state in `private` part will be ignored by git. Commit changes to that submodule separately.
 
-## Manual for now
+## Manual installation for now
 
 * [InSync](https://www.insynchq.com/downloads/linux)
 * Dark mode for Keepass [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
-
+* [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
 
 ## TODO
 
 * wget bootstrap files now that repo is public
-* [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
 * Linux gui links optional
 * Code style links optional
 * Linux:
