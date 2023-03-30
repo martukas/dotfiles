@@ -26,22 +26,24 @@ Just run either `install.ps1` or `install.sh` as per shell type.
 
 This will also run [SuperPack](https://github.com/martukas/superpack) to offer you installation of packages appropriate for your system.
 
-## Updating repo
+For convenience, there are defined [aliases](common/shell/aliases.sh):
+* dfu - dotfiles update, pulls and runs appropriate install script
+* df-upgrade - upgrades all submodules to latest versions in remote repos
 
-Symlinked files will stay up to date. You only need to commit and push. Except...
+Updating repo:
+* symlinked files will stay up to date
+* occasionally run `update.sh` to extract and save settings for guake
+* `dirty` state in `private` part will be ignored by git. Commit changes to that submodule separately.
 
-Run `update.sh` to extract and save settings for:
-* guake
+## Manual for now
 
-## Upgrading dependencies
+* [InSync](https://www.insynchq.com/downloads/linux)
+* Dark mode for Keepass [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
 
-Sometimes you may need to update submodules in this repo. Try `upgrade.sh`, but check to make sure it really worked as intended. This is still poorly tested.
 
 ## TODO
 
 * wget bootstrap files now that repo is public
-* custom hosts file for ssh remote aliases
-* keepass dark mode [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
 * [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
 * Linux gui links optional
 * Code style links optional
@@ -52,7 +54,6 @@ Sometimes you may need to update submodules in this repo. Try `upgrade.sh`, but 
   * baobab
   * circleci
   * libreoffice
-  * InSync
 * Windows:
   * TuneIn
   * steam
@@ -63,5 +64,6 @@ Sometimes you may need to update submodules in this repo. Try `upgrade.sh`, but 
   * configure night light
   * optional sshd and remote-desktop config
 * Set up conditional GPG things in `.gitconfig_local` or some such
+* custom hosts file for ssh remote aliases
 * Adopt https://github.com/pop-os/shell ?
 * Migrate to https://www.chezmoi.io/ ?

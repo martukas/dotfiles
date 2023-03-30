@@ -1,3 +1,8 @@
+osinfo() {
+  uname -a
+  cat /etc/*-release
+}
+
 sysinfo() {
   sudo lshw -html > "${HOME}/Documents/system-info.html"
   python -m webbrowser "${HOME}/Documents/system-info.html"
