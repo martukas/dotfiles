@@ -10,4 +10,4 @@ HISTFILE="$HOME/.bash_history"
 SAVEHIST=$HISTSIZE
 shopt -s histappend # append to history file
 
-export EDITOR=mousepad
+export EDITOR=nano
