@@ -1,0 +1,88 @@
+---
+- defaults:
+    type: powershell
+  packages:
+    - id: colorize
+      descr: Colorize PowerShell prompt
+      category: dev-admin
+      check: winget list -q JanDeDobbeleer.OhMyPosh | findstr 'JanDeDobbeleer.OhMyPosh'
+      install: "..\\win10-only\\pack-custom.ps1 colorize"
+    - id: dummy
+      descr: Dummy test package
+      category: xtras
+      check: winget list -q nonexistent | findstr 'nothingtofind'
+      install: "..\\win10-only\\pack-custom.ps1 test"
+- defaults:
+    type: winget
+    category: GUI
+  packages:
+    - id: Maximus5.ConEmu
+      descr: Conemu terminal
+      install: "..\\win10-only\\custom.ps1 startup ConEmu C:\\Program Files\\ConEmu\\ConEmu64.exe"
+    - id: Flameshot.Flameshot
+      descr: Flameshot screenshot utility
+      install: "..\\win10-only\\custom.ps1 startup Flameshot C:\\Program Files\\Flameshot\\bin\\flameshot.exe"
+    - id: IrfanSkiljan.IrfanView
+      descr: Irfanview minimal image viewer
+    - id: Microsoft.BingWallpaper
+      descr: Bing wallpaper daily images
+    - id: DominikReichl.KeePass
+      descr: KeePass password manager
+- defaults:
+    type: winget
+    category: dev-admin
+  packages:
+    - id: Notepad++.Notepad++
+      descr: Notepad++ text editor
+    - id: JetBrains.Toolbox
+      descr: JetBrains Toolbox for IDEs
+    - id: 7zip.7zip
+      descr: 7zip archive extractor
+    - id: PostMan.PostMan
+      descr: Postman web protocol sniffer
+    - id: 3T.Robo3T
+      descr: Robo3T Mongo database browser
+    - id: TeamViewer.TeamViewer
+      descr: TeamViewer remote desktop client
+    - id: WiresharkFoundation.Wireshark
+      descr: Wireshark network sniffer
+    - id: WinDirStat.WinDirStat
+      descr: WinDirStat
+- defaults:
+    type: winget
+    category: web
+  packages:
+    - id: Zoom.Zoom
+      descr: Zoom client
+    - id: Telegram.TelegramDesktop
+      descr: Telegram desktop client
+    - id: OpenWhisperSystems.Signal
+      descr: Signal messenger
+    - id: Mozilla.Firefox
+      descr: Firefox browser
+    - id: Google.Chrome
+      descr: Chrome browser
+    - id: SlackTechnologies.Slack
+      descr: Slack
+    - id: WhatsApp.WhatsApp
+      descr: Whatsapp desktop client
+- defaults:
+    type: winget
+    category: multimedia
+  packages:
+    - id: Clementine.Clementine
+      descr: Clementine music player
+    - id: VideoLAN.VLC
+      descr: Clementine music player
+    - id: Spotify.Spotify
+      descr: Spotify desktop client
+- defaults:
+    type: winget
+    category: graphics
+  packages:
+    - id: Inkscape.Inkscape
+      descr: Inkscape graphics editor
+    - id: GIMP.GIMP
+      descr: GIMP graphics editor
+    - id: dotPDNLLC.paintdotnet
+      descr: Paint.NET graphics editor

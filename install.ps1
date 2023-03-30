@@ -41,7 +41,7 @@ if ($confirmation -eq 'y') {
     Push-Location superpack
     pipenv install
     Start-Process pwsh -WindowStyle Maximized -ArgumentList `
-        "-Command & {pipenv run python .\superpack\superpack.py ..\win10-only\packages.json}"
+        "-Command & {pipenv run python .\superpack\superpack.py ..\win10-only\pack-win10.yml}"
     Pop-Location
 }
 
