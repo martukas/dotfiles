@@ -4,8 +4,6 @@
 #    ~/.config:
 #      recursive: true
 
-# link for linux only
-
 - defaults:
     link:
       create: true
@@ -13,6 +11,13 @@
 - link:
     ~/.gdb: 'linux-only/gdb'
     ~/.gdbinit: 'linux-only/gdbinit'
+
+# GUI, ok to create even if not using
+- defaults:
+    link:
+      create: true
+      relink: true
+- link:
     ~/.config/autostart:
       glob: true
       path: linux-only/config/autostart/**
@@ -24,6 +29,12 @@
     ~/.config/mimeapps.list:
       path: linux-only/config/mimeapps.list
       force: true
+
+# code style stuff, better not clutter
+- defaults:
+    link:
+      relink: true
+- link:
     ~/dev/ess/essdaq/daquiri/daquiri/.idea: 'code/daquiri/idea'
     ~/dev/ess/essdaq/efu/event-formation-unit/.idea: 'code/event-formation-unit/idea'
     ~/dev/ess/h5cpp/.idea: 'code/h5cpp/idea'

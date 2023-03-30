@@ -40,13 +40,16 @@ Sometimes you may need to update submodules in this repo. Try `upgrade.sh`, but 
 ## TODO
 
 * wget bootstrap files now that repo is public
-* custom hosts file for machine aliases
-* 
+* custom hosts file for ssh remote aliases
+* keepass dark mode [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
+* [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
 * Linux gui links optional
 * Code style links optional
 * Linux:
   * docker via apt
   * flameshot config
+  * Rust
+  * NPM & NVM
   * synaptic
   * baobab
   * circleci

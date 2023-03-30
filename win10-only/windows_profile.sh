@@ -1,3 +1,5 @@
+alias python='winpty python.exe'
+
 # autostart ssh agent as explained here:
 # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/working-with-ssh-key-passphrases
 

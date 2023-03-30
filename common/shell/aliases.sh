@@ -30,9 +30,13 @@ alias missue='git-issue-create'
 alias commit-push='git-commit-push'
 alias git-rm-submodule='git-remove-submodule'
 
-# python BS in windows
-if [[ "$OSTYPE" == "msys" ]]; then
-	alias python='winpty python.exe'
+if command -v guake &> /dev/null
+then
+  function ssh() {
+    guake -r "$@";
+    /usr/bin/ssh "$@"
+    guake -r "-"
+  }
 fi
 
 # Dotfiles update
@@ -81,17 +85,6 @@ mcd() {
 jump() {
     cd "$(dirname ${1})"
 }
-
-# cd replacement for screen to track cwd (like tmux)
-scr_cd()
-{
-    builtin cd $1
-    screen -X chdir "$PWD"
-}
-
-if [[ -n $STY ]]; then
-    alias cd=scr_cd
-fi
 
 # Go up [n] directories
 up()
