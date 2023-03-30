@@ -46,7 +46,6 @@ Sometimes you may need to update submodules in this repo. Try `upgrade.sh`, but 
 * Linux gui links optional
 * Code style links optional
 * Linux:
-  * docker via apt
   * flameshot config
   * Rust
   * NPM & NVM
@@ -67,8 +66,3 @@ Sometimes you may need to update submodules in this repo. Try `upgrade.sh`, but 
 * Set up conditional GPG things in `.gitconfig_local` or some such
 * Adopt https://github.com/pop-os/shell ?
 * Migrate to https://www.chezmoi.io/ ?
-
-## Docker config
-If docker was installed with snap, you should:
-* open `/var/snap/docker/current/config/daemon.json` and change `storage-driver` from "overlay2" to "vfs"
-* run `sudo snap restart docker`.

@@ -44,7 +44,7 @@
     "descr": "Logiops mouse buttons hack",
     "category": "GUI",
     "type": "posix",
-    "check": "which logid",
+    "check": "command -v logid",
     "install": "../linux-only/custom.sh install-logiops"
   },
   {
@@ -164,10 +164,10 @@
     "type": "snap"
   },
   {
-    "id": "docker",
+    "id": "docker.io",
     "descr": "Docker container framework",
     "category": "dev-admin",
-    "type": "snap"
+    "type": "apt"
   },
   {
     "id": "snap-store",
