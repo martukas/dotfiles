@@ -46,6 +46,7 @@ Sometimes you may need to update submodules in this repo. Try `upgrade.sh`, but 
 * Linux gui links optional
 * Code style links optional
 * Linux:
+  * mimeapps VLC for video
   * flameshot config
   * Rust
   * NPM & NVM

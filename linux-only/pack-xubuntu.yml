@@ -1,0 +1,115 @@
+---
+- defaults:
+    type: posix
+  packages:
+    - id: logiops
+      descr: Logiops mouse buttons hack
+      category: GUI
+      check: command -v logid
+      install: "../linux-only/pack-custom.sh install-logiops"
+    - id: nerdfonts
+      descr: Nerdfonts for fancy terminal shit
+      category: dev-admin
+      check: ls ~/.local/share/fonts | grep Nerd
+      install: "../linux-only/pack-custom.sh install-nerdfonts"
+    - id: dummy
+      descr: Dummy test package
+      category: xtras
+      check: which nonexistentscript
+      install: "../linux-only/pack-custom.sh test"
+- defaults:
+    type: apt
+    category: GUI
+  packages:
+    - id: guake
+      descr: Guake terminal
+      install: sudo apt --install-suggests install guake* dconf-cli
+    - id: redshift
+      descr: Redshift for the eyes
+      install: sudo apt --install-suggests install redshift*
+    - id: flameshot
+      descr: Flameshot screenshot utility
+    - id: keepass2
+      descr: Keepass password manager
+    - id: viewnior
+      descr: Viewnior minimal image viewer
+- defaults:
+    type: apt
+    category: dev-admin
+  packages:
+    - id: build-essential
+      descr: build-essential for compiling C/C++
+    - id: cmake
+      descr: CMake
+    - id: gdb
+      descr: GDB debugger
+    - id: meld
+      descr: Meld comparison tool
+    - id: glogg
+      descr: Glogg log explorer
+    - id: docker.io
+      descr: Docker container framework
+    - id: dotnet-sdk-7.0
+      descr: Microsoft .NET SDK
+    - id: remmina
+      descr: Remmina remote desktop client
+    - id: teamviewer
+      descr: TeamViewer remote desktop client
+    - id: wireshark
+      descr: Wireshark network sniffer
+    - id: virtualbox
+      descr: VirtualBox
+- defaults:
+    type: snap
+    category: dev-admin
+  packages:
+    - id: root-framework
+      descr: ROOT physics framework
+    - id: postman
+      descr: Postman web protocol sniffer
+    - id: robo3t
+      descr: Robo3T Mongo database browser
+    - id: powershell
+      descr: Microsoft PowerShell
+      install: snap install powershell --classic
+- defaults:
+    category: graphics
+    type: apt
+  packages:
+    - id: inkscape
+      descr: Inkscape graphics editor
+    - id: gimp
+      descr: GIMP graphics editor
+    - id: simple-scan
+      descr: Simple scan for scanning docs
+      type: snap
+- defaults:
+    category: multimedia
+    type: apt
+  packages:
+    - id: clementine
+      descr: Clementine music player
+    - id: vlc
+      descr: VLC player
+    - id: spotify
+      descr: Spotify desktop client
+      type: snap
+- defaults:
+    category: web
+    type: snap
+  packages:
+    - id: whatsdesk
+      descr: Whatsapp desktop client
+    - id: zoom-client
+      descr: Zoom client
+    - id: telegram-desktop
+      descr: Telegram desktop client
+    - id: firefox
+      descr: Firefox browser
+    - id: slack
+      descr: Slack
+    - id: signal-desktop
+      descr: Signal messenger
+    - id: chromium-browser
+      descr: Chromium browser
+      type: apt

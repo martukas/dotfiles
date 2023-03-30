@@ -33,7 +33,7 @@ if [[ "$OS" == "GNU/Linux" ]]; then
 
         pushd superpack
         pipenv install
-        pipenv run python ./superpack/superpack.py ../linux-only/packages.json
+        pipenv run python ./superpack/superpack.py ../linux-only/pack-xubuntu.yml
         popd
         ;;
       *)
