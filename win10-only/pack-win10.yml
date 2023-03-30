@@ -18,10 +18,10 @@
   packages:
     - id: Maximus5.ConEmu
       descr: Conemu terminal
-      install: "..\\win10-only\\custom.ps1 startup ConEmu C:\\Program Files\\ConEmu\\ConEmu64.exe"
+      install: "..\\win10-only\\pack-custom.ps1 startup ConEmu C:\\Program Files\\ConEmu\\ConEmu64.exe"
     - id: Flameshot.Flameshot
       descr: Flameshot screenshot utility
-      install: "..\\win10-only\\custom.ps1 startup Flameshot C:\\Program Files\\Flameshot\\bin\\flameshot.exe"
+      install: "..\\win10-only\\pack-custom.ps1 startup Flameshot C:\\Program Files\\Flameshot\\bin\\flameshot.exe"
     - id: IrfanSkiljan.IrfanView
       descr: Irfanview minimal image viewer
     - id: Microsoft.BingWallpaper
