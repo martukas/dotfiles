@@ -50,6 +50,7 @@ function install_nerdfonts() {
 }
 
 function install_nvm() {
+  sudo apt --install-suggests install build-essential libssl-dev
   export NVM_DIR="$HOME/.nvm" && (
     git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR"
     cd "$NVM_DIR"
@@ -80,6 +81,14 @@ elif [ "$1" == "install-rust" ]; then
 elif [ "$1" == "install-nvm" ]; then
   install_nvm
   exit_success
+
+elif [ "$1" == "check-nvm" ]; then
+  if [[ $(command -v nvm) ]]; then
+    echo "nvm present"
+    exit $SUCCESS
+  else
+    exit $FAILURE
+  fi
 
 else
   echo "ERROR: Bad command or insufficient parameters!"

@@ -20,7 +20,7 @@
     - id: nvm
       descr: Node.js toolchain (nvm)
       category: dev-admin
-      check: command -v nvm
+      check: "../linux-only/pack-custom.sh check-nvm"
       install: "../linux-only/pack-custom.sh install-nvm"
     - id: dummy
       descr: Dummy test package

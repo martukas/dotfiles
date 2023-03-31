@@ -2,6 +2,14 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# OS-specific before - for interactive only
+case "$OSTYPE" in
+  darwin*)  echo "Running OSX: no custom dotfile scripts for this OS" ;;
+  linux*)   source ~/.dotfiles/linux-only/profile_linux_before.sh ;;
+  msys*)    source ~/.dotfiles/win10-only/profile_win10_before.sh ;;
+  cygwin*)  source ~/.dotfiles/win10-only/profile_win10_before.sh ;;
+  *)        echo "Unknown OS: $OSTYPE" ;;
+esac
 
 # Allow local customizations in the ~/.shell_local_before file
 if [ -f ~/.shell_local_before ]; then
@@ -88,19 +96,11 @@ if [ -f ~/.bashrc_local_after ]; then
     source ~/.bashrc_local_after
 fi
 
-NPM_PACKAGES="${HOME}/.npm-packages"
-NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
-PATH="$NPM_PACKAGES/bin:$PATH"
-# Unset manpath so we can inherit from /etc/manpath via the `manpath`
-# command
-unset MANPATH # delete if you already modified MANPATH elsewhere in your config
-MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
-export PATH=~/.npm-global/bin:$PATH
-
+# OS-specific after - for interactive only
 case "$OSTYPE" in
   darwin*)  echo "Running OSX: no custom dotfile scripts for this OS" ;;
-  linux*)   source ~/.dotfiles/linux-only/linux_profile.sh ;;
-  msys*)    source ~/.dotfiles/win10-only/windows_profile.sh ;;
-  cygwin*)  source ~/.dotfiles/win10-only/windows_profile.sh ;;
+  linux*)   source ~/.dotfiles/linux-only/profile_linux_after.sh ;;
+  msys*)    source ~/.dotfiles/win10-only/profile_win10_after.sh ;;
+  cygwin*)  source ~/.dotfiles/win10-only/profile_win10_after.sh ;;
   *)        echo "Unknown OS: $OSTYPE" ;;
 esac
