@@ -12,6 +12,11 @@
       category: dev-admin
       check: ls ~/.local/share/fonts | grep Nerd
       install: "../linux-only/pack-custom.sh install-nerdfonts"
+    - id: Rust
+      descr: Rust toolchain
+      category: dev-admin
+      check: command -v rustup
+      install: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
     - id: dummy
       descr: Dummy test package
       category: xtras

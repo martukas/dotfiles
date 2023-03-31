@@ -1,3 +1,8 @@
+# Enable Rust tools
+if [ -f ${HOME}/.cargo/bin/rustup ]; then
+    . "${HOME}/.cargo/env"
+fi
+
 osinfo() {
   uname -a
   cat /etc/*-release

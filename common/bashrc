@@ -101,10 +101,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 export PATH=~/.npm-global/bin:$PATH
 
-# TODO: put this in linux_only?
-# Rust shit
-. "$HOME/.cargo/env"
-
 case "$OSTYPE" in
   darwin*)  echo "Running OSX: no custom dotfile scripts for this OS" ;;
   linux*)   source ~/.dotfiles/linux-only/linux_profile.sh ;;

@@ -44,8 +44,9 @@ Updating repo:
 * Linux gui links optional
 * Code style links optional
 * Linux:
-  * Rust
   * NPM & NVM
+  * conan
+  * platformio
   * synaptic
   * baobab
   * circleci
