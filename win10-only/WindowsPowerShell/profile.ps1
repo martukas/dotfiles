@@ -25,6 +25,22 @@ function dfu
     Pop-Location
 }
 
+function git-rm-submodule($submodule_name)
+{
+    # Remove the submodule entry from .git/config
+    git submodule deinit -f $submodule_name
+    # Remove the submodule directory from the superproject's .git/modules directory
+    rm -rf .git/modules/$submodule_name
+    # Remove the entry in .gitmodules and remove the submodule directory located at path/to/submodule
+    git rm -f $submodule_name
+}
+
+function commit-push {
+    git add -A
+    git commit -m "\"$args\""
+    git push
+}
+
 # Load custom theme for Windows Terminal
 $theme="blue-owl"
 

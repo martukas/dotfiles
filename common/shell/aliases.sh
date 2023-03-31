@@ -25,10 +25,43 @@ alias rmake='cmake -DCMAKE_BUILD_TYPE=Release'
 
 # git related aliases
 alias gag='git exec ag'
-alias issue='git-issue-push'
-alias missue='git-issue-create'
-alias commit-push='git-commit-push'
-alias git-rm-submodule='git-remove-submodule'
+
+function missue() {
+  git checkout -b issue_$1
+  git push --set-upstream origin issue_$1
+}
+
+function issue() {
+  BRANCH="$(git symbolic-ref --short HEAD)"
+  NUMBER=$(echo "$BRANCH" | sed 's@^[^0-9]*\([0-9]\+\).*@\1@')
+
+  if [[ $BRANCH == *"issue"* ]] && [ -n "${NUMBER}" ]; then
+    message="$@; updates #$NUMBER"
+    git add -A
+    git commit -m "${message}"
+    git push
+  else
+    echo "not an issue branch!"
+    exit 1
+  fi
+}
+
+function commit-push() {
+  message="$@"
+  git add -A
+  git commit -m "\"$message\""
+  git push
+}
+
+function git-rm-submodule() {
+  # Remove the submodule entry from .git/config
+  git submodule deinit -f "$1"
+  # Remove the submodule directory from the superproject's .git/modules directory
+  rm -rf .git/modules/"$1"
+  # Remove the entry in .gitmodules and remove the submodule directory located at path/to/submodule
+  git rm -f "$1"
+}
+
 
 # Dotfiles upgrade submodules
 df-upgrade() {

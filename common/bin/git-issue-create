@@ -1,4 +1,0 @@
-#!/bin/bash
-
-git checkout -b issue_$1
-git push --set-upstream origin issue_$1

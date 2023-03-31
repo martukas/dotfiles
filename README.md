@@ -44,15 +44,14 @@ Updating repo:
 * Linux gui links optional
 * Code style links optional
 * Linux:
-  * NPM
   * conan
   * platformio
+  * NPM
   * synaptic
   * baobab
   * circleci
   * libreoffice
 * Windows:
-  * git aliases for pwsh
   * TuneIn
   * steam
   * discord
@@ -61,6 +60,7 @@ Updating repo:
   * google drive
   * configure night light
   * optional sshd and remote-desktop config
+  * issue-related git aliases for pwsh
 * Set up conditional GPG things in `.gitconfig_local` or some such
 * custom hosts file for ssh remote aliases
 * Adopt https://github.com/pop-os/shell ?
