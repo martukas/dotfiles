@@ -27,10 +27,10 @@ To update locally, there are convenience [aliases](common/shell/aliases.sh):
 * `df-upgrade` - upgrades all submodules to latest versions in remote repos
 
 Updating repo:
-* The usual add-commit-push, or the `commit-push` alias
+* The usual add-commit-push ritual, or the `commit-push` alias
 * symlinked files will stay up to date
-* occasionally run `update.sh` to extract and save settings for guake
-* `dirty` state in `private` part will be ignored by git. Commit changes to that submodule separately.
+* on Xubuntu, occasionally run `df-save` to extract and save settings for guake
+* `dirty` state in `private` part will be ignored by git. Commit changes to that submodule separately, before you commit in parent dir
 
 ## Manual installation for now...
 
@@ -45,7 +45,7 @@ Updating repo:
 * Linux gui links optional
 * Code style links optional
 * Linux:
-  * conan
+  * [conan](https://docs.conan.io/2/installation.html)
   * NPM
   * synaptic
   * baobab
@@ -62,6 +62,7 @@ Updating repo:
   * optional sshd and remote-desktop config
   * issue-related git aliases for pwsh
 * Configure rustup shell completion [here](https://rust-lang.github.io/rustup/installation/index.html)
+* Try out [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
 * Set up conditional GPG things in `.gitconfig_local` or some such
 * custom hosts file for ssh remote aliases
 * Adopt https://github.com/pop-os/shell ?

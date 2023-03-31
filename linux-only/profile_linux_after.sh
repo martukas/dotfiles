@@ -23,7 +23,7 @@ mouse-tweak() {
   sudo systemctl enable --now logid
 }
 
-mouse_untweak() {
+mouse-untweak() {
   sudo systemctl disable --now logid
 }
 
@@ -52,4 +52,10 @@ create-user() {
     *)
       ;;
   esac
+}
+
+df-save() {
+  pushd ~/.dotfiles
+  dconf dump /apps/guake/ > linux-only/dconf-guake-dump.txt
+  popd
 }
