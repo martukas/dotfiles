@@ -32,11 +32,12 @@ Updating repo:
 * occasionally run `update.sh` to extract and save settings for guake
 * `dirty` state in `private` part will be ignored by git. Commit changes to that submodule separately.
 
-## Manual installation for now
+## Manual installation for now...
 
 * [InSync](https://www.insynchq.com/downloads/linux)
 * Dark mode for Keepass [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
 * [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
+* [CLion + PlatformIO integration](https://docs.platformio.org/en/latest/integration/ide/clion.html)
 
 ## TODO
 
@@ -45,7 +46,6 @@ Updating repo:
 * Code style links optional
 * Linux:
   * conan
-  * platformio
   * NPM
   * synaptic
   * baobab
@@ -61,6 +61,7 @@ Updating repo:
   * configure night light
   * optional sshd and remote-desktop config
   * issue-related git aliases for pwsh
+* Configure rustup shell completion [here](https://rust-lang.github.io/rustup/installation/index.html)
 * Set up conditional GPG things in `.gitconfig_local` or some such
 * custom hosts file for ssh remote aliases
 * Adopt https://github.com/pop-os/shell ?

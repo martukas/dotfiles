@@ -58,6 +58,17 @@ function install_nvm() {
   ) && \. "$NVM_DIR/nvm.sh"
 }
 
+function install_platformio() {
+  python3 -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"
+  ln -s ~/.platformio/penv/bin/platformio ~/.local/bin/platformio
+  ln -s ~/.platformio/penv/bin/pio ~/.local/bin/pio
+  ln -s ~/.platformio/penv/bin/piodebuggdb ~/.local/bin/piodebuggdb
+  curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules | sudo tee /etc/udev/rules.d/99-platformio-udev.rules
+  sudo usermod -a -G dialout $USER
+  sudo usermod -a -G plugdev $USER
+  sudo service udev restart
+}
+
 # Script will run in its own path no matter where it's called from.
 pushd "$(dirname "$0")"
 
@@ -89,6 +100,10 @@ elif [ "$1" == "check-nvm" ]; then
   else
     exit $FAILURE
   fi
+
+elif [ "$1" == "install-platformio" ]; then
+  install_platformio
+  exit_success
 
 else
   echo "ERROR: Bad command or insufficient parameters!"

@@ -2,6 +2,11 @@
 - defaults:
     type: posix
   packages:
+    - id: dummy
+      descr: Dummy test package
+      category: xtras
+      check: which nonexistentscript
+      install: "../linux-only/pack-custom.sh test"
     - id: logiops
       descr: Logiops mouse buttons hack
       category: GUI
@@ -22,11 +27,11 @@
       category: dev-admin
       check: "../linux-only/pack-custom.sh check-nvm"
       install: "../linux-only/pack-custom.sh install-nvm"
-    - id: dummy
-      descr: Dummy test package
-      category: xtras
-      check: which nonexistentscript
-      install: "../linux-only/pack-custom.sh test"
+    - id: platformio
+      descr: PlatformIO embedded toolchain
+      category: dev-admin
+      check: "command -v platformio"
+      install: "../linux-only/pack-custom.sh install-platformio"
 - defaults:
     type: apt
     category: GUI
