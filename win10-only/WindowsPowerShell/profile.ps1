@@ -17,6 +17,14 @@ function upd
     winget upgrade --all
 }
 
+function dfu
+{
+    Push-Location (Get-Item "$HOME\.dotfiles").Target
+    git pull
+    .\install.ps1
+    Pop-Location
+}
+
 # Load custom theme for Windows Terminal
 $theme="blue-owl"
 

@@ -30,25 +30,6 @@ alias missue='git-issue-create'
 alias commit-push='git-commit-push'
 alias git-rm-submodule='git-remove-submodule'
 
-if command -v guake &> /dev/null
-then
-  function ssh() {
-    # TODO what if there are options inside the @? parse and remove them for guake
-    guake -r "$@";
-    /usr/bin/ssh "$@"
-    guake -r "-"
-  }
-fi
-
-# Dotfiles update
-dfu() {
-  if [[ "$OSTYPE" == "msys" ]]; then
-    pushd ~/.dotfiles && git pull && ./install.ps1 && popd
-  else
-    pushd ~/.dotfiles && git pull && ./install.sh && popd
-  fi
-}
-
 # Dotfiles upgrade submodules
 df-upgrade() {
   pushd ~/.dotfiles

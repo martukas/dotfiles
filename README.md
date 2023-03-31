@@ -52,6 +52,7 @@ Updating repo:
   * circleci
   * libreoffice
 * Windows:
+  * git aliases for pwsh
   * TuneIn
   * steam
   * discord

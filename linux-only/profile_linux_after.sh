@@ -1,3 +1,18 @@
+# Dotfiles update
+dfu() {
+  pushd ~/.dotfiles && git pull && ./install.sh && popd
+}
+
+if command -v guake &> /dev/null
+then
+  function ssh() {
+    # TODO what if there are options inside the @? parse and remove them for guake
+    guake -r "$@";
+    /usr/bin/ssh "$@"
+    guake -r "-"
+  }
+fi
+
 osinfo() {
   uname -a
   cat /etc/*-release
