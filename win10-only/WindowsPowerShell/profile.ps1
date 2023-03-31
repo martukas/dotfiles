@@ -12,6 +12,11 @@ function Test-Administrator
     }
 }
 
+function la
+{
+    Get-ChildItem -Force
+}
+
 function upd
 {
     winget upgrade --all
@@ -37,8 +42,8 @@ function git-rm-submodule($submodule_name)
 
 function commit-push {
     git add -A
-    git commit -m "\"$args\""
-    git push
+    git commit -m '"$argumentList"'
+#    git push
 }
 
 # Load custom theme for Windows Terminal
