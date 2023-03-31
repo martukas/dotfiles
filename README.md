@@ -41,6 +41,7 @@ Updating repo:
 
 ## TODO
 
+* clementine remote config & script
 * wget bootstrap files now that repo is public
 * Linux gui links optional
 * Code style links optional

@@ -48,6 +48,8 @@
       descr: Wireshark network sniffer
     - id: WinDirStat.WinDirStat
       descr: WinDirStat
+    - id: GNU.Nano
+      descr: Nano text editor for terminal
 - defaults:
     type: winget
     category: web
