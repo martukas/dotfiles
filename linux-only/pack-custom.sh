@@ -7,6 +7,12 @@ SUCCESS=0
 set -e
 set -o pipefail
 
+function exit_success() {
+  echo " "
+  read -n1 -srp $'Press any key to continue...\n' key
+  exit $SUCCESS
+}
+
 function install_logiops() {
   sudo apt install build-essential cmake libevdev-dev libudev-dev libconfig++-dev
   mkdir -p logiops/build
@@ -43,6 +49,13 @@ function install_nerdfonts() {
   fc-cache -fv
 }
 
+function install_nvm() {
+  export NVM_DIR="$HOME/.nvm" && (
+    git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR"
+    cd "$NVM_DIR"
+    git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
+  ) && \. "$NVM_DIR/nvm.sh"
+}
 
 # Script will run in its own path no matter where it's called from.
 pushd "$(dirname "$0")"
@@ -50,17 +63,23 @@ pushd "$(dirname "$0")"
 if [ "$1" == "test" ]; then
   echo "---=== TEST CLAUSE OR PLACEHOLDER ===---"
   echo "  Will not actually install anything."
-  echo " "
-  read -n1 -srp $'Press any key to continue...\n' key
-  exit $SUCCESS
+  exit_success
 
 elif [ "$1" == "install-logiops" ]; then
   install_logiops
-  exit $SUCCESS
+  exit_success
 
 elif [ "$1" == "install-nerdfonts" ]; then
   install_logiops
-  exit $SUCCESS
+  exit_success
+
+elif [ "$1" == "install-rust" ]; then
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  exit_success
+
+elif [ "$1" == "install-nvm" ]; then
+  install_nvm
+  exit_success
 
 else
   echo "ERROR: Bad command or insufficient parameters!"

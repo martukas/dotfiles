@@ -44,7 +44,7 @@ Updating repo:
 * Linux gui links optional
 * Code style links optional
 * Linux:
-  * NPM & NVM
+  * NPM
   * conan
   * platformio
   * synaptic
