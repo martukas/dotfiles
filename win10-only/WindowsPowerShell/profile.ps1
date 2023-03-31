@@ -43,7 +43,7 @@ function git-rm-submodule($submodule_name)
 function commit-push {
     git add -A
     git commit -m '"$argumentList"'
-#    git push
+    git push
 }
 
 # Load custom theme for Windows Terminal
