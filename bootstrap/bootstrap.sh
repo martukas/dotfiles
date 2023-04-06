@@ -11,7 +11,6 @@ set -o pipefail
 case "${OSTYPE}" in
   linux*)
     echo "Linux: OK"
-    exit $SUCCESS # \TODO: remove before merging
     ;;
   *)
     echo "Error: This script only supports linux. You have: $OSTYPE."
@@ -38,8 +37,7 @@ read -n1 -srp $'Press any key to continue...\n' key
 ### Install git-lfs
 sudo apt --yes install curl git-lfs ssh python3-pip python-is-python3 xclip
 
-# \TODO: change to point to master before merging
-wget -qO - 'https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh' \
+wget -qO - 'https://github.com/martukas/dotfiles/raw/master/bootstrap/config_ssh.sh' \
   | bash -s "python -m webbrowser"
 
 echo "Bootstrapping complete. We will now run the rest of the rest of the dotfiles-managed installation scripts."
