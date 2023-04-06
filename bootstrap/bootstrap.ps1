@@ -15,7 +15,7 @@ Write-Host -NoNewLine 'Press any key to continue...';
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 
 # \TODO: change to point to master before merging
-(New-Object System.Net.WebClient).DownloadFile ("https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh", "config_ssh.sh")
+(New-Object System.Net.WebClient).DownloadFile ("https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh", ".\config_ssh.sh")
 
 Exit $SUCCESS
 
