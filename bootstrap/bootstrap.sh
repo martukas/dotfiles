@@ -20,6 +20,8 @@ if [ "${EUID}" -eq 0 ] && [ "$2" != "-f" ]; then
   exit $FAILURE
 fi
 
+pwd
+
 # This script should work no matter where you call it from.
 cd "$(dirname "$0")"
 
@@ -34,6 +36,7 @@ echo " "
 read -n1 -srp $'Press any key to continue...\n' key
 
 # \TODO: change to point to master before merging
+pwd
 wget https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh
 chmod +x ./config_ssh.sh
 exit $SUCCESS
