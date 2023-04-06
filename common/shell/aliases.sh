@@ -42,7 +42,7 @@ function issue() {
     git push
   else
     echo "not an issue branch!"
-    exit 1
+    return 1
   fi
 }
 

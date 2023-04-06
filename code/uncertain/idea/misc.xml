@@ -4,6 +4,9 @@
   <component name="CidrRootsConfiguration">
     <excludeRoots>
       <file path="$PROJECT_DIR$/build" />
+      <file path="$PROJECT_DIR$/coverage-reports" />
+      <file path="$PROJECT_DIR$/coverage_reports" />
+      <file path="$PROJECT_DIR$/static-checks" />
     </excludeRoots>
   </component>
   <component name="JavaScriptSettings">

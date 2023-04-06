@@ -1,5 +1,8 @@
 # My dotfiles
 
+[![bash](https://img.shields.io/badge/GNU-Bash-4eaa25?logo=gnubash)](https://github.com/PowerShell/PowerShell)
+[![PowerShell](https://img.shields.io/badge/PowerShell-7-26405f?logo=powershell)](https://github.com/PowerShell/PowerShell)
+
 These are my dotfiles and bootstrap scripts for Linux (mainly Xubuntu) and Win10+ systems.
 
 If on Windows, before doing anything else, you:
@@ -35,18 +38,23 @@ Updating repo:
 ## Manual installation for now...
 
 * [InSync](https://www.insynchq.com/downloads/linux)
-* Dark mode for Keepass [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
 * [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
 * [CLion + PlatformIO integration](https://docs.platformio.org/en/latest/integration/ide/clion.html)
 
 ## TODO
 
+* badges
+* include .profile?
+* install [thefuck](https://github.com/nvbn/thefuck)
+* install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
 * wget bootstrap files now that repo is public
 * Linux gui links optional
 * Code style links optional
+* Dark mode for Keepass [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
 * Linux:
-  * [conan](https://docs.conan.io/2/installation.html)
+  * change terminal name via ssh
+  * Xubuntu dark mode
   * NPM
   * synaptic
   * baobab
@@ -65,6 +73,5 @@ Updating repo:
 * Configure rustup shell completion [here](https://rust-lang.github.io/rustup/installation/index.html)
 * Try out [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
 * Set up conditional GPG things in `.gitconfig_local` or some such
-* custom hosts file for ssh remote aliases
 * Adopt https://github.com/pop-os/shell ?
 * Migrate to https://www.chezmoi.io/ ?

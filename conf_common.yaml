@@ -25,3 +25,4 @@
     ~/.gitignore_global: 'common/gitignore_global'
     ~/.shell: 'common/shell'
     ~/.ssh/config: 'private/common/ssh/config'
+    ~/.gitconfig_private: 'private/common/gitconfig_private'
