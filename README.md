@@ -9,9 +9,7 @@ These are my dotfiles and bootstrap scripts for Linux and Windows systems. The g
 
 ## Bootstrapping
 
-Let's make as few assumptions as possible about what's available on the machine - no git, no Python, nothing...
-
-These bootstrap scripts will install the essentials, set up ssh credentials and clone this repo with privileges.
+Let's make as few assumptions as possible about what's available on the machine - no git, no Python. These scripts will install the essentials, set up ssh credentials and clone this repo.
 
 ### Linux
 
@@ -55,7 +53,7 @@ Pushing local changes to repo:
 * on Xubuntu, occasionally run `df-save` to extract and save settings for guake
 * `dirty` state in `private` part will be ignored by git. Commit changes to that submodule separately, before you commit in parent dir
 
-## Manual installation for now...
+## Manual installation required
 
 * [InSync](https://www.insynchq.com/downloads/linux)
 * [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
@@ -65,7 +63,6 @@ Pushing local changes to repo:
 
 <details>
 <summary>Roadmap</summary>
-## Step by Step
 * bootstrap script should fork on headless session
 * include .profile?
 * pre-commit hook for guake settings
