@@ -1,7 +1,7 @@
 #!/bin/bash
 
-EXIT_FAILURE=1
-EXIT_SUCCESS=0
+FAILURE=1
+SUCCESS=0
 
 # Fail if any command fails
 set -e
@@ -11,13 +11,13 @@ set -o pipefail
 PLATFORM="$(uname -s)"
 if [ "${PLATFORM}" != "Linux" ]; then
   echo "Error: This script only supports 'Linux'. You have $PLATFORM."
-  exit $EXIT_FAILURE
+  exit $FAILURE
 fi
 
 # Make sure we are not in sudo
 if [ "${EUID}" -eq 0 ] && [ "$2" != "-f" ]; then
   echo "Please do not run this script with root privileges!"
-  exit $EXIT_FAILURE
+  exit $FAILURE
 fi
 
 # This script should work no matter where you call it from.
@@ -33,14 +33,20 @@ echo "  -- clones the dotfile repository"
 echo " "
 read -n1 -srp $'Press any key to continue...\n' key
 
+# \TODO: change to point to master before merging
+wget https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh
+chmod +x config_ssh.sh
+exit $SUCCESS
+
 ### Install git-lfs
-sudo apt --install-suggests install git-lfs ssh python3-pip python-is-python3 xclip
+sudo apt --install-suggests install curl git-lfs ssh python3-pip python-is-python3 xclip
 
 ./config_ssh.sh "python -m webbrowser"
 
 echo "Bootstrapping complete. We will now run the rest of the rest of the dotfiles-managed installation scripts."
 echo " "
 read -n1 -srp $'Press any key to continue...\n' key
+rm ./config_ssh.sh
 
 cd "${HOME}/dev/dotfiles/"
 ./install.sh

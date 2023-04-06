@@ -17,6 +17,17 @@ If on Windows, before doing anything else:
 
 ## Bootstrapping
 
+<!-- \TODO change to point to master before merging!!! -->
+```shell
+bash <(wget -qO- https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/bootstrap.sh)
+```
+
+<!-- \TODO change to point to master before merging!!! -->
+```powershell
+(New-Object System.Net.WebClient).DownloadFile ("https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/bootstrap.ps1", "bootstrap.ps1")
+./bootstrap.ps1
+```
+
 Let's make as few assumptions as possible about what's available on the machine - no git, no Python, nothing...
 
 In this case, download the files in the [bootstrap](bootstrap) directory.

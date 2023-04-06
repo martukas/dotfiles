@@ -1,3 +1,6 @@
+$FAILURE=1
+$SUCCESS=0
+
 Write-Host "==============================================================="
 Write-Host "============== MGS personal bootstrapper - Win10 =============="
 Write-Host "==============================================================="
@@ -10,6 +13,11 @@ Write-Host "  -- installs common programs"
 Write-Host " "
 Write-Host -NoNewLine 'Press any key to continue...';
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+
+# \TODO: change to point to master before merging
+(New-Object System.Net.WebClient).DownloadFile ("https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh", "config_ssh.sh")
+
+Exit $SUCCESS
 
 Write-Host " "
 
@@ -50,6 +58,7 @@ Pop-Location
 Write-Host "Bootstrapping complete. You should now restart the machine and run 'install.ps1' from pwsh."
 Write-Host " "
 Write-Host -NoNewLine 'Press any key to restart machine...';
+Remove-Item .\config_ssh.sh
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 
 Restart-Computer -Confirm
