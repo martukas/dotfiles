@@ -1,7 +1,9 @@
-# My dotfiles
+# One ring to rule them all
 
 [![bash](https://img.shields.io/badge/GNU-Bash-4eaa25?logo=gnubash)](https://github.com/PowerShell/PowerShell)
 [![PowerShell](https://img.shields.io/badge/PowerShell-7-26405f?logo=powershell)](https://github.com/PowerShell/PowerShell)
+[![Ubuntu](https://img.shields.io/badge/Ubuntu-22.10-E95420?logo=ubuntu)](https://github.com/PowerShell/PowerShell)
+[![Windows10](https://img.shields.io/badge/Windows-10-0078D6?logo=windows)](https://github.com/PowerShell/PowerShell)
 
 These are my dotfiles and bootstrap scripts for Linux (mainly Xubuntu) and Win10+ systems.
 
@@ -43,7 +45,6 @@ Updating repo:
 
 ## TODO
 
-* badges
 * include .profile?
 * install [thefuck](https://github.com/nvbn/thefuck)
 * install [conan](https://docs.conan.io/2/installation.html)
