@@ -1,3 +1,14 @@
+$FAILURE=1
+$SUCCESS=0
+
+if (-Not $IsWindows) {
+    Write-Host "Error: This script only supports Windows"
+    Exit $FAILURE
+}
+else {
+    Write-Host "Windows: OK"
+}
+
 Write-Host "==============================================================="
 Write-Host "============== MGS personal bootstrapper - Win10 =============="
 Write-Host "==============================================================="
@@ -42,8 +53,13 @@ $out_path = "$HOME\.bash_profile"
 $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
 [System.IO.File]::WriteAllLines($out_path, $py_alias, $Utf8NoBomEncoding)
 
+Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/master/bootstrap/config_ssh.sh" -OutFile "config_ssh.sh"
+
 Start-Process -FilePath "$Env:Programfiles\Git\bin\sh.exe" `
 	-ArgumentList "--login","-i","-c",'"./config_ssh.sh start"'
+
+Remove-Item .\config_ssh.sh
+Remove-Item .\bootstrap.ps1
 
 Pop-Location
 

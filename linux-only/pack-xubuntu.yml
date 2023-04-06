@@ -38,10 +38,10 @@
   packages:
     - id: guake
       descr: Guake terminal
-      install: sudo apt --install-suggests install guake* dconf-cli
+      install: sudo apt --yes install guake* dconf-cli
     - id: redshift
       descr: Redshift for the eyes
-      install: sudo apt --install-suggests install redshift*
+      install: sudo apt --yes install redshift*
     - id: flameshot
       descr: Flameshot screenshot utility
     - id: keepass2

@@ -27,7 +27,7 @@ if [[ "$OS" == "GNU/Linux" ]]; then
     read -rp "[Linux] Do you want to run one-time installation scripts? " answer
     case ${answer:0:1} in
       y | Y)
-        sudo apt --install-suggests install aptitude snapd silversearcher-ag
+        sudo apt --yes install aptitude snapd silversearcher-ag
         sudo apt -y purge parole
         sudo python -m pip install --upgrade pip
         python -m pip install --upgrade pipenv
