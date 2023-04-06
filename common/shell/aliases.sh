@@ -26,31 +26,36 @@ alias rmake='cmake -DCMAKE_BUILD_TYPE=Release'
 # git related aliases
 alias gag='git exec ag'
 
-function missue() {
-  git checkout -b issue_$1
-  git push --set-upstream origin issue_$1
+# git new branch
+function gnb() {
+  git checkout -b $1
+  git push --set-upstream origin $1
 }
 
+#create new issue branch
+function missue() {
+  gnb issue_$1
+}
+
+function commit-push() {
+  message="$@"
+  git add -A
+  git commit -m "${message}"
+  git push
+}
+
+# commit-push, appending an "updates #issue" to one-line commit message
 function issue() {
   BRANCH="$(git symbolic-ref --short HEAD)"
   NUMBER=$(echo "$BRANCH" | sed 's@^[^0-9]*\([0-9]\+\).*@\1@')
 
   if [[ $BRANCH == *"issue"* ]] && [ -n "${NUMBER}" ]; then
     message="$@; updates #$NUMBER"
-    git add -A
-    git commit -m "${message}"
-    git push
+    commit-push "${message}"
   else
     echo "not an issue branch!"
     return 1
   fi
-}
-
-function commit-push() {
-  message="$@"
-  git add -A
-  git commit -m "\"$message\""
-  git push
 }
 
 function git-rm-submodule() {
