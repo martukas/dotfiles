@@ -1,13 +1,16 @@
 #!/bin/bash
 
-EXIT_FAILURE=1
-EXIT_SUCCESS=0
+FAILURE=1
+SUCCESS=0
 
 # Fail if any command fails
 set -e
 set -o pipefail
 
 START_BROWSER_CMD="$@"
+
+echo "About to run config_ssh.sh with START_BROWSER_CMD=\"$START_BROWSER_CMD\""
+exit $SUCCESS
 
 KEY_TYPE="ed25519"
 KEY_FILE="${HOME}/.ssh/id_${KEY_TYPE}"

@@ -1,6 +1,8 @@
 $FAILURE=1
 $SUCCESS=0
 
+# \TODO: perform OS check
+
 Write-Host "==============================================================="
 Write-Host "============== MGS personal bootstrapper - Win10 =============="
 Write-Host "==============================================================="
@@ -15,7 +17,10 @@ Write-Host -NoNewLine 'Press any key to continue...';
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 
 # \TODO: change to point to master before merging
-(New-Object System.Net.WebClient).DownloadFile ("https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh", ".\config_ssh.sh")
+Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh" -OutFile "config_ssh.sh"
+
+Start-Process -FilePath "$Env:Programfiles\Git\bin\sh.exe" `
+	-ArgumentList "--login","-i","-c",'"./config_ssh.sh start"'
 
 Exit $SUCCESS
 

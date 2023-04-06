@@ -8,7 +8,6 @@
 These are my dotfiles and bootstrap scripts for Linux and Windows systems. The git/bash/ssh parts should work for Mac as well.
 
 If on Windows, before doing anything else:
-* Run `Set-ExecutionPolicy RemoteSigned` for PS1 scripts to work
 * Prevent OneDrive from taking over your home directories as described [here](https://answers.microsoft.com/en-us/windows/forum/all/taking-back-control-of-your-folders-from-onedrive/7b7ad05e-8b05-4bcd-9772-9e4eee880346):
   * Open 'gpedit' from the Start menu
   * Follow `Administrative Templates`>`Windows Components`>`OneDrive`
@@ -24,7 +23,9 @@ bash <(wget -qO- https://github.com/martukas/dotfiles/raw/bootstrapping/bootstra
 
 <!-- \TODO change to point to master before merging!!! -->
 ```powershell
-Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/bootstrap.ps1"))
+Set-ExecutionPolicy RemoteSigned
+Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/bootstrap.ps1" -OutFile "bootstrap.ps1"
+.\bootstrap.ps1
 ```
 
 Let's make as few assumptions as possible about what's available on the machine - no git, no Python, nothing...

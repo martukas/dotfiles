@@ -20,11 +20,6 @@ if [ "${EUID}" -eq 0 ] && [ "$2" != "-f" ]; then
   exit $FAILURE
 fi
 
-pwd
-
-# This script should work no matter where you call it from.
-cd "$(dirname "$0")"
-
 echo "==============================================================="
 echo "============== MGS personal bootstrapper - Linux =============="
 echo "==============================================================="
@@ -36,10 +31,8 @@ echo " "
 read -n1 -srp $'Press any key to continue...\n' key
 
 # \TODO: change to point to master before merging
-pwd
 wget https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh
 chmod +x ./config_ssh.sh
-exit $SUCCESS
 
 ### Install git-lfs
 sudo apt --install-suggests install curl git-lfs ssh python3-pip python-is-python3 xclip
@@ -50,6 +43,7 @@ echo "Bootstrapping complete. We will now run the rest of the rest of the dotfil
 echo " "
 read -n1 -srp $'Press any key to continue...\n' key
 rm ./config_ssh.sh
+exit $SUCCESS
 
 cd "${HOME}/dev/dotfiles/"
 ./install.sh
