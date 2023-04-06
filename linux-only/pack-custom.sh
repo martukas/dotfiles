@@ -50,7 +50,7 @@ function install_nerdfonts() {
 }
 
 function install_nvm() {
-  sudo apt --install-suggests install build-essential libssl-dev
+  sudo apt --yes install build-essential libssl-dev
   export NVM_DIR="$HOME/.nvm" && (
     git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR"
     cd "$NVM_DIR"
