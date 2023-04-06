@@ -59,10 +59,11 @@ Pushing local changes to repo:
 * [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
 * [CLion + PlatformIO integration](https://docs.platformio.org/en/latest/integration/ide/clion.html)
 
-## TODO
+## Future improvements
 
 <details>
 <summary>Roadmap</summary>
+
 * bootstrap script should fork on headless session
 * include .profile?
 * pre-commit hook for guake settings
