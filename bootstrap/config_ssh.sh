@@ -1,16 +1,18 @@
 #!/bin/bash
 
+echo "Running config_ssh"
+
 FAILURE=1
 SUCCESS=0
-
-# Fail if any command fails
-set -e
-set -o pipefail
 
 START_BROWSER_CMD="$@"
 
 echo "About to run config_ssh.sh with START_BROWSER_CMD=\"$START_BROWSER_CMD\""
 exit $SUCCESS
+
+# Fail if any command fails
+set -e
+set -o pipefail
 
 KEY_TYPE="ed25519"
 KEY_FILE="${HOME}/.ssh/id_${KEY_TYPE}"

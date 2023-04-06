@@ -30,24 +30,17 @@ echo "  -- clones the dotfile repository"
 echo " "
 read -n1 -srp $'Press any key to continue...\n' key
 
-# \TODO: change to point to master before merging
-wget https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh
-chmod +x ./config_ssh.sh
-./config_ssh.sh "python -m webbrowser"
-wget -qO - 'https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh' | bash -s "python -m webbrowser"
-
-exit $SUCCESS
-
 ### Install git-lfs
 sudo apt --yes install curl git-lfs ssh python3-pip python-is-python3 xclip
 
-./config_ssh.sh "python -m webbrowser"
+# \TODO: change to point to master before merging
+wget -qO - 'https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh' \
+  | bash -s "python -m webbrowser"
 
 echo "Bootstrapping complete. We will now run the rest of the rest of the dotfiles-managed installation scripts."
 echo " "
 read -n1 -srp $'Press any key to continue...\n' key
-rm ./config_ssh.sh
-exit $SUCCESS
+exit $SUCCESS # \TODO: remove this before merging
 
 cd "${HOME}/dev/dotfiles/"
 ./install.sh
