@@ -35,7 +35,7 @@ Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/bootstrapping/b
 ```
 You will have to reboot before you start using the utilities below.
 
-## Routine use:
+## Routine use
 
 For first-time setup:
 * go to `~/dev/dotfiles`
@@ -64,19 +64,19 @@ Pushing local changes to repo:
 <details>
 <summary>Roadmap</summary>
 
-* bootstrap script should fork on headless session
+* bootstrap script should work on headless session
 * include .profile?
-* pre-commit hook for guake settings
 * install [thefuck](https://github.com/nvbn/thefuck)
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
-* wget bootstrap files now that repo is public
+* pre-commit hook for guake settings
 * Linux gui links optional
 * Code style links optional
 * Dark mode for Keepass [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
+* Foreign keyboards
 * Linux:
-  * change terminal name via ssh
   * Xubuntu dark mode
+  * change terminal name via ssh
   * NPM
   * synaptic
   * baobab
