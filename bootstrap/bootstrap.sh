@@ -8,11 +8,16 @@ set -e
 set -o pipefail
 
 # Check if Linux
-PLATFORM="$(uname -s)"
-if [ "${PLATFORM}" != "Linux" ]; then
-  echo "Error: This script only supports 'Linux'. You have $PLATFORM."
-  exit $FAILURE
-fi
+case "${OSTYPE}" in
+  linux*)
+    echo "Linux: OK"
+    exit $SUCCESS # \TODO: remove before merging
+    ;;
+  *)
+    echo "Error: This script only supports linux. You have: $OSTYPE."
+    exit $FAILURE
+    ;;
+esac
 
 # Make sure we are not in sudo
 if [ "${EUID}" -eq 0 ] && [ "$2" != "-f" ]; then
@@ -40,7 +45,6 @@ wget -qO - 'https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/con
 echo "Bootstrapping complete. We will now run the rest of the rest of the dotfiles-managed installation scripts."
 echo " "
 read -n1 -srp $'Press any key to continue...\n' key
-exit $SUCCESS # \TODO: remove this before merging
 
 cd "${HOME}/dev/dotfiles/"
 ./install.sh

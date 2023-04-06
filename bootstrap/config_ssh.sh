@@ -1,14 +1,11 @@
 #!/bin/bash
 
-echo "Running config_ssh"
-
 FAILURE=1
 SUCCESS=0
 
 START_BROWSER_CMD="$@"
 
-echo "About to run config_ssh.sh with START_BROWSER_CMD=\"$START_BROWSER_CMD\""
-exit $SUCCESS
+echo "Running config_ssh with START_BROWSER_CMD=\"$START_BROWSER_CMD\""
 
 # Fail if any command fails
 set -e

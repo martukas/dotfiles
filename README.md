@@ -56,6 +56,7 @@ Updating repo:
 
 ## TODO
 
+* bootstrap script should fork on headless session
 * include .profile?
 * install [thefuck](https://github.com/nvbn/thefuck)
 * install [conan](https://docs.conan.io/2/installation.html)

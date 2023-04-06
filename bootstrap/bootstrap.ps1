@@ -1,7 +1,14 @@
 $FAILURE=1
 $SUCCESS=0
 
-# \TODO: perform OS check
+if (-Not $IsWindows) {
+    Write-Host "Error: This script only supports Windows"
+    Exit $FAILURE
+}
+else {
+    Write-Host "Windows: OK"
+    Exit $SUCCESS # \TODO: remove before merging
+}
 
 Write-Host "==============================================================="
 Write-Host "============== MGS personal bootstrapper - Win10 =============="
@@ -15,14 +22,6 @@ Write-Host "  -- installs common programs"
 Write-Host " "
 Write-Host -NoNewLine 'Press any key to continue...';
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-
-# \TODO: change to point to master before merging
-Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh" -OutFile "config_ssh.sh"
-
-Start-Process -FilePath "$Env:Programfiles\Git\bin\sh.exe" `
-	-ArgumentList "--login","-i","-c",'"./config_ssh.sh start"'
-
-Exit $SUCCESS
 
 Write-Host " "
 
@@ -55,15 +54,20 @@ $out_path = "$HOME\.bash_profile"
 $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
 [System.IO.File]::WriteAllLines($out_path, $py_alias, $Utf8NoBomEncoding)
 
+# \TODO: change to point to master before merging
+Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/config_ssh.sh" -OutFile "config_ssh.sh"
+
 Start-Process -FilePath "$Env:Programfiles\Git\bin\sh.exe" `
 	-ArgumentList "--login","-i","-c",'"./config_ssh.sh start"'
+
+Remove-Item .\config_ssh.sh
+Remove-Item .\bootstrap.ps1
 
 Pop-Location
 
 Write-Host "Bootstrapping complete. You should now restart the machine and run 'install.ps1' from pwsh."
 Write-Host " "
 Write-Host -NoNewLine 'Press any key to restart machine...';
-Remove-Item .\config_ssh.sh
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 
 Restart-Computer -Confirm
