@@ -1,5 +1,6 @@
 # One ring to rule them all
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/martukas/dotfiles/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/martukas/dotfiles/tree/master)
 [![bash](https://img.shields.io/badge/GNU-Bash-4eaa25?logo=gnubash)](https://www.gnu.org/software/bash/)
 [![PowerShell](https://img.shields.io/badge/PowerShell-7-26405f?logo=powershell)](https://github.com/PowerShell/PowerShell)
 [![Windows10](https://img.shields.io/badge/Windows-10-0078D6?logo=windows)](https://www.microsoft.com/en-us/software-download/windows10%20)
