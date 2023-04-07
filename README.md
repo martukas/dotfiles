@@ -26,7 +26,7 @@ Firstly, you want to prevent OneDrive from taking over your home directories as 
   * Follow `Administrative Templates`>`Windows Components`>`OneDrive`
   * Edit and enable `Prevent the usage of OneDrive for file storage`.
 
-Run there commands in PowerShell with Admin privileges:
+Run these commands in PowerShell with Admin privileges:
 <!-- \TODO change to point to master before merging!!! -->
 ```powershell
 Set-ExecutionPolicy Unrestricted
@@ -51,7 +51,7 @@ Pushing local changes to repo:
 * The usual add-commit-push ritual, or the `commit-push` alias
 * symlinked files will stay up to date
 * on Xubuntu, occasionally run `df-save` to extract and save settings for guake
-* `dirty` state in `private` part will be ignored by git. Commit changes to that submodule separately, before you commit in parent dir
+* "dirty" state in the `/private` subrepo will be ignored. Commit changes to that submodule separately, before you commit in parent dir
 
 ## Manual installation required
 
