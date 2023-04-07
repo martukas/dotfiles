@@ -1,11 +1,13 @@
 #!/bin/bash
 
-FAILURE=1
-SUCCESS=0
-
 # Fail if any command fails
 set -e
 set -o pipefail
+
+# shellcheck disable=SC2034
+FAILURE=1
+# shellcheck disable=SC2034
+SUCCESS=0
 
 # Check if Linux
 case "${OSTYPE}" in
@@ -32,7 +34,7 @@ echo "  -- installs essentials: git, ssh, python, xclip"
 echo "  -- configures ssh & github credentials"
 echo "  -- clones the dotfile repository"
 echo " "
-read -n1 -srp $'Press any key to continue...\n' key
+read -n1 -srp $'Press any key to continue...\n' _
 
 ### Install git-lfs
 sudo apt --yes install curl git-lfs ssh python3-pip python-is-python3 xclip
@@ -50,7 +52,7 @@ rm ./config_ssh.sh
 
 echo "Bootstrapping complete. We will now run the rest of the rest of the dotfiles-managed installation scripts."
 echo " "
-read -n1 -srp $'Press any key to continue...\n' key
+read -n1 -srp $'Press any key to continue...\n' _
 
 cd "${HOME}/dev/dotfiles/"
 ./install.sh

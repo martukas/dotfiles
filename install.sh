@@ -40,13 +40,11 @@ if [[ "$OS" == "GNU/Linux" ]]; then
       *)
         ;;
     esac
-elif [[ "$OS" == "Msys" ]]; then
-  echo "No special scripts for Msys"
 else
   echo "No custom scripts to run for platform '$OS'."
 fi
 
-read -n1 -srp $'Press any key to continue with dotbot config...\n' key
+read -n1 -srp $'Press any key to continue with dotbot config...\n' _
 
 echo "Linking dotfiles for general bash use"
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_COMMON}" "${@}"
