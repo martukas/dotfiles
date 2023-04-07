@@ -14,40 +14,45 @@ Let's make as few assumptions as possible about what's available on the machine 
 ### Linux
 
 This one-line command should get things going:
-<!-- \TODO change to point to master before merging!!! -->
+
 ```shell
-bash <(wget -qO- https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/bootstrap.sh)
+bash <(wget -qO- https://github.com/martukas/dotfiles/raw/master/bootstrap/bootstrap.sh)
 ```
 
 ### Windows
 
 Firstly, you want to prevent OneDrive from taking over your home directories as described [here](https://answers.microsoft.com/en-us/windows/forum/all/taking-back-control-of-your-folders-from-onedrive/7b7ad05e-8b05-4bcd-9772-9e4eee880346):
-  * Open 'gpedit' from the Start menu
-  * Follow `Administrative Templates`>`Windows Components`>`OneDrive`
-  * Edit and enable `Prevent the usage of OneDrive for file storage`.
+
+* Open 'gpedit' from the Start menu
+* Follow `Administrative Templates`>`Windows Components`>`OneDrive`
+* Edit and enable `Prevent the usage of OneDrive for file storage`.
 
 Run these commands in PowerShell with Admin privileges:
-<!-- \TODO change to point to master before merging!!! -->
+
 ```powershell
 Set-ExecutionPolicy Unrestricted
-Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/bootstrap.ps1" -OutFile "bootstrap.ps1"
+Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/master/bootstrap/bootstrap.ps1" -OutFile "bootstrap.ps1"
 .\bootstrap.ps1
 ```
+
 You will have to reboot before you start using the utilities below.
 
 ## Routine use
 
 For first-time setup:
+
 * go to `~/dev/dotfiles`
 * run either `install.ps1` or `install.sh` as per shell type
 
 These scripts will set up symlinks, command aliases and also run [SuperPack](https://github.com/martukas/superpack) to offer you installation of packages appropriate for your system.
 
 Henceforth, you can update locally with these [aliases](common/shell/aliases.sh):
+
 * `dfu` - dotfiles update, pulls and runs appropriate install script
 * `df-upgrade` - upgrades all submodules to latest versions in remote repos
 
 Pushing local changes to repo:
+
 * The usual add-commit-push ritual, or the `commit-push` alias
 * symlinked files will stay up to date
 * on Xubuntu, occasionally run `df-save` to extract and save settings for guake
@@ -93,6 +98,7 @@ Pushing local changes to repo:
 * Configure rustup shell completion [here](https://rust-lang.github.io/rustup/installation/index.html)
 * Try out [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
 * Set up conditional GPG things in `.gitconfig_local` or some such
-* Adopt https://github.com/pop-os/shell ?
-* Migrate to https://www.chezmoi.io/ ?
+* Adopt <https://github.com/pop-os/shell> ?
+* Migrate to <https://www.chezmoi.io/> ?
+
 </details>
