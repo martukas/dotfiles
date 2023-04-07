@@ -95,4 +95,3 @@ cd dotfiles
 
 echo "SSH and GitHub config completed successfully. You will now return to your OS-specific installation scripts."
 read -n 1 -srp "Press any key to continue"$'\n'
-

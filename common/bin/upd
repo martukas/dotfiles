@@ -58,5 +58,3 @@ else
   print_help
   exit $FAILURE
 fi
-
-
