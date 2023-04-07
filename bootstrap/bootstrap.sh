@@ -37,8 +37,16 @@ read -n1 -srp $'Press any key to continue...\n' key
 ### Install git-lfs
 sudo apt --yes install curl git-lfs ssh python3-pip python-is-python3 xclip
 
-wget -qO - 'https://github.com/martukas/dotfiles/raw/master/bootstrap/config_ssh.sh' \
-  | bash -s "python -m webbrowser"
+browser_call='echo [RUNNING HEADLESS] Please open this URL manually: '
+if [ -n "$DISPLAY" ]; then
+  echo "GUI Enabled"
+  browser_call="python -m webbrowser"
+fi
+
+wget 'https://github.com/martukas/dotfiles/raw/master/bootstrap/config_ssh.sh'
+chmod +x ./config_ssh.sh
+./config_ssh.sh "$browser_call"
+rm ./config_ssh.sh
 
 echo "Bootstrapping complete. We will now run the rest of the rest of the dotfiles-managed installation scripts."
 echo " "

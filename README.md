@@ -64,9 +64,7 @@ Pushing local changes to repo:
 <details>
 <summary>Roadmap</summary>
 
-* bootstrap script should work on headless session
 * include .profile?
-* install [thefuck](https://github.com/nvbn/thefuck)
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
 * pre-commit hook for guake settings

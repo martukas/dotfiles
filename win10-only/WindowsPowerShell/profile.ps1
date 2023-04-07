@@ -46,6 +46,8 @@ function commit-push {
     git push
 }
 
+Invoke-Expression "$(thefuck --alias)"
+
 # Load custom theme for Windows Terminal
 $theme="blue-owl"
 

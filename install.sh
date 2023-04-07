@@ -30,7 +30,7 @@ if [[ "$OS" == "GNU/Linux" ]]; then
         sudo apt --yes install aptitude snapd silversearcher-ag
         sudo apt -y purge parole
         sudo python -m pip install --upgrade pip
-        python -m pip install --upgrade pipenv
+        python -m pip install --upgrade pipenv thefuck pre-commit
 
         pushd superpack
         pipenv install

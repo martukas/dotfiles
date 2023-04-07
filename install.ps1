@@ -36,7 +36,7 @@ if ($confirmation -eq 'y') {
 
     # Need pip and pipenv for what comes next
     python -m pip install --upgrade pip
-    python -m pip install --upgrade pipenv
+    python -m pip install --upgrade pipenv thefuck pre-commit
 
     Push-Location superpack
     pipenv install
