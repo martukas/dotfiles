@@ -46,6 +46,8 @@ function commit-push {
     git push
 }
 
+$env:PYTHONIOENCODING="utf-8"
+
 Invoke-Expression "$(thefuck --alias)"
 
 # Load custom theme for Windows Terminal

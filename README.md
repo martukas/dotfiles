@@ -29,7 +29,7 @@ Firstly, you want to prevent OneDrive from taking over your home directories as 
 Run there commands in PowerShell with Admin privileges:
 <!-- \TODO change to point to master before merging!!! -->
 ```powershell
-Set-ExecutionPolicy RemoteSigned
+Set-ExecutionPolicy Unrestricted
 Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/bootstrapping/bootstrap/bootstrap.ps1" -OutFile "bootstrap.ps1"
 .\bootstrap.ps1
 ```
