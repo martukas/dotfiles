@@ -1,5 +1,9 @@
+# shellcheck disable=SC2148
+# shellcheck disable=SC2034
+# shellcheck disable=SC1091
+
 # Enable Rust tools
-if [ -f ${HOME}/.cargo/bin/rustup ]; then
+if [ -f "${HOME}/.cargo/bin/rustup" ]; then
     . "${HOME}/.cargo/env"
 fi
 

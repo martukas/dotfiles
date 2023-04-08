@@ -1,6 +1,12 @@
+# shellcheck disable=SC2148
+
 # Dotfiles update
 dfu() {
-  pushd ~/.dotfiles && git pull && ./install.sh && popd
+  pushd ~/.dotfiles || { echo "No dotfiles dir symlinked"; exit 1; }
+  git pull
+  ./install.sh
+  # shellcheck disable=SC2164
+  popd
 }
 
 osinfo() {
@@ -9,6 +15,7 @@ osinfo() {
 }
 
 sysinfo() {
+  # shellcheck disable=SC2024
   sudo lshw -html > "${HOME}/Documents/system-info.html"
   python -m webbrowser "${HOME}/Documents/system-info.html"
 }
@@ -37,7 +44,7 @@ create-user() {
   read -rp "Yes-go or no-go? " answer
   case ${answer:0:1} in
     y | Y)
-      read -p "Enter username: " user
+      read -rp "Enter username: " user
       sudo useradd -m -d "/home/${user}" -s /bin/bash "${user}"
       sudo passwd "${user}"
       sudo passwd -e "${user}"
@@ -55,7 +62,8 @@ create-user() {
 }
 
 df-save() {
-  pushd ~/.dotfiles
+  pushd ~/.dotfiles || { echo "No dotfiles dir symlinked"; exit 1; }
   dconf dump /apps/guake/ > linux-only/dconf-guake-dump.txt
+  # shellcheck disable=SC2164
   popd
 }

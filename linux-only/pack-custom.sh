@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2317
 
 FAILURE=1
 SUCCESS=0
@@ -7,9 +8,9 @@ SUCCESS=0
 set -e
 set -o pipefail
 
-function exit_success() {
+function prompt_exit() {
   echo " "
-  read -n1 -srp $'Press any key to continue...\n' key
+  read -n1 -srp $'Press any key to continue...\n' _
   exit $SUCCESS
 }
 
@@ -51,9 +52,12 @@ function install_nerdfonts() {
 
 function install_nvm() {
   sudo apt --yes install build-essential libssl-dev
+  # shellcheck disable=SC1091
   export NVM_DIR="$HOME/.nvm" && (
     git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR"
     cd "$NVM_DIR"
+    # shellcheck disable=SC2046
+    # shellcheck disable=SC2006
     git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
   ) && \. "$NVM_DIR/nvm.sh"
 }
@@ -64,8 +68,8 @@ function install_platformio() {
   ln -s ~/.platformio/penv/bin/pio ~/.local/bin/pio
   ln -s ~/.platformio/penv/bin/piodebuggdb ~/.local/bin/piodebuggdb
   curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules | sudo tee /etc/udev/rules.d/99-platformio-udev.rules
-  sudo usermod -a -G dialout $USER
-  sudo usermod -a -G plugdev $USER
+  sudo usermod -a -G dialout "$USER"
+  sudo usermod -a -G plugdev "$USER"
   sudo service udev restart
 }
 
@@ -75,23 +79,23 @@ pushd "$(dirname "$0")"
 if [ "$1" == "test" ]; then
   echo "---=== TEST CLAUSE OR PLACEHOLDER ===---"
   echo "  Will not actually install anything."
-  exit_success
+  prompt_exit
 
 elif [ "$1" == "install-logiops" ]; then
   install_logiops
-  exit_success
+  prompt_exit
 
 elif [ "$1" == "install-nerdfonts" ]; then
   install_logiops
-  exit_success
+  prompt_exit
 
 elif [ "$1" == "install-rust" ]; then
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-  exit_success
+  prompt_exit
 
 elif [ "$1" == "install-nvm" ]; then
   install_nvm
-  exit_success
+  prompt_exit
 
 elif [ "$1" == "check-nvm" ]; then
   if [[ $(command -v nvm) ]]; then
@@ -103,7 +107,7 @@ elif [ "$1" == "check-nvm" ]; then
 
 elif [ "$1" == "install-platformio" ]; then
   install_platformio
-  exit_success
+  prompt_exit
 
 else
   echo "ERROR: Bad command or insufficient parameters!"
