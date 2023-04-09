@@ -3,8 +3,6 @@
 # Stolen from:
 # https://www.reddit.com/r/PowerShell/comments/10zxwcv/sharing_this_cool_thing_i_wrote_psscriptanalzyer/
 
-Get-ChildItem -Path . -Exclude "*.tests.ps1" | Invoke-ScriptAnalyzer
-
 $ScriptAnalyzerResults = Invoke-ScriptAnalyzer -Path . -Recurse
 
 if ($null -ne $ScriptAnalyzerResults) {
