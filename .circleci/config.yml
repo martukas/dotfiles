@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  win: circleci/windows@5.0
+
 jobs:
   pre-commit-checks:
     docker:
@@ -19,19 +22,19 @@ jobs:
             git reset --soft $merge_base
             pre-commit run --show-diff-on-failure --files $changed_files
   powershell-checks:
-    machine:
-      image: 'windows-server-2022-gui:current'
+    executor:
+      name: win/default
     resource_class: windows.medium
     steps:
       - checkout
       - run:
           name: Install ScriptAnalyzer module
-          command: |
-            Install-Module -Name PSScriptAnalyzer -Force
-      - run: |
+          shell: powershell.exe
+          command: Install-Module -Name PSScriptAnalyzer -Force
+      - run:
           name: Check PS scripts
-          command: |
-            .\win10-only\Invoke-PSSAPreCommitHook.ps1
+          shell: powershell.exe
+          command: .\win10-only\Invoke-PSSAPreCommitHook.ps1
 
 
 workflows:
