@@ -10,10 +10,6 @@
 	path = linux-only/gdb/qt5printers
 	url = https://github.com/Lekensteyn/qt5printers.git
 	branch = master
-[submodule "shell/plugins/dircolors-solarized"]
-	path = shell/plugins/dircolors-solarized
-	url = https://github.com/seebi/dircolors-solarized.git
-	branch = master
 [submodule "linux-only/logiops"]
 	path = linux-only/logiops
 	url = https://github.com/PixlOne/logiops.git
