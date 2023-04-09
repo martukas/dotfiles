@@ -30,114 +30,127 @@ alias gag='git exec ag'
 
 # git new branch
 function gnb() {
-  git checkout -b "$1"
-  git push --set-upstream origin "$1"
+	git checkout -b "$1"
+	git push --set-upstream origin "$1"
 }
 
 #create new issue branch
 function missue() {
-  gnb issue_"$1"
+	gnb issue_"$1"
 }
 
 function commit-push() {
-  message="$*"
-  git add -A
-  git commit -m "${message}"
-  git push
+	message="$*"
+	git add -A
+	git commit -m "${message}"
+	git push
 }
 
 # commit-push, appending an "updates #issue" to one-line commit message
 function issue() {
-  BRANCH="$(git symbolic-ref --short HEAD)"
-  # shellcheck disable=SC2001
-  NUMBER=$(echo "$BRANCH" | sed 's@^[^0-9]*\([0-9]\+\).*@\1@')
+	BRANCH="$(git symbolic-ref --short HEAD)"
+	# shellcheck disable=SC2001
+	NUMBER=$(echo "$BRANCH" | sed 's@^[^0-9]*\([0-9]\+\).*@\1@')
 
-  if [[ $BRANCH == *"issue"* ]] && [ -n "${NUMBER}" ]; then
-    message="$*; updates #$NUMBER"
-    commit-push "${message}"
-  else
-    echo "not an issue branch!"
-    return 1
-  fi
+	if [[ $BRANCH == *"issue"* ]] && [ -n "${NUMBER}" ]; then
+		message="$*; updates #$NUMBER"
+		commit-push "${message}"
+	else
+		echo "not an issue branch!"
+		return 1
+	fi
 }
 
 function git-rm-submodule() {
-  # Remove the submodule entry from .git/config
-  git submodule deinit -f "$1"
-  # Remove the submodule directory from the super-project's .git/modules directory
-  rm -rf .git/modules/"$1"
-  # Remove the entry in .gitmodules and remove the submodule directory located at path/to/submodule
-  git rm -f "$1"
+	# Remove the submodule entry from .git/config
+	git submodule deinit -f "$1"
+	# Remove the submodule directory from the super-project's .git/modules directory
+	rm -rf .git/modules/"$1"
+	# Remove the entry in .gitmodules and remove the submodule directory located at path/to/submodule
+	git rm -f "$1"
 }
-
 
 # Dotfiles upgrade submodules
 df-upgrade() {
-  pushd ~/.dotfiles || { echo "Could not go to .dotfiles"; exit 1; }
-  git submodule update --remote private
-  git submodule update --remote dotbot
-  git submodule update --remote superpack
-  git submodule update --remote common/bash-git-prompt
-  git submodule update --remote linux-only/logiops
-  git submodule update --remote linux-only/gdb/qt5printers
-  # shellcheck disable=SC2164
-  popd
+	pushd ~/.dotfiles || {
+		echo "Could not go to .dotfiles"
+		exit 1
+	}
+	git submodule update --remote private
+	git submodule update --remote dotbot
+	git submodule update --remote superpack
+	git submodule update --remote common/bash-git-prompt
+	git submodule update --remote linux-only/logiops
+	git submodule update --remote linux-only/gdb/qt5printers
+	# shellcheck disable=SC2164
+	popd
 }
 
 # Use pip without requiring virtualenv
 syspip() {
-    PIP_REQUIRE_VIRTUALENV="" pip "$@"
+	PIP_REQUIRE_VIRTUALENV="" pip "$@"
 }
 
 syspip2() {
-    PIP_REQUIRE_VIRTUALENV="" pip2 "$@"
+	PIP_REQUIRE_VIRTUALENV="" pip2 "$@"
 }
 
 syspip3() {
-    PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
+	PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
 }
 
 upd() {
-  upd.sh "$@"
+	upd.sh "$@"
 }
 
 # cd to git root directory
 cdgr() {
-  cd "$(git root)"  || { echo "Could not jump to git root"; exit 1; }
+	cd "$(git root)" || {
+		echo "Could not jump to git root"
+		exit 1
+	}
 }
 
 # Create a directory and cd into it
 mcd() {
-    mkdir "${1}"
-    cd "${1}" || { echo "Could not enter directory: ${1}"; exit 1; }
+	mkdir "${1}"
+	cd "${1}" || {
+		echo "Could not enter directory: ${1}"
+		exit 1
+	}
 }
 
 # Jump to directory containing file
 jump() {
-    cd "$(dirname "${1}")" || { echo "Cannot jump to dir containing ${1}"; exit 1; }
+	cd "$(dirname "${1}")" || {
+		echo "Cannot jump to dir containing ${1}"
+		exit 1
+	}
 }
 
 # Go up [n] directories
-up()
-{
-    local cdir
-    cdir="$(pwd)"
-    if [[ "${1}" == "" ]]; then
-        cdir="$(dirname "${cdir}")"
-    elif ! [[ "${1}" =~ ^[0-9]+$ ]]; then
-        echo "Error: argument must be a number"
-    elif ! [[ "${1}" -gt "0" ]]; then
-        echo "Error: argument must be positive"
-    else
-        for ((i=0; i<${1}; i++)); do
-            local ncdir
-            ncdir="$(dirname "${cdir}")"
-            if [[ "${cdir}" == "${ncdir}" ]]; then
-                break
-            else
-                cdir="${ncdir}"
-            fi
-        done
-    fi
-    cd "${cdir}" || { echo "Could not go up ${1} dirs"; exit 1; }
+up() {
+	local cdir
+	cdir="$(pwd)"
+	if [[ ${1} == "" ]]; then
+		cdir="$(dirname "${cdir}")"
+	elif ! [[ ${1} =~ ^[0-9]+$ ]]; then
+		echo "Error: argument must be a number"
+	elif ! [[ ${1} -gt "0" ]]; then
+		echo "Error: argument must be positive"
+	else
+		for ((i = 0; i < ${1}; i++)); do
+			local ncdir
+			ncdir="$(dirname "${cdir}")"
+			if [[ ${cdir} == "${ncdir}" ]]; then
+				break
+			else
+				cdir="${ncdir}"
+			fi
+		done
+	fi
+	cd "${cdir}" || {
+		echo "Could not go up ${1} dirs"
+		exit 1
+	}
 }

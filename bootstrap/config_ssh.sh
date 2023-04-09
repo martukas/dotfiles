@@ -17,67 +17,67 @@ KEY_FILE="${HOME}/.ssh/id_${KEY_TYPE}"
 PUB_KEY_FILE="${KEY_FILE}.pub"
 
 copy_to_clipboard() {
-  case "${OSTYPE}" in
-    linux*)
-      xclip "${PUB_KEY_FILE}"
-      xclip -o | xclip -sel clip
-      echo "Key has been copied to clipboard"
-      ;;
-    msys*)
-      clip <"${PUB_KEY_FILE}"
-      echo "Key has been copied to clipboard"
-      ;;
-    darwin*)
-      pbcopy <"${PUB_KEY_FILE}"
-      echo "Key has been copied to clipboard"
-      ;;
-    *)
-      echo "unknown OS: $OSTYPE"
-      echo "Ok then. I will just print it out here for you to copy manually:"
-      cat "${PUB_KEY_FILE}"
-      ;;
-  esac
-  read -n 1 -srp "Please add it to your keys in GitHub and press any key to continue"$'\n' _
+	case "${OSTYPE}" in
+	linux*)
+		xclip "${PUB_KEY_FILE}"
+		xclip -o | xclip -sel clip
+		echo "Key has been copied to clipboard"
+		;;
+	msys*)
+		clip <"${PUB_KEY_FILE}"
+		echo "Key has been copied to clipboard"
+		;;
+	darwin*)
+		pbcopy <"${PUB_KEY_FILE}"
+		echo "Key has been copied to clipboard"
+		;;
+	*)
+		echo "unknown OS: $OSTYPE"
+		echo "Ok then. I will just print it out here for you to copy manually:"
+		cat "${PUB_KEY_FILE}"
+		;;
+	esac
+	read -n 1 -srp "Please add it to your keys in GitHub and press any key to continue"$'\n' _
 }
 
 read -rp "Do you want to set up a local ssh key? " answer
 case ${answer:0:1} in
-  y | Y)
-    read -n 1 -srp "*** Press any key to to begin ssh key generation process ***"$'\n' _
-    ssh-keygen -t ${KEY_TYPE} -f "${KEY_FILE}"
-    eval "$(ssh-agent -s)"
-    ssh-add "${KEY_FILE}"
-    echo "Key has been generated and registered with ssh-agent."
-    echo
+y | Y)
+	read -n 1 -srp "*** Press any key to to begin ssh key generation process ***"$'\n' _
+	ssh-keygen -t ${KEY_TYPE} -f "${KEY_FILE}"
+	eval "$(ssh-agent -s)"
+	ssh-add "${KEY_FILE}"
+	echo "Key has been generated and registered with ssh-agent."
+	echo
 
-    read -rp "Do you want to open GitHub on this PC's web browser? " answer
-    case ${answer:0:1} in
-      y | Y)
+	read -rp "Do you want to open GitHub on this PC's web browser? " answer
+	case ${answer:0:1} in
+	y | Y)
 		${START_BROWSER_CMD} "https://github.com/login"
-        echo "Make sure you are logged into GitHub on this PC"
-        read -n 1 -srp "*** Press any key to open the SSH key management page ***"$'\n' _
-        ${START_BROWSER_CMD} "https://github.com/settings/ssh/new"
-        ;;
-      *)
-        echo "Ok then. Open a browser on your local system and go to https://github.com/settings/keys "
-        ;;
-    esac
+		echo "Make sure you are logged into GitHub on this PC"
+		read -n 1 -srp "*** Press any key to open the SSH key management page ***"$'\n' _
+		${START_BROWSER_CMD} "https://github.com/settings/ssh/new"
+		;;
+	*)
+		echo "Ok then. Open a browser on your local system and go to https://github.com/settings/keys "
+		;;
+	esac
 
-    read -rp "Do you want the ssh public key copied to your clipboard right now? " answer
-    case ${answer:0:1} in
-      y | Y)
-        copy_to_clipboard
-        ;;
-      *)
-        echo "Ok then. I will just print it out here for you to copy manually:"
-        cat "${PUB_KEY_FILE}"
-        read -n 1 -srp "Press any key to continue"$'\n' _
-        ;;
-    esac
-    ;;
-  *)
-    echo "Ok then. Let's assume you have already done it or you have ssh-agent forwarding working here."
-    ;;
+	read -rp "Do you want the ssh public key copied to your clipboard right now? " answer
+	case ${answer:0:1} in
+	y | Y)
+		copy_to_clipboard
+		;;
+	*)
+		echo "Ok then. I will just print it out here for you to copy manually:"
+		cat "${PUB_KEY_FILE}"
+		read -n 1 -srp "Press any key to continue"$'\n' _
+		;;
+	esac
+	;;
+*)
+	echo "Ok then. Let's assume you have already done it or you have ssh-agent forwarding working here."
+	;;
 esac
 
 echo "Assuming you have configured the public key correctly. We should be able to test the connection now."

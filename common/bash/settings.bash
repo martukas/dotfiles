@@ -6,7 +6,6 @@
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 #HISTFILESIZE=2000
 
-
 HISTSIZE=1048576
 HISTFILE="$HOME/.bash_history"
 SAVEHIST=$HISTSIZE
