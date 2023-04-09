@@ -47,7 +47,7 @@ if ($confirmation -eq 'y') {
 
 #file associations - notepad++, irfanview
 
-Write-Host -NoNewLine 'Press any key to continue with dotbot config...';
+Write-Output 'Press any key to continue with dotbot config...';
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 
 foreach ($PYTHON in ('python', 'python3')) {
@@ -56,11 +56,11 @@ foreach ($PYTHON in ('python', 'python3')) {
             ![string]::IsNullOrEmpty((&$PYTHON -V))
             $ErrorActionPreference = "Stop" }) {
 
-        Write-Host "Linking dotfiles for general bash use"
+        Write-Output "Linking dotfiles for general bash use"
         &$PYTHON $(Join-Path $BASEDIR -ChildPath $DOTBOT_DIR | Join-Path -ChildPath $DOTBOT_BIN) `
             -d $BASEDIR -c $CONFIG_COMMON $Args
 
-        Write-Host "Linking Win10-specific dotfiles"
+        Write-Output "Linking Win10-specific dotfiles"
         &$PYTHON $(Join-Path $BASEDIR -ChildPath $DOTBOT_DIR | Join-Path -ChildPath $DOTBOT_BIN) `
             -d $BASEDIR -c $CONFIG_WINDOWS $Args
 

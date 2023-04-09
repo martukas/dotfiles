@@ -25,3 +25,12 @@ repos:
     rev: v3.6.0-2
     hooks:
       - id: shfmt
+
+# Cannot use this yet because there is no way to ignore 3rd party code in sub-modules
+#  - repo: local
+#    hooks:
+#      - id: PSScriptAnalyzer
+#        name: PSScriptAnalyzer
+#        description: Run PSScriptAnalyzer on commit
+#        language: script
+#        entry: ./win10-only/Invoke-PSSAPreCommitHook.ps1

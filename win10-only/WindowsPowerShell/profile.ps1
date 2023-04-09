@@ -58,4 +58,4 @@ oh-my-posh init pwsh --config `
     "$HOME\Documents\WindowsPowerShell\$theme.omp.json" `
     | Invoke-Expression
 
-#Write-Host "[Win10] Using MGS ps1 Profile"
+#Write-Output "[Win10] Using MGS ps1 Profile"

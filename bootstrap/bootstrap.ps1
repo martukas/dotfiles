@@ -1,51 +1,55 @@
+#!/usr/bin/env pwsh
+
 $FAILURE=1
 $SUCCESS=0
 
+Write-Output "Hahaha"
+
 if (-Not $IsWindows) {
-    Write-Host "Error: This script only supports Windows"
+    Write-Error "Error: This script only supports Windows"
     Exit $FAILURE
 }
 else {
-    Write-Host "Windows: OK"
+    Write-Output "Windows: OK"
 }
 
-Write-Host "==============================================================="
-Write-Host "============== MGS personal bootstrapper - Win10 =============="
-Write-Host "==============================================================="
-Write-Host " "
-Write-Host "  -- removes OneDrive"
-Write-Host "  -- installs esenstials: PowerShell7, Git, Python"
-Write-Host "  -- configures ssh and github credentials"
-Write-Host "  -- clones the dotfile repository"
-Write-Host "  -- installs common programs"
-Write-Host " "
-Write-Host -NoNewLine 'Press any key to continue...';
+Write-Output "==============================================================="
+Write-Output "============== MGS personal bootstrapper - Win10 =============="
+Write-Output "==============================================================="
+Write-Output " "
+Write-Output "  -- removes OneDrive"
+Write-Output "  -- installs esenstials: PowerShell7, Git, Python"
+Write-Output "  -- configures ssh and github credentials"
+Write-Output "  -- clones the dotfile repository"
+Write-Output "  -- installs common programs"
+Write-Output " "
+Write-Output 'Press any key to continue...';
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 
-Write-Host " "
+Write-Output " "
 
 $scriptpath = $MyInvocation.MyCommand.Path
 $dir = Split-Path $scriptpath
-Write-host "Running script in $dir"
+Write-Output "Running script in $dir"
 
 Push-Location $dir
 
-Write-Host "[Win10] Remove OneDrive"
+Write-Output "[Win10] Remove OneDrive"
 winget uninstall Microsoft.OneDrive
 
-Write-Host "[Win10] Set new PowerShell profile root"
+Write-Output "[Win10] Set new PowerShell profile root"
 New-ItemProperty `
   'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' `
   Personal -Value "$HOME\Documents" -Type ExpandString -Force
 
-Write-Host "[Win10] Installing modern PowerShell"
+Write-Output "[Win10] Installing modern PowerShell"
 winget install -e --id Microsoft.PowerShell
 
-Write-Host "[Win10] Installing Git"
+Write-Output "[Win10] Installing Git"
 winget install --id Git.Git -e --source winget
 
 #Must install python here, so that we have it available in bash for dotbot
-Write-Host "[Win10] Installing Python"
+Write-Output "[Win10] Installing Python"
 winget install --id Python.Python.3.12 -e --source winget --scope=machine
 #Temporary solution until bash profiles are imported
 $py_alias = "alias python='winpty python.exe'"
@@ -63,10 +67,9 @@ Remove-Item .\bootstrap.ps1
 
 Pop-Location
 
-Write-Host "Bootstrapping complete. You should now restart the machine and run 'install.ps1' from pwsh."
-Write-Host " "
-Write-Host -NoNewLine 'Press any key to restart machine...';
+Write-Output "Bootstrapping complete. You should now restart the machine and run 'install.ps1' from pwsh."
+Write-Output " "
+Write-Output 'Press any key to restart machine...';
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 
 Restart-Computer -Confirm
-
