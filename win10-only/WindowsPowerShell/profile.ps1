@@ -1,3 +1,6 @@
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '')]
+param()
+
 function Test-Administrator
 {
     $id = [System.Security.Principal.WindowsIdentity]::GetCurrent()
@@ -52,16 +55,12 @@ New-Alias commit-push Push-FullCommit
 
 $env:PYTHONIOENCODING="utf-8"
 
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute('AvoidUsingInvokeExpression', '']
-param()
 Invoke-Expression "$(thefuck --alias)"
 
 # Load custom theme for Windows Terminal
 $theme="blue-owl"
 
 Import-Module posh-git
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute('AvoidUsingInvokeExpression', '']
-param()
 oh-my-posh init pwsh --config `
     "$HOME\Documents\WindowsPowerShell\$theme.omp.json" `
     | Invoke-Expression

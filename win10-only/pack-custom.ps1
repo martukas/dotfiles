@@ -2,6 +2,9 @@ $FAILURE=1
 $SUCCESS=0
 
 function CreateStartupApp($Name, $RunPath) {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
+    param()
+
     Write-Output "[Win10] Creating startup app '$Name' -> $RunPath"
 
     $RegItem = @{
@@ -15,12 +18,8 @@ function CreateStartupApp($Name, $RunPath) {
 
     if ($null -eq (Get-ItemProperty @RegItem -ErrorAction SilentlyContinue)) {
         New-ItemProperty @RegItem -Value "$RunPath" -PropertyType DWord -Force | Out-Null
-        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('AvoidUsingWriteHost', '']
-        param()
         Write-Host 'Added Registry value' -f Green
     } else {
-        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('AvoidUsingWriteHost', '']
-        param()
         Write-Host "Value already exists" -f Yellow
         #set-ItemProperty @RegItem -Value "$RunPath"
     }
