@@ -1,4 +1,4 @@
-# shellcheck disable=SC2148
+#!/bin/bash
 # shellcheck disable=SC2034
 # shellcheck disable=SC1091
 

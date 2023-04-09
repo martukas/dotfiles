@@ -1,4 +1,4 @@
-# shellcheck disable=SC2148
+#!/bin/bash
 # shellcheck disable=SC1090
 
 # autostart ssh agent as explained here:
