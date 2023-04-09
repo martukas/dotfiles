@@ -97,6 +97,10 @@ syspip3() {
     PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
 }
 
+upd() {
+  upd.sh "$@"
+}
+
 # cd to git root directory
 cdgr() {
   cd "$(git root)"  || { echo "Could not jump to git root"; exit 1; }
