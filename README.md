@@ -74,6 +74,7 @@ Pushing local changes to repo:
 <summary>Roadmap</summary>
 
 * include .profile?
+* use PowerShell profile on Linux
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
 * pre-commit hook for guake settings
