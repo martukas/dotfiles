@@ -1,3 +1,6 @@
+# shellcheck disable=SC1090
+# shellcheck disable=SC1091
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -78,9 +81,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export GPG_TTY="$( tty )"
+GPG_TTY="$( tty )"
+export GPG_TTY
 
 GIT_PROMPT_ONLY_IN_REPO=1
+export GIT_PROMPT_ONLY_IN_REPO
 source ~/.bash-git-prompt/gitprompt.sh
 
 eval "$(thefuck --alias)"

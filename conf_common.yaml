@@ -11,14 +11,18 @@
       relink: true
 
 - link:
+    ~/.dotfiles: ''
     ~/.bash-git-prompt: 'common/bash-git-prompt'
     ~/.bash: 'common/bash'
-    ~/.bashrc: 'common/bashrc'
-    ~/.bash_logout: 'common/bash_logout'
-    ~/.bash_profile:
-      path: common/bash_profile
+    ~/.bashrc:
+      path: common/rc.bash
       force: true
-    ~/.dotfiles: ''
+    ~/.bash_logout:
+      path: common/logout.bash
+      force: true
+    ~/.bash_profile:
+      path: common/profile.bash
+      force: true
     ~/.gitconfig:
       path: common/gitconfig
       force: true
