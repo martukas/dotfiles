@@ -33,7 +33,7 @@ function dfu
     Pop-Location
 }
 
-function Remove-GitSubmodule($submodule_name)
+function GitRemoveSubmodule($submodule_name)
 {
     # Remove the submodule entry from .git/config
     git submodule deinit -f $submodule_name
@@ -43,15 +43,15 @@ function Remove-GitSubmodule($submodule_name)
     git rm -f $submodule_name
 }
 
-New-Alias git-rm-submodule Remove-GitSubmodule
+New-Alias git-rm-submodule GitRemoveSubmodule
 
-function Push-FullCommit {
+function GitAddAllCommitPush {
     git add -A
     git commit -m '"$argumentList"'
     git push
 }
 
-New-Alias commit-push Push-FullCommit
+New-Alias commit-push GitAddAllCommitPush
 
 $env:PYTHONIOENCODING="utf-8"
 

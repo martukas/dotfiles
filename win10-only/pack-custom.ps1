@@ -73,6 +73,7 @@ Switch ($request)
         Exit $SUCCESS
     }
     {$_ -match 'system_defaults'} {
+        Install-Module -Name PSScriptAnalyzer -Force
         DefaultFileExplorerSettings
         NumLockOnStartup
         DarkThemeUI
