@@ -1,12 +1,16 @@
+#!/bin/bash
+# shellcheck disable=SC2034
+# shellcheck disable=SC1091
+
 # Enable Rust tools
-if [ -f ${HOME}/.cargo/bin/rustup ]; then
-    . "${HOME}/.cargo/env"
+if [ -f "${HOME}/.cargo/bin/rustup" ]; then
+	. "${HOME}/.cargo/env"
 fi
 
 # Enable Node version manager
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # This may be needed by PlatformIO at the very least
 export PATH=$PATH:$HOME/.local/bin

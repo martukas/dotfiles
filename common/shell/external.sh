@@ -1,3 +1,6 @@
+#!/bin/bash
+# shellcheck disable=SC2034
+
 # pip should only run if there is a virtualenv currently activated
 export PIP_REQUIRE_VIRTUALENV=true
 

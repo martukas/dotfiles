@@ -23,35 +23,32 @@ git submodule update --init --recursive private
 
 git submodule update
 
-if [[ "$OS" == "GNU/Linux" ]]; then
-    read -rp "[Linux] Do you want to run one-time installation scripts? " answer
-    case ${answer:0:1} in
-      y | Y)
-        sudo apt --yes install aptitude snapd silversearcher-ag
-        sudo apt -y purge parole
-        sudo python -m pip install --upgrade pip
-        python -m pip install --upgrade pipenv thefuck pre-commit
+if [[ $OS == "GNU/Linux" ]]; then
+	read -rp "[Linux] Do you want to run one-time installation scripts? " answer
+	case ${answer:0:1} in
+	y | Y)
+		sudo apt --yes install aptitude snapd silversearcher-ag
+		sudo apt -y purge parole
+		sudo python -m pip install --upgrade pip
+		python -m pip install --upgrade pipenv thefuck pre-commit
 
-        pushd superpack
-        pipenv install
-        pipenv run python ./superpack/superpack.py ../linux-only/pack-xubuntu.yml
-        popd
-        ;;
-      *)
-        ;;
-    esac
-elif [[ "$OS" == "Msys" ]]; then
-  echo "No special scripts for Msys"
+		pushd superpack
+		pipenv install
+		pipenv run python ./superpack/superpack.py ../linux-only/pack-xubuntu.yml
+		popd
+		;;
+	*) ;;
+	esac
 else
-  echo "No custom scripts to run for platform '$OS'."
+	echo "No custom scripts to run for platform '$OS'."
 fi
 
-read -n1 -srp $'Press any key to continue with dotbot config...\n' key
+read -n1 -srp $'Press any key to continue with dotbot config...\n' _
 
 echo "Linking dotfiles for general bash use"
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_COMMON}" "${@}"
 
-if [[ "$OS" == "GNU/Linux" ]]; then
-  echo "Linking Linux-specific dotfiles"
-  "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_LINUX}" "${@}"
+if [[ $OS == "GNU/Linux" ]]; then
+	echo "Linking Linux-specific dotfiles"
+	"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_LINUX}" "${@}"
 fi

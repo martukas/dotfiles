@@ -1,27 +1,29 @@
 #!/bin/bash
 
-FAILURE=1
-SUCCESS=0
-
 # Fail if any command fails
 set -e
 set -o pipefail
 
+# shellcheck disable=SC2034
+FAILURE=1
+# shellcheck disable=SC2034
+SUCCESS=0
+
 # Check if Linux
 case "${OSTYPE}" in
-  linux*)
-    echo "Linux: OK"
-    ;;
-  *)
-    echo "Error: This script only supports linux. You have: $OSTYPE."
-    exit $FAILURE
-    ;;
+linux*)
+	echo "Linux: OK"
+	;;
+*)
+	echo "Error: This script only supports linux. You have: $OSTYPE."
+	exit $FAILURE
+	;;
 esac
 
 # Make sure we are not in sudo
 if [ "${EUID}" -eq 0 ] && [ "$2" != "-f" ]; then
-  echo "Please do not run this script with root privileges!"
-  exit $FAILURE
+	echo "Please do not run this script with root privileges!"
+	exit $FAILURE
 fi
 
 echo "==============================================================="
@@ -32,15 +34,15 @@ echo "  -- installs essentials: git, ssh, python, xclip"
 echo "  -- configures ssh & github credentials"
 echo "  -- clones the dotfile repository"
 echo " "
-read -n1 -srp $'Press any key to continue...\n' key
+read -n1 -srp $'Press any key to continue...\n' _
 
 ### Install git-lfs
 sudo apt --yes install curl git-lfs ssh python3-pip python-is-python3 xclip
 
 browser_call='echo [RUNNING HEADLESS] Please open this URL manually: '
 if [ -n "$DISPLAY" ]; then
-  echo "GUI Enabled"
-  browser_call="python -m webbrowser"
+	echo "GUI Enabled"
+	browser_call="python -m webbrowser"
 fi
 
 wget 'https://github.com/martukas/dotfiles/raw/master/bootstrap/config_ssh.sh'
@@ -50,7 +52,7 @@ rm ./config_ssh.sh
 
 echo "Bootstrapping complete. We will now run the rest of the rest of the dotfiles-managed installation scripts."
 echo " "
-read -n1 -srp $'Press any key to continue...\n' key
+read -n1 -srp $'Press any key to continue...\n' _
 
 cd "${HOME}/dev/dotfiles/"
 ./install.sh

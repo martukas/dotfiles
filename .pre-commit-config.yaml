@@ -16,7 +16,12 @@ repos:
     hooks:
       - id: markdownlint-fix
 
-#  - repo: https://github.com/shellcheck-py/shellcheck-py
-#    rev: v0.9.0.2
-#    hooks:
-#      - id: shellcheck
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.9.0.2
+    hooks:
+      - id: shellcheck
+
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.6.0-2
+    hooks:
+      - id: shfmt

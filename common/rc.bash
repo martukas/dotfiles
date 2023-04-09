@@ -1,24 +1,27 @@
+# shellcheck disable=SC1090
+# shellcheck disable=SC1091
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
 # OS-specific before - for interactive only
 case "$OSTYPE" in
-  darwin*)  echo "Running OSX: no custom dotfile scripts for this OS" ;;
-  linux*)   source ~/.dotfiles/linux-only/profile_linux_before.sh ;;
-  msys*)    source ~/.dotfiles/win10-only/profile_win10_before.sh ;;
-  cygwin*)  source ~/.dotfiles/win10-only/profile_win10_before.sh ;;
-  *)        echo "Unknown OS: $OSTYPE" ;;
+darwin*) echo "Running OSX: no custom dotfile scripts for this OS" ;;
+linux*) source ~/.dotfiles/linux-only/profile_linux_before.sh ;;
+msys*) source ~/.dotfiles/win10-only/profile_win10_before.sh ;;
+cygwin*) source ~/.dotfiles/win10-only/profile_win10_before.sh ;;
+*) echo "Unknown OS: $OSTYPE" ;;
 esac
 
 # Allow local customizations in the ~/.shell_local_before file
 if [ -f ~/.shell_local_before ]; then
-    source ~/.shell_local_before
+	source ~/.shell_local_before
 fi
 
 # Allow local customizations in the ~/.bashrc_local_before file
 if [ -f ~/.bashrc_local_before ]; then
-    source ~/.bashrc_local_before
+	source ~/.bashrc_local_before
 fi
 
 # Settings
@@ -34,7 +37,7 @@ source ~/.shell/bootstrap-bin.sh
 source ~/.shell/aliases.sh
 
 if [ -f ~/.dotfiles/private/common/private_profile.sh ]; then
-    source ~/.dotfiles/private/common/private_profile.sh
+	source ~/.dotfiles/private/common/private_profile.sh
 fi
 
 # Custom prompt
@@ -45,8 +48,8 @@ source ~/.bash/plugins.bash
 
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+*i*) ;;
+*) return ;;
 esac
 
 # check the window size after each command and, if necessary,
@@ -71,35 +74,37 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+	if [ -f /usr/share/bash-completion/bash_completion ]; then
+		. /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ]; then
+		. /etc/bash_completion
+	fi
 fi
 
-export GPG_TTY="$( tty )"
+GPG_TTY="$(tty)"
+export GPG_TTY
 
 GIT_PROMPT_ONLY_IN_REPO=1
+export GIT_PROMPT_ONLY_IN_REPO
 source ~/.bash-git-prompt/gitprompt.sh
 
 eval "$(thefuck --alias)"
 
 # Allow local customizations in the ~/.shell_local_after file
 if [ -f ~/.shell_local_after ]; then
-    source ~/.shell_local_after
+	source ~/.shell_local_after
 fi
 
 # Allow local customizations in the ~/.bashrc_local_after file
 if [ -f ~/.bashrc_local_after ]; then
-    source ~/.bashrc_local_after
+	source ~/.bashrc_local_after
 fi
 
 # OS-specific after - for interactive only
 case "$OSTYPE" in
-  darwin*)  echo "Running OSX: no custom dotfile scripts for this OS" ;;
-  linux*)   source ~/.dotfiles/linux-only/profile_linux_after.sh ;;
-  msys*)    source ~/.dotfiles/win10-only/profile_win10_after.sh ;;
-  cygwin*)  source ~/.dotfiles/win10-only/profile_win10_after.sh ;;
-  *)        echo "Unknown OS: $OSTYPE" ;;
+darwin*) echo "Running OSX: no custom dotfile scripts for this OS" ;;
+linux*) source ~/.dotfiles/linux-only/profile_linux_after.sh ;;
+msys*) source ~/.dotfiles/win10-only/profile_win10_after.sh ;;
+cygwin*) source ~/.dotfiles/win10-only/profile_win10_after.sh ;;
+*) echo "Unknown OS: $OSTYPE" ;;
 esac

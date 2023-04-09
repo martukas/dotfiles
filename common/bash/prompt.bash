@@ -1,5 +1,3 @@
-ATTRIBUTE_BOLD='\[\e[1m\]'
-ATTRIBUTE_RESET='\[\e[0m\]'
 COLOR_DEFAULT='\[\e[39m\]'
 COLOR_RED='\[\e[31m\]'
 COLOR_GREEN='\[\e[32m\]'
@@ -9,11 +7,11 @@ COLOR_MAGENTA='\[\e[35m\]'
 COLOR_CYAN='\[\e[36m\]'
 
 machine_name() {
-    if [[ -f $HOME/.name ]]; then
-        cat $HOME/.name
-    else
-        hostname
-    fi
+	if [[ -f $HOME/.name ]]; then
+		cat "$HOME"/.name
+	else
+		hostname
+	fi
 }
 
 PROMPT_DIRTRIM=3
