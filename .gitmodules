@@ -6,6 +6,10 @@
 	path = common/bash-git-prompt
 	url = https://github.com/magicmonty/bash-git-prompt.git
 	branch = master
+[submodule "common/shell/plugins/dircolors-solarized"]
+	path = common/shell/plugins/dircolors-solarized
+	url = https://github.com/seebi/dircolors-solarized.git
+	branch = master
 [submodule "gdb/qt5printers"]
 	path = linux-only/gdb/qt5printers
 	url = https://github.com/Lekensteyn/qt5printers.git
