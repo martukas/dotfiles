@@ -28,13 +28,17 @@ jobs:
           name: Install ScriptAnalyzer module
           shell: powershell.exe
           command: |
-            winget install --id Python.Python.3.12 -e --source winget --scope=machine
             Install-Module -Name PSScriptAnalyzer -Force
             pip install pre-commit
       - run:
           name: Check PS scripts
           shell: powershell.exe
           command: |
+            $merge_base=$(git merge-base -a HEAD origin/master)
+            $changed_files=$(git diff --name-only $merge_base...HEAD)
+            echo "Changed files since branched from origin/master: " $changed_files
+            git reset --soft $merge_base
+            pre-commit run --show-diff-on-failure --files $changed_files
             .\common\powershell\Invoke-PSSAPreCommitHook.ps1
   unholy-alliance:
     machine:
