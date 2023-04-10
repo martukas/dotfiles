@@ -45,15 +45,14 @@ foreach ($item in $FilteredResults)
         -Value ($item.ScriptPath | Resolve-Path -Relative)
     $Link = "https://github.com/PowerShell/PSScriptAnalyzer/blob/master/docs/Rules/" `
             + $item.RuleName.Substring(2) + ".md"
-    Add-Member -InputObject $item -MemberType NoteProperty -Name "Link" `
-        -Value $Link
+    Add-Member -InputObject $item -MemberType NoteProperty -Name "RuleLink" -Value $Link
 }
 
 if ($null -ne $FilteredResults)
 {
     # List all violations
     $FilteredResults | Sort-Object RelPath, Line | Format-Table `
-        -Property Severity, RelPath, Line, Column, RuleName, Link `
+        -Property Severity, RelPath, Line, Column, RuleName, RuleLink `
         -AutoSize -Wrap
 
     $SeverityValues = [Enum]::GetNames("Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticSeverity")
