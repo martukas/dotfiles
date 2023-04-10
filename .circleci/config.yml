@@ -49,4 +49,3 @@ workflows:
     jobs:
       - pre-commit-checks
       - powershell-checks
-      - unholy-alliance

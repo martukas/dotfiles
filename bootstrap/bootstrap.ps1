@@ -10,6 +10,9 @@ if (-Not $IsWindows) {
     Exit $FAILURE
 }
 
+# Fail on first error
+$ErrorActionPreference = "Stop"
+
 Write-Output "==============================================================="
 Write-Output "============== MGS personal bootstrapper - Win10 =============="
 Write-Output "==============================================================="
