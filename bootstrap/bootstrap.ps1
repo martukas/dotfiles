@@ -6,11 +6,8 @@ $FAILURE=1
 $SUCCESS=0
 
 if (-Not $IsWindows) {
-    Write-Error "Error: This script only supports Windows"
+    Write-Error "This script only supports Windows"
     Exit $FAILURE
-}
-else {
-    Write-Output "Windows: OK"
 }
 
 Write-Output "==============================================================="
