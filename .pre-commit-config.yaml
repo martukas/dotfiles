@@ -31,5 +31,7 @@ repos:
       - id: PSScriptAnalyzer
         name: PSScriptAnalyzer
         description: Run PSScriptAnalyzer on commit
-        language: script
         entry: ./common/powershell/Invoke-PSSAPreCommitHook.ps1
+        language: script
+        pass_filenames: false
+        verbose: true

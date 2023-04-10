@@ -54,5 +54,4 @@ jobs:
 workflows:
   circle-ci-tests:
     jobs:
-      - pre-commit-checks
       - powershell-checks
