@@ -36,14 +36,13 @@ if [[ $OS == "GNU/Linux" ]]; then
 		pipenv install
 		pipenv run python ./superpack/superpack.py ../linux/packages.yml
 		popd
+		read -n1 -srp $'Press any key to continue with dotbot config...\n' _
 		;;
 	*) ;;
 	esac
 else
 	echo "No custom scripts to run for platform '$OS'."
 fi
-
-read -n1 -srp $'Press any key to continue with dotbot config...\n' _
 
 echo "Linking dotfiles for general bash use"
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_COMMON}" "${@}"

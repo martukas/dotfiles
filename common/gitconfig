@@ -118,6 +118,7 @@
 # Allow local customizations in the .gitconfig_local file
 [include]
 	path = ~/.gitconfig_private
+	path = ~/.gitconfig_linux
 	path = ~/.gitconfig_win10
 	path = ~/.gitconfig_local
 

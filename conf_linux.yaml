@@ -8,9 +8,11 @@
     link:
       create: true
       relink: true
+      force: true
 - link:
     ~/.gdb: 'linux/gdb'
     ~/.gdbinit: 'linux/gdbinit'
+    ~/.gitconfig_linux: 'linux/gitconfig_linux'
 
 # GUI, ok to create even if not using
 - defaults:
