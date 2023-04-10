@@ -100,10 +100,6 @@ syspip3() {
 	PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
 }
 
-upd() {
-	apt-update-wrapper.sh "$@"
-}
-
 # cd to git root directory
 cdgr() {
 	cd "$(git root)" || {

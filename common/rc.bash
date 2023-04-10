@@ -22,9 +22,6 @@ fi
 # Settings
 source ~/.bash/settings.bash
 
-# Bootstrap
-source ~/.bash/bootstrap-bin.sh
-
 # Aliases
 source ~/.bash/aliases.sh
 

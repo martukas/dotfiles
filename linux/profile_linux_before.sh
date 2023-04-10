@@ -24,3 +24,6 @@ PATH="$NPM_PACKAGES/bin:$PATH"
 unset MANPATH # delete if you already modified MANPATH elsewhere in your config
 MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 export PATH=~/.npm-global/bin:$PATH
+
+# Boostrapping custom scripts in our repo
+export PATH=~/.dotfiles/linux/bin:${PATH}

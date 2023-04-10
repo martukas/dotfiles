@@ -7,9 +7,7 @@ SUCCESS=0
 
 # Check if Linux
 case "${OSTYPE}" in
-linux*)
-	echo "Linux: OK"
-	;;
+linux*) ;;
 *)
 	echo "Error: This script only supports linux. You have: $OSTYPE."
 	exit $FAILURE

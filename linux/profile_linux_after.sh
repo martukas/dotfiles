@@ -1,5 +1,9 @@
 #!/bin/bash
 
+upd() {
+	apt-update-wrapper.sh "$@"
+}
+
 # Dotfiles update
 dfu() {
 	pushd ~/.dotfiles || {
