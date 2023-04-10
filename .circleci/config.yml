@@ -33,7 +33,7 @@ jobs:
           name: Check PS scripts
           shell: powershell.exe
           command: |
-            .\win10-only\Invoke-PSSAPreCommitHook.ps1
+            .\win10\Invoke-PSSAPreCommitHook.ps1
 
 
 workflows:
