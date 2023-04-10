@@ -25,3 +25,12 @@ repos:
     rev: v3.6.0-2
     hooks:
       - id: shfmt
+
+#    This will not work if linux system does not have pwsh + module
+#  - repo: local
+#    hooks:
+#      - id: PSScriptAnalyzer
+#        name: PSScriptAnalyzer
+#        description: Run PSScriptAnalyzer on commit
+#        language: script
+#        entry: ./win10-only/Invoke-PSSAPreCommitHook.ps1

@@ -32,7 +32,8 @@ git submodule update
 $confirmation = Read-Host "[Win10] Do you want to run one-time installation scripts?"
 if ($confirmation -eq 'y') {
     # Configure file exporer, numlock, theme
-    .\win10-only\pack-custom.ps1 system_defaults
+    .\win10-only\pack-custom.ps1 default-modules
+    .\win10-only\pack-custom.ps1 win10-defaults
 
     # Need pip and pipenv for what comes next
     python -m pip install --upgrade pip
@@ -47,7 +48,7 @@ if ($confirmation -eq 'y') {
 
 #file associations - notepad++, irfanview
 
-Write-Host -NoNewLine 'Press any key to continue with dotbot config...';
+Write-Output 'Press any key to continue with dotbot config...';
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 
 foreach ($PYTHON in ('python', 'python3')) {
@@ -56,11 +57,11 @@ foreach ($PYTHON in ('python', 'python3')) {
             ![string]::IsNullOrEmpty((&$PYTHON -V))
             $ErrorActionPreference = "Stop" }) {
 
-        Write-Host "Linking dotfiles for general bash use"
+        Write-Output "Linking dotfiles for general bash use"
         &$PYTHON $(Join-Path $BASEDIR -ChildPath $DOTBOT_DIR | Join-Path -ChildPath $DOTBOT_BIN) `
             -d $BASEDIR -c $CONFIG_COMMON $Args
 
-        Write-Host "Linking Win10-specific dotfiles"
+        Write-Output "Linking Win10-specific dotfiles"
         &$PYTHON $(Join-Path $BASEDIR -ChildPath $DOTBOT_DIR | Join-Path -ChildPath $DOTBOT_BIN) `
             -d $BASEDIR -c $CONFIG_WINDOWS $Args
 

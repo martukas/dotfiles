@@ -80,6 +80,7 @@ df-upgrade() {
 	git submodule update --remote dotbot
 	git submodule update --remote superpack
 	git submodule update --remote common/bash-git-prompt
+	git submodule update --remote common/shell/plugins/dircolors-solarized
 	git submodule update --remote linux-only/logiops
 	git submodule update --remote linux-only/gdb/qt5printers
 	# shellcheck disable=SC2164

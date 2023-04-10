@@ -1,8 +1,16 @@
+#!/usr/bin/env pwsh
+
 $FAILURE=1
 $SUCCESS=0
 
-function CreateStartupApp($Name, $RunPath) {
-    Write-Host "[Win10] Creating startup app '$Name' -> $RunPath"
+function CreateStartupApp() {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
+    param()
+
+    $Name = $args[0]
+    $RunPath = $args[1]
+
+    Write-Output "[Win10] Creating startup app '$Name' -> $RunPath"
 
     $RegItem = @{
         Path = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
@@ -22,20 +30,20 @@ function CreateStartupApp($Name, $RunPath) {
     }
 }
 
-function ColorizePrompt() {
-    Write-Host "[Win10] Setting up colorized and git-aware PowerShell prompt"
-    Install-Module posh-git -Scope CurrentUser -Force
-    winget install JanDeDobbeleer.OhMyPosh -s winget
+function DefaultModules() {
+    Install-Module -Name posh-git -Scope CurrentUser -Force
+    Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force
 }
 
-function InstallNerdfonts()
-{
+function ColorizePrompt() {
+    Write-Output "[Win10] Setting up colorized and git-aware PowerShell prompt"
+    winget install JanDeDobbeleer.OhMyPosh -s winget
     oh-my-posh font install Hack
     oh-my-posh font install Meslo
 }
 
 function DefaultFileExplorerSettings() {
-    Write-Host "[Win10] Show extensions and hidden files in file explorer"
+    Write-Output "[Win10] Show extensions and hidden files in file explorer"
     Set-Itemproperty -path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' `
       -Name 'HideFileExt' -value 0
     Set-Itemproperty -path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' `
@@ -45,14 +53,14 @@ function DefaultFileExplorerSettings() {
 }
 
 function NumLockOnStartup() {
-    Write-Host "[Win10] NumLock on at startup"
+    Write-Output "[Win10] NumLock on at startup"
     Set-Itemproperty -path 'registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard' `
       -Name 'InitialKeyboardIndicators' -value 2147483650
     # could also be =2 on some systems
 }
 
 function DarkThemeUI() {
-    Write-Host "[Win10] Use dark UI theme"
+    Write-Output "[Win10] Use dark UI theme"
     Set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' `
       -Name 'AppsUseLightTheme' -Value 0
 }
@@ -62,17 +70,11 @@ $request=$args[0]
 Switch ($request)
 {
     {$_ -match 'test'} {
-        Write-Host "---=== TEST CLAUSE OR PLACEHOLDER ===---"
-        Write-Host "  Will not actually install anything."
-        Write-Host " "
-        Write-Host -NoNewLine 'Press any key to continue...';
+        Write-Output "---=== TEST CLAUSE OR PLACEHOLDER ===---"
+        Write-Output "  Will not actually install anything."
+        Write-Output " "
+        Write-Output 'Press any key to continue...';
         $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-        Exit $SUCCESS
-    }
-    {$_ -match 'system_defaults'} {
-        DefaultFileExplorerSettings
-        NumLockOnStartup
-        DarkThemeUI
         Exit $SUCCESS
     }
     {$_ -match 'startup'} {
@@ -81,13 +83,21 @@ Switch ($request)
         CreateStartupApp "$prog_name" "$prog_path"
         Exit $SUCCESS
     }
+    {$_ -match 'default-modules'} {
+        DefaultModules
+    }
+    {$_ -match 'win10-defaults'} {
+        DefaultFileExplorerSettings
+        NumLockOnStartup
+        DarkThemeUI
+        Exit $SUCCESS
+    }
     {$_ -match 'colorize'} {
         ColorizePrompt
-        InstallNerdfonts
         Exit $SUCCESS
     }
     default {
-        Write-Host "Request invalid"
+        Write-Error "Request invalid"
         Exit $FAILURE
     }
 }

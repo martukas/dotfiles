@@ -1,3 +1,6 @@
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '')]
+param()
+
 function Test-Administrator
 {
     $id = [System.Security.Principal.WindowsIdentity]::GetCurrent()
@@ -30,7 +33,15 @@ function dfu
     Pop-Location
 }
 
-function git-rm-submodule($submodule_name)
+# git new branch
+function gnb
+{
+    git checkout -b $args[0]
+    git push --set-upstream origin $args[0]
+}
+
+
+function GitRemoveSubmodule($submodule_name)
 {
     # Remove the submodule entry from .git/config
     git submodule deinit -f $submodule_name
@@ -40,22 +51,26 @@ function git-rm-submodule($submodule_name)
     git rm -f $submodule_name
 }
 
-function commit-push {
+New-Alias git-rm-submodule GitRemoveSubmodule
+
+function GitAddAllCommitPush {
     git add -A
     git commit -m '"$argumentList"'
     git push
 }
 
+New-Alias commit-push GitAddAllCommitPush
+
 $env:PYTHONIOENCODING="utf-8"
 
 Invoke-Expression "$(thefuck --alias)"
 
-# Load custom theme for Windows Terminal
-$theme="blue-owl"
-
 Import-Module posh-git
-oh-my-posh init pwsh --config `
+
+# Load custom theme for Windows Terminal
+if ($IsWindows) {
+    $theme="blue-owl"
+    oh-my-posh init pwsh --config `
     "$HOME\Documents\WindowsPowerShell\$theme.omp.json" `
     | Invoke-Expression
-
-#Write-Host "[Win10] Using MGS ps1 Profile"
+}
