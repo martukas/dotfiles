@@ -3,6 +3,9 @@
 $FAILURE=1
 $SUCCESS=0
 
+# Fail on first error
+$ErrorActionPreference = "Stop"
+
 function CreateStartupApp() {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
     param()

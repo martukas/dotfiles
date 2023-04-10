@@ -20,6 +20,7 @@ if (-not($found))
     Exit $FAILURE
 }
 
+# Fail on first error
 $ErrorActionPreference = "Stop"
 
 $CONFIG_COMMON = "conf_common.yaml"
