@@ -55,11 +55,11 @@ New-Alias git-rm-submodule GitRemoveSubmodule
 
 function GitAddAllCommitPush {
     git add -A
-    git commit -m $args
+    git commit -m `"$args`"
     git push
 }
 
-Set-Alias commit-push GitAddAllCommitPush
+New-Alias commit-push GitAddAllCommitPush
 
 $env:PYTHONIOENCODING="utf-8"
 

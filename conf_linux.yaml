@@ -32,9 +32,9 @@
     ~/.config/mimeapps.list:
       path: linux-only/config/mimeapps.list
     ~/.config/powershell/Microsoft.PowerShell_profile.ps1:
-      path: win10-only/WindowsPowerShell/profile.ps1
+      path: common/powershell/profile.ps1
     ~/.config/powershell/blue-owl.omp.json:
-      path: win10-only/WindowsPowerShell/blue-owl.omp.json
+      path: common/powershell/blue-owl.omp.json
 
 # code style stuff, better not clutter
 - defaults:
