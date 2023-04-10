@@ -55,7 +55,7 @@ New-Alias git-rm-submodule GitRemoveSubmodule
 
 function GitAddAllCommitPush {
     git add -A
-    git commit -m '"$argumentList"'
+    git commit -m ""$args""
     git push
 }
 
