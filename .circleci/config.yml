@@ -28,33 +28,21 @@ jobs:
           name: Install ScriptAnalyzer module
           shell: powershell.exe
           command: |
+            $ErrorActionPreference = "Stop"
             Install-Module -Name PSScriptAnalyzer -Force
             pip install pre-commit
       - run:
           name: Check PS scripts
           shell: powershell.exe
           command: |
-            $merge_base=$(git merge-base -a HEAD origin/master)
-            $changed_files=$(git diff --name-only $merge_base...HEAD)
+            $ErrorActionPreference = "Stop"
+            $merge_base = git merge-base -a HEAD origin/master
+            $changed_files = git diff --name-only $merge_base...HEAD
             echo "Changed files since branched from origin/master: " $changed_files
             git reset --soft $merge_base
             pre-commit run --show-diff-on-failure --files $changed_files
             .\common\powershell\Invoke-PSSAPreCommitHook.ps1
-  unholy-alliance:
-    machine:
-      image: ubuntu-2204:current
-    steps:
-      - checkout
-      - run:
-          name: Do stuff
-          command: |
-            sudo rm -rf /var/lib/apt/lists/*
-            sudo apt-get update
-            sudo apt-get -y install snapd python3-pip
-            pip install pre-commit
-            sudo snap install powershell --classic
-            pwsh -Command {Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force}
-            pwsh -Command {./common/powershell/Invoke-PSSAPreCommitHook.ps1}
+
 
 workflows:
   circle-ci-tests:
