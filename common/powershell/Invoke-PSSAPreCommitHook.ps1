@@ -24,15 +24,19 @@ function containsArrayValue {
     return $false;
 }
 
+$UselessValue = "bla"
+
+# Run Analyzer on everything recursively
 $Results = Invoke-ScriptAnalyzer -Path . -Recurse
 
+# Find the paths of git sub-modules
 $SubModulePaths = git submodule --quiet foreach --recursive pwd
 
+# Eliminate results for files in git sub-modules
 $FilteredResults = $Results | Where-Object {-Not (containsArrayValue $_.ScriptPath $SubModulePaths)}
 
-$SanitizedResults = $FilteredResults
-
-foreach ($item in $SanitizedResults)
+# Sanitize paths and and add links to rule pages
+foreach ($item in $FilteredResults)
 {
     Add-Member -InputObject $item -MemberType NoteProperty -Name "RelPath" `
         -Value ($item.ScriptPath | Resolve-Path -Relative)
@@ -42,32 +46,30 @@ foreach ($item in $SanitizedResults)
         -Value $Link
 }
 
-$SanitizedResults = $FilteredResults
-
-if ($null -ne $SanitizedResults)
+if ($null -ne $FilteredResults)
 {
-#    $SanitizedResults | Sort-Object RelPath, Line| Format-List `
-#        -GroupBy RelPath `
-#        -Property Severity, Line, Column, RuleName, Link, Message
-
-    $SanitizedResults | Sort-Object RelPath, Line | Format-Table `
+    # List all violations
+    $FilteredResults | Sort-Object RelPath, Line | Format-Table `
         -Property Severity, RelPath, Line, Column, RuleName, Link `
         -AutoSize -Wrap
 
     $SeverityValues = [Enum]::GetNames("Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticSeverity")
 
+    # Calculate severity statistics
     $SeverityStats = $SeverityValues | ForEach-Object {
         $ourObject = New-Object -TypeName psobject;
         $ourObject | Add-Member -MemberType NoteProperty -Name "Severity" -Value $_;
         $ourObject | Add-Member -MemberType NoteProperty -Name "Count" -Value (
-        $SanitizedResults | Where-Object -Property Severity -EQ -Value $_ | Measure-Object
+        $FilteredResults | Where-Object -Property Severity -EQ -Value $_ | Measure-Object
         ).Count;
         $ourObject
     }
 
+    # Print severity stats
     $SeverityStats | Format-Table
 
-    $NumFailures = ($SanitizedResults).Count
+    $NumFailures = ($FilteredResults).Count
 
+    # Since there was at least one failure, get mad now
     throw "ScriptAnalyzer failed with $($NumFailures) violations"
 }

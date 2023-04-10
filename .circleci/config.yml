@@ -34,10 +34,26 @@ jobs:
           shell: powershell.exe
           command: |
             .\common\powershell\Invoke-PSSAPreCommitHook.ps1
-
+  unholy-alliance:
+    machine:
+      image: ubuntu-2204:current
+    steps:
+      - checkout
+      - run:
+          name: Install stuff
+          command: |
+            sudo rm -rf /var/lib/apt/lists/*
+            sudo apt-get -y install snapd
+            sudo snap install powershell --classic
+            pwsh -Command {Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force}
+      - run:
+          name: Run things
+          command: |
+            .\common\powershell\Invoke-PSSAPreCommitHook.ps1
 
 workflows:
   circle-ci-tests:
     jobs:
       - pre-commit-checks
       - powershell-checks
+      - unholy-alliance
