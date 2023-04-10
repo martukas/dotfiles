@@ -23,6 +23,11 @@ function install_logiops() {
 	sudo /usr/bin/cp -fr logid.cfg /etc/logid.cfg
 }
 
+function install_powershell() {
+	snap install powershell --classic
+	../win10-only/pack-custom.ps1 default-modules
+}
+
 function install_nerdfonts() {
 	declare -a fonts=(
 		Hack
@@ -85,8 +90,12 @@ elif [ "$1" == "install-logiops" ]; then
 	install_logiops
 	prompt_exit
 
+elif [ "$1" == "install-powershell" ]; then
+	install_powershell
+	prompt_exit
+
 elif [ "$1" == "install-nerdfonts" ]; then
-	install_logiops
+	install_nerdfonts
 	prompt_exit
 
 elif [ "$1" == "install-rust" ]; then

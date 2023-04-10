@@ -32,7 +32,8 @@ git submodule update
 $confirmation = Read-Host "[Win10] Do you want to run one-time installation scripts?"
 if ($confirmation -eq 'y') {
     # Configure file exporer, numlock, theme
-    .\win10-only\pack-custom.ps1 system_defaults
+    .\win10-only\pack-custom.ps1 default-modules
+    .\win10-only\pack-custom.ps1 win10-defaults
 
     # Need pip and pipenv for what comes next
     python -m pip install --upgrade pip

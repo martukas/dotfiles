@@ -32,6 +32,12 @@
       category: dev-admin
       check: "command -v platformio"
       install: "../linux-only/pack-custom.sh install-platformio"
+    - id: powershell
+      category: dev-admin
+      descr: Microsoft PowerShell
+      check: "snap list | grep powershell"
+      install: "../linux-only/pack-custom.sh install-powershell"
+
 - defaults:
     type: apt
     category: GUI
@@ -84,9 +90,6 @@
       descr: Postman web protocol sniffer
     - id: robo3t
       descr: Robo3T Mongo database browser
-    - id: powershell
-      descr: Microsoft PowerShell
-      install: snap install powershell --classic
 - defaults:
     category: graphics
     type: apt

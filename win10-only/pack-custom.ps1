@@ -1,9 +1,14 @@
+#!/usr/bin/env pwsh
+
 $FAILURE=1
 $SUCCESS=0
 
-function CreateStartupApp($Name, $RunPath) {
+function CreateStartupApp() {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
     param()
+
+    $Name = $args[0]
+    $RunPath = $args[1]
 
     Write-Output "[Win10] Creating startup app '$Name' -> $RunPath"
 
@@ -25,14 +30,14 @@ function CreateStartupApp($Name, $RunPath) {
     }
 }
 
-function ColorizePrompt() {
-    Write-Output "[Win10] Setting up colorized and git-aware PowerShell prompt"
-    Install-Module posh-git -Scope CurrentUser -Force
-    winget install JanDeDobbeleer.OhMyPosh -s winget
+function DefaultModules() {
+    Install-Module -Name posh-git -Scope CurrentUser -Force
+    Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force
 }
 
-function InstallNerdfonts()
-{
+function ColorizePrompt() {
+    Write-Output "[Win10] Setting up colorized and git-aware PowerShell prompt"
+    winget install JanDeDobbeleer.OhMyPosh -s winget
     oh-my-posh font install Hack
     oh-my-posh font install Meslo
 }
@@ -72,22 +77,23 @@ Switch ($request)
         $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
         Exit $SUCCESS
     }
-    {$_ -match 'system_defaults'} {
-        Install-Module -Name PSScriptAnalyzer -Force
-        DefaultFileExplorerSettings
-        NumLockOnStartup
-        DarkThemeUI
-        Exit $SUCCESS
-    }
     {$_ -match 'startup'} {
         $prog_name=$args[1]
         $prog_path=$args[2]
         CreateStartupApp "$prog_name" "$prog_path"
         Exit $SUCCESS
     }
+    {$_ -match 'default-modules'} {
+        DefaultModules
+    }
+    {$_ -match 'win10-defaults'} {
+        DefaultFileExplorerSettings
+        NumLockOnStartup
+        DarkThemeUI
+        Exit $SUCCESS
+    }
     {$_ -match 'colorize'} {
         ColorizePrompt
-        InstallNerdfonts
         Exit $SUCCESS
     }
     default {
