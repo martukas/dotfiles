@@ -40,17 +40,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install stuff
+          name: Do stuff
           command: |
             sudo rm -rf /var/lib/apt/lists/*
             sudo apt-get update
-            sudo apt-get -y install snapd
+            sudo apt-get -y install snapd python3-pip
+            pip install pre-commit
             sudo snap install powershell --classic
             pwsh -Command {Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force}
-      - run:
-          name: Run things
-          command: |
-            ./common/powershell/Invoke-PSSAPreCommitHook.ps1
+            pwsh -Command {./common/powershell/Invoke-PSSAPreCommitHook.ps1}
 
 workflows:
   circle-ci-tests:
