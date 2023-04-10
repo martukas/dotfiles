@@ -14,11 +14,6 @@ cygwin*) source ~/.dotfiles/win10-only/profile_win10_before.sh ;;
 *) echo "Unknown OS: $OSTYPE" ;;
 esac
 
-# Allow local customizations in the ~/.shell_local_before file
-if [ -f ~/.shell_local_before ]; then
-	source ~/.shell_local_before
-fi
-
 # Allow local customizations in the ~/.bashrc_local_before file
 if [ -f ~/.bashrc_local_before ]; then
 	source ~/.bashrc_local_before
@@ -28,10 +23,10 @@ fi
 source ~/.bash/settings.bash
 
 # Bootstrap
-source ~/.shell/bootstrap-bin.sh
+source ~/.bash/bootstrap-bin.sh
 
 # Aliases
-source ~/.shell/aliases.sh
+source ~/.bash/aliases.sh
 
 if [ -f ~/.dotfiles/private/common/private_profile.sh ]; then
 	source ~/.dotfiles/private/common/private_profile.sh
@@ -86,11 +81,6 @@ export GIT_PROMPT_ONLY_IN_REPO
 source ~/.bash-git-prompt/gitprompt.sh
 
 eval "$(thefuck --alias)"
-
-# Allow local customizations in the ~/.shell_local_after file
-if [ -f ~/.shell_local_after ]; then
-	source ~/.shell_local_after
-fi
 
 # Allow local customizations in the ~/.bashrc_local_after file
 if [ -f ~/.bashrc_local_after ]; then

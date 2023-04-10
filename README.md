@@ -52,7 +52,7 @@ For first-time setup:
 
 These scripts will set up symlinks, command aliases and also run [SuperPack](https://github.com/martukas/superpack) to offer you installation of packages appropriate for your system.
 
-Henceforth, you can update locally with these [aliases](common/shell/aliases.sh):
+Henceforth, you can update locally with these [aliases](common/bash/aliases.sh):
 
 * `dfu` - dotfiles update, pulls and runs appropriate install script
 * `df-upgrade` - upgrades all submodules to latest versions in remote repos
