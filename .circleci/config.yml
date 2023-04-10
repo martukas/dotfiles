@@ -1,25 +1,7 @@
 version: 2.1
 
 jobs:
-  linux-checks:
-    docker:
-      - image: cimg/python:3.10.7
-    steps:
-      - checkout
-      - run:
-          name: Install pre-commit
-          command: |
-            pip install pre-commit
-      - run:
-          name: Run pre-commit hooks
-          command: |
-            merge_base=$(git merge-base -a HEAD origin/master)
-            echo "Merge base: $merge_base"
-            changed_files=$(git diff --name-only $merge_base...HEAD)
-            echo "Changed files since branched from origin/master: " $changed_files
-            git reset --soft $merge_base
-            pre-commit run --show-diff-on-failure --files $changed_files
-  windows-checks:
+  pre-commit-checks:
     machine:
       image: 'windows-server-2022-gui:current'
     resource_class: windows.medium
@@ -55,5 +37,4 @@ jobs:
 workflows:
   circle-ci-tests:
     jobs:
-      - linux-checks
-      - windows-checks
+      - pre-commit-checks

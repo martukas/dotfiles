@@ -24,8 +24,6 @@ function containsArrayValue {
     return $false;
 }
 
-$UselessValue = "bla"
-
 # Run Analyzer on everything recursively
 $Results = Invoke-ScriptAnalyzer -Path . -Recurse
 
