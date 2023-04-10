@@ -41,8 +41,8 @@ git submodule update
 $confirmation = Read-Host "[Win10] Do you want to run one-time installation scripts?"
 if ($confirmation -eq 'y') {
     # Configure file exporer, numlock, theme
-    .\win10\pack-custom.ps1 default-modules
-    .\win10\pack-custom.ps1 win10-defaults
+    .\win10\packages.ps1 default-modules
+    .\win10\packages.ps1 win10-defaults
 
     # Need pip and pipenv for what comes next
     python -m pip install --upgrade pip
@@ -51,7 +51,7 @@ if ($confirmation -eq 'y') {
     Push-Location superpack
     pipenv install
     Start-Process pwsh -WindowStyle Maximized -ArgumentList `
-        "-Command & {pipenv run python .\superpack\superpack.py ..\win10\pack-win10.yml}"
+        "-Command & {pipenv run python .\superpack\superpack.py ..\win10\packages.yml}"
     Pop-Location
 }
 

@@ -8,9 +8,9 @@
 # OS-specific before - for interactive only
 case "$OSTYPE" in
 darwin*) echo "Running OSX: no custom dotfile scripts for this OS" ;;
-linux*) source ~/.dotfiles/linux/profile_linux_before.sh ;;
-msys*) source ~/.dotfiles/win10/profile_win10_before.sh ;;
-cygwin*) source ~/.dotfiles/win10/profile_win10_before.sh ;;
+linux*) source ~/.dotfiles/linux/profile1.sh ;;
+msys*) source ~/.dotfiles/win10/profile1.sh ;;
+cygwin*) source ~/.dotfiles/win10/profile1.sh ;;
 *) echo "Unknown OS: $OSTYPE" ;;
 esac
 
@@ -87,8 +87,8 @@ fi
 # OS-specific after - for interactive only
 case "$OSTYPE" in
 darwin*) echo "Running OSX: no custom dotfile scripts for this OS" ;;
-linux*) source ~/.dotfiles/linux/profile_linux_after.sh ;;
-msys*) source ~/.dotfiles/win10/profile_win10_after.sh ;;
-cygwin*) source ~/.dotfiles/win10/profile_win10_after.sh ;;
+linux*) source ~/.dotfiles/linux/profile2.sh ;;
+msys*) source ~/.dotfiles/win10/profile2.sh ;;
+cygwin*) source ~/.dotfiles/win10/profile2.sh ;;
 *) echo "Unknown OS: $OSTYPE" ;;
 esac

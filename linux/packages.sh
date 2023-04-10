@@ -25,7 +25,7 @@ function install_logiops() {
 
 function install_powershell() {
 	snap install powershell --classic
-	../win10/pack-custom.ps1 default-modules
+	../win10/packages.ps1 default-modules
 }
 
 function install_nerdfonts() {

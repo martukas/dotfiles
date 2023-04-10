@@ -6,22 +6,22 @@
       descr: Colorize PowerShell prompt
       category: dev-admin
       check: winget list -q JanDeDobbeleer.OhMyPosh | findstr 'JanDeDobbeleer.OhMyPosh'
-      install: "..\\win10\\pack-custom.ps1 colorize"
+      install: "..\\win10\\packages.ps1 colorize"
     - id: dummy
       descr: Dummy test package
       category: xtras
       check: winget list -q nonexistent | findstr 'nothingtofind'
-      install: "..\\win10\\pack-custom.ps1 test"
+      install: "..\\win10\\packages.ps1 test"
 - defaults:
     type: winget
     category: GUI
   packages:
     - id: Maximus5.ConEmu
       descr: Conemu terminal
-      install: "..\\win10\\pack-custom.ps1 startup ConEmu C:\\Program Files\\ConEmu\\ConEmu64.exe"
+      install: "..\\win10\\packages.ps1 startup ConEmu C:\\Program Files\\ConEmu\\ConEmu64.exe"
     - id: Flameshot.Flameshot
       descr: Flameshot screenshot utility
-      install: "..\\win10\\pack-custom.ps1 startup Flameshot C:\\Program Files\\Flameshot\\bin\\flameshot.exe"
+      install: "..\\win10\\packages.ps1 startup Flameshot C:\\Program Files\\Flameshot\\bin\\flameshot.exe"
     - id: IrfanSkiljan.IrfanView
       descr: Irfanview minimal image viewer
     - id: Microsoft.BingWallpaper

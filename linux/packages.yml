@@ -6,37 +6,37 @@
       descr: Dummy test package
       category: xtras
       check: which nonexistentscript
-      install: "../linux/pack-custom.sh test"
+      install: "../linux/packages.sh test"
     - id: logiops
       descr: Logiops mouse buttons hack
       category: GUI
       check: command -v logid
-      install: "../linux/pack-custom.sh install-logiops"
+      install: "../linux/packages.sh install-logiops"
     - id: nerdfonts
       descr: Nerdfonts for fancy terminal shit
       category: dev-admin
       check: ls ~/.local/share/fonts | grep Nerd
-      install: "../linux/pack-custom.sh install-nerdfonts"
+      install: "../linux/packages.sh install-nerdfonts"
     - id: rustup
       descr: Rust toolchain
       category: dev-admin
       check: command -v rustup
-      install: "../linux/pack-custom.sh install-rust"
+      install: "../linux/packages.sh install-rust"
     - id: nvm
       descr: Node.js toolchain (nvm)
       category: dev-admin
-      check: "../linux/pack-custom.sh check-nvm"
-      install: "../linux/pack-custom.sh install-nvm"
+      check: "../linux/packages.sh check-nvm"
+      install: "../linux/packages.sh install-nvm"
     - id: platformio
       descr: PlatformIO embedded toolchain
       category: dev-admin
       check: "command -v platformio"
-      install: "../linux/pack-custom.sh install-platformio"
+      install: "../linux/packages.sh install-platformio"
     - id: powershell
       category: dev-admin
       descr: Microsoft PowerShell
       check: "snap list | grep powershell"
-      install: "../linux/pack-custom.sh install-powershell"
+      install: "../linux/packages.sh install-powershell"
 
 - defaults:
     type: apt
