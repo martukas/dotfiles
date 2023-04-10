@@ -6,6 +6,6 @@ Terminal=false
 Type=Application
 Icon=/snap/whatsdesk/28/meta/gui/icon.png
 StartupWMClass=whatsdesk
-Comment=unofficial whatsapp client for linux 
+Comment=unofficial whatsapp client for linux
 MimeType=whatsapp;
 Categories=Network;

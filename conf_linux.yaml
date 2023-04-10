@@ -9,8 +9,8 @@
       create: true
       relink: true
 - link:
-    ~/.gdb: 'linux-only/gdb'
-    ~/.gdbinit: 'linux-only/gdbinit'
+    ~/.gdb: 'linux/gdb'
+    ~/.gdbinit: 'linux/gdbinit'
 
 # GUI, ok to create even if not using
 - defaults:
@@ -22,15 +22,15 @@
     ~/.config/KeePass/KeePass.config.xml:
       path: private/linux/config/KeePass/KeePass.config.xml
     ~/.config/autostart:
-      path: linux-only/config/autostart/**
+      path: linux/config/autostart/**
       glob: true
       force: false
     ~/.config/flameshot/flameshot.ini:
-      path: linux-only/config/flameshot/flameshot.ini
+      path: linux/config/flameshot/flameshot.ini
     ~/.config/redshift.conf:
-      path: linux-only/config/redshift.conf
+      path: linux/config/redshift.conf
     ~/.config/mimeapps.list:
-      path: linux-only/config/mimeapps.list
+      path: linux/config/mimeapps.list
     ~/.config/powershell/Microsoft.PowerShell_profile.ps1:
       path: common/powershell/profile.ps1
     ~/.config/powershell/blue-owl.omp.json:
@@ -50,7 +50,7 @@
 
 - shell:
   - description: "[Linux] Guake config"
-    command: dconf load /apps/guake/ < linux-only/dconf-guake-dump.txt
+    command: dconf load /apps/guake/ < linux/dconf-guake-dump.txt
     quiet: true
     stdin: false
     stdout: true
