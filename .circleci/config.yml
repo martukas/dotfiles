@@ -43,6 +43,7 @@ jobs:
           name: Install stuff
           command: |
             sudo rm -rf /var/lib/apt/lists/*
+            sudo apt-get update
             sudo apt-get -y install snapd
             sudo snap install powershell --classic
             pwsh -Command {Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force}
