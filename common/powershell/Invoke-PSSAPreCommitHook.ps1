@@ -30,6 +30,17 @@ $Results = Invoke-ScriptAnalyzer -Path . -Recurse
 # Find the paths of git sub-modules
 $SubModulePaths = git submodule --quiet foreach --recursive pwd
 
+# If in Windows, have to convert unix paths provided by git
+if ($IsWindows)
+{
+    $Command = "$Env:Programfiles\Git\usr\bin\cygpath.exe"
+
+    $SubModulePaths = $SubModulePaths | ForEach-Object {
+        $Params = "-w $_".Split(" ")
+        & "$Command" $Params
+    }
+}
+
 # Eliminate results for files in git sub-modules if any
 $FilteredResults = $Results
 if ($SubModulePaths) {
@@ -50,7 +61,7 @@ if ($null -ne $FilteredResults)
 {
     # List all violations
     $FilteredResults | Sort-Object RelPath, Line | Format-Table `
-        -Property Severity, RelPath, Line, Column, RuleName, RuleLink `
+        -Property Severity, ScriptPath, Line, Column, RuleName, RuleLink `
         -AutoSize -Wrap
 
     $SeverityValues = [Enum]::GetNames("Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticSeverity")

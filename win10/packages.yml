@@ -68,6 +68,8 @@
       descr: Slack
     - id: WhatsApp.WhatsApp
       descr: Whatsapp desktop client
+    - id: Discord.Discord
+      descr: Discord client
 - defaults:
     type: winget
     category: multimedia
