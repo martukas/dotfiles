@@ -50,7 +50,7 @@ jobs:
       - run:
           name: Run things
           command: |
-            .\common\powershell\Invoke-PSSAPreCommitHook.ps1
+            ./common/powershell/Invoke-PSSAPreCommitHook.ps1
 
 workflows:
   circle-ci-tests:
