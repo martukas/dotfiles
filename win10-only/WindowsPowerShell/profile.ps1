@@ -74,5 +74,3 @@ if ($IsWindows) {
     "$HOME\Documents\WindowsPowerShell\$theme.omp.json" `
     | Invoke-Expression
 }
-
-#Write-Output "[Win10] Using MGS ps1 Profile"

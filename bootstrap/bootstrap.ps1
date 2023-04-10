@@ -5,8 +5,6 @@ param()
 $FAILURE=1
 $SUCCESS=0
 
-Write-Output "Hahaha"
-
 if (-Not $IsWindows) {
     Write-Error "Error: This script only supports Windows"
     Exit $FAILURE
