@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Fail if any command fails
-set -e
-set -o pipefail
-
 # shellcheck disable=SC2034
 FAILURE=1
 # shellcheck disable=SC2034
@@ -19,6 +15,10 @@ linux*)
 	exit $FAILURE
 	;;
 esac
+
+# Fail if any command fails
+set -e
+set -o pipefail
 
 # Make sure we are not in sudo
 if [ "${EUID}" -eq 0 ] && [ "$2" != "-f" ]; then

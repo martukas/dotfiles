@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# shellcheck disable=SC2034
+FAILURE=1
+# shellcheck disable=SC2034
+SUCCESS=0
+
+# Check if Linux
+case "${OSTYPE}" in
+linux*)
+	echo "Linux: OK"
+	;;
+*)
+	echo "Error: This script only supports linux. You have: $OSTYPE."
+	exit $FAILURE
+	;;
+esac
+
 # Fail if any command fails
 set -e
 set -o pipefail
@@ -8,9 +24,6 @@ set -o pipefail
 if [ -n "$VERBOSE" ]; then
 	set -o xtrace
 fi
-
-FAILURE=1
-SUCCESS=0
 
 print_help() {
 	cat <<EOF
