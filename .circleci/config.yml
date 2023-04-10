@@ -31,6 +31,11 @@ jobs:
             $ErrorActionPreference = "Stop"
             Install-Module -Name PSScriptAnalyzer -Force
             pip install pre-commit
+            git config --global core.autocrlf false
+            git config --global core.eol lf
+            git config --global core.autocrlf input
+            git rm -rf --cached .
+            git reset --hard HEAD
       - run:
           name: Check PS scripts
           shell: powershell.exe
