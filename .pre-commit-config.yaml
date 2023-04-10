@@ -26,11 +26,10 @@ repos:
     hooks:
       - id: shfmt
 
-#    This will not work if linux system does not have pwsh + module
-#  - repo: local
-#    hooks:
-#      - id: PSScriptAnalyzer
-#        name: PSScriptAnalyzer
-#        description: Run PSScriptAnalyzer on commit
-#        language: script
-#        entry: ./common/powershell/Invoke-PSSAPreCommitHook.ps1
+  - repo: local
+    hooks:
+      - id: PSScriptAnalyzer
+        name: PSScriptAnalyzer
+        description: Run PSScriptAnalyzer on commit
+        language: script
+        entry: ./common/powershell/Invoke-PSSAPreCommitHook.ps1

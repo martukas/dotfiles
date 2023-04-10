@@ -29,19 +29,11 @@ $UselessValue = "bla"
 # Run Analyzer on everything recursively
 $Results = Invoke-ScriptAnalyzer -Path . -Recurse
 
-$TotalFailures = ($Results).Count
-
-# Since there was at least one failure, get mad now
-Write-Output "Total failures = $($TotalFailures)"
-
 # Find the paths of git sub-modules
 $SubModulePaths = git submodule --quiet foreach --recursive pwd
 
-Write-Output "SubmodulePaths = $SubModulePaths"
-
-# Eliminate results for files in git sub-modules
+# Eliminate results for files in git sub-modules if any
 $FilteredResults = $Results
-
 if ($SubModulePaths) {
     $FilteredResults = $Results | Where-Object {-Not (containsArrayValue $_.ScriptPath $SubModulePaths)}
 }

@@ -25,19 +25,22 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install ScriptAnalyzer module
+          name: Make sure CRLFs were not added by git
+          shell: powershell.exe
+          command: |
+            $ErrorActionPreference = "Stop"
+            git config --global core.autocrlf input
+            git rm -rf --cached .
+            git reset --hard HEAD
+      - run:
+          name: Install dependencies
           shell: powershell.exe
           command: |
             $ErrorActionPreference = "Stop"
             Install-Module -Name PSScriptAnalyzer -Force
             pip install pre-commit
-            git config --global core.autocrlf false
-            git config --global core.eol lf
-            git config --global core.autocrlf input
-            git rm -rf --cached .
-            git reset --hard HEAD
       - run:
-          name: Check PS scripts
+          name: Run pre-commit checks
           shell: powershell.exe
           command: |
             $ErrorActionPreference = "Stop"
@@ -46,7 +49,6 @@ jobs:
             echo "Changed files since branched from origin/master: " $changed_files
             git reset --soft $merge_base
             pre-commit run --show-diff-on-failure --files $changed_files
-            .\common\powershell\Invoke-PSSAPreCommitHook.ps1
 
 
 workflows:
