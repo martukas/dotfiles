@@ -1,0 +1,11 @@
+[Desktop Entry]
+X-SnapInstanceName=whatsdesk
+Name=whatsdesk
+Exec=env BAMF_DESKTOP_FILE_HINT=/var/lib/snapd/desktop/applications/whatsdesk_whatsdesk.desktop /snap/bin/whatsdesk %U
+Terminal=false
+Type=Application
+Icon=/snap/whatsdesk/28/meta/gui/icon.png
+StartupWMClass=whatsdesk
+Comment=unofficial whatsapp client for linux
+MimeType=whatsapp;
+Categories=Network;

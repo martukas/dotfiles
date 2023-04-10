@@ -33,4 +33,4 @@ repos:
 #        name: PSScriptAnalyzer
 #        description: Run PSScriptAnalyzer on commit
 #        language: script
-#        entry: ./win10-only/Invoke-PSSAPreCommitHook.ps1
+#        entry: ./common/powershell/Invoke-PSSAPreCommitHook.ps1

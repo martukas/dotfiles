@@ -8,16 +8,11 @@
 # OS-specific before - for interactive only
 case "$OSTYPE" in
 darwin*) echo "Running OSX: no custom dotfile scripts for this OS" ;;
-linux*) source ~/.dotfiles/linux-only/profile_linux_before.sh ;;
-msys*) source ~/.dotfiles/win10-only/profile_win10_before.sh ;;
-cygwin*) source ~/.dotfiles/win10-only/profile_win10_before.sh ;;
+linux*) source ~/.dotfiles/linux/profile1.sh ;;
+msys*) source ~/.dotfiles/win10/profile1.sh ;;
+cygwin*) source ~/.dotfiles/win10/profile1.sh ;;
 *) echo "Unknown OS: $OSTYPE" ;;
 esac
-
-# Allow local customizations in the ~/.shell_local_before file
-if [ -f ~/.shell_local_before ]; then
-	source ~/.shell_local_before
-fi
 
 # Allow local customizations in the ~/.bashrc_local_before file
 if [ -f ~/.bashrc_local_before ]; then
@@ -27,14 +22,8 @@ fi
 # Settings
 source ~/.bash/settings.bash
 
-# Bootstrap
-source ~/.shell/bootstrap-bin.sh
-
-# External settings
-#source ~/.shell/external.sh
-
 # Aliases
-source ~/.shell/aliases.sh
+source ~/.bash/aliases.sh
 
 if [ -f ~/.dotfiles/private/common/private_profile.sh ]; then
 	source ~/.dotfiles/private/common/private_profile.sh
@@ -90,11 +79,6 @@ source ~/.bash-git-prompt/gitprompt.sh
 
 eval "$(thefuck --alias)"
 
-# Allow local customizations in the ~/.shell_local_after file
-if [ -f ~/.shell_local_after ]; then
-	source ~/.shell_local_after
-fi
-
 # Allow local customizations in the ~/.bashrc_local_after file
 if [ -f ~/.bashrc_local_after ]; then
 	source ~/.bashrc_local_after
@@ -103,8 +87,8 @@ fi
 # OS-specific after - for interactive only
 case "$OSTYPE" in
 darwin*) echo "Running OSX: no custom dotfile scripts for this OS" ;;
-linux*) source ~/.dotfiles/linux-only/profile_linux_after.sh ;;
-msys*) source ~/.dotfiles/win10-only/profile_win10_after.sh ;;
-cygwin*) source ~/.dotfiles/win10-only/profile_win10_after.sh ;;
+linux*) source ~/.dotfiles/linux/profile2.sh ;;
+msys*) source ~/.dotfiles/win10/profile2.sh ;;
+cygwin*) source ~/.dotfiles/win10/profile2.sh ;;
 *) echo "Unknown OS: $OSTYPE" ;;
 esac

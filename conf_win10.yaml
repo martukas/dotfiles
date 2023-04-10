@@ -16,17 +16,17 @@
       force: true
 - link:
     ~/.gitconfig_win10:
-      path: win10-only/gitconfig_win10
+      path: win10/gitconfig_win10
     $APPDATA/ConEmu.xml:
-      path: win10-only/AppData/ConEmu.xml
+      path: win10/AppData/ConEmu.xml
     $APPDATA/Notepad++/:
       glob: true
       path: private/windows/AppData/Notepad++/**
     $APPDATA/flameshot/flameshot.ini:
-      path: win10-only/AppData/flameshot/flameshot.ini
+      path: win10/AppData/flameshot/flameshot.ini
     ~/Documents/WindowsPowerShell/profile.ps1:
-      path: win10-only/WindowsPowerShell/profile.ps1
-    ~/Documents/WindowsPowerShell/blue-owl.omp.json:
-      path: win10-only/WindowsPowerShell/blue-owl.omp.json
+      path: common/powershell/profile.ps1
     ~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1:
-      path: win10-only/WindowsPowerShell/profile.ps1
+      path: common/powershell/profile.ps1
+    ~/Documents/WindowsPowerShell/blue-owl.omp.json:
+      path: common/powershell/blue-owl.omp.json

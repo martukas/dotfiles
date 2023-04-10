@@ -1,14 +1,23 @@
+#!/usr/bin/env pwsh
+
+if (-Not $IsWindows) {
+    Write-Error "This script only supports Windows"
+    Exit $FAILURE
+}
+
 $user = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 $principal = New-Object System.Security.Principal.WindowsPrincipal($user)
 if (-not($principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)))
 {
-    throw "Please run this script as an administrator"
+    Write-Error "Please run this script as an administrator"
+    Exit $FAILURE
 }
 
 $found = [bool] (Get-Command -ErrorAction Ignore -Type Application pwsh)
 if (-not($found))
 {
-    throw "Modern PowerShell(pwsh.exe) is not installed. Pleas run 'winget install -e --id Microsoft.PowerShell'"
+    Write-Error "Modern PowerShell(pwsh.exe) is not installed. Pleas run 'winget install -e --id Microsoft.PowerShell'"
+    Exit $FAILURE
 }
 
 $ErrorActionPreference = "Stop"
@@ -32,8 +41,8 @@ git submodule update
 $confirmation = Read-Host "[Win10] Do you want to run one-time installation scripts?"
 if ($confirmation -eq 'y') {
     # Configure file exporer, numlock, theme
-    .\win10-only\pack-custom.ps1 default-modules
-    .\win10-only\pack-custom.ps1 win10-defaults
+    .\win10\packages.ps1 default-modules
+    .\win10\packages.ps1 win10-defaults
 
     # Need pip and pipenv for what comes next
     python -m pip install --upgrade pip
@@ -42,7 +51,7 @@ if ($confirmation -eq 'y') {
     Push-Location superpack
     pipenv install
     Start-Process pwsh -WindowStyle Maximized -ArgumentList `
-        "-Command & {pipenv run python .\superpack\superpack.py ..\win10-only\pack-win10.yml}"
+        "-Command & {pipenv run python .\superpack\superpack.py ..\win10\packages.yml}"
     Pop-Location
 }
 

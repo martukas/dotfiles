@@ -9,8 +9,8 @@
       create: true
       relink: true
 - link:
-    ~/.gdb: 'linux-only/gdb'
-    ~/.gdbinit: 'linux-only/gdbinit'
+    ~/.gdb: 'linux/gdb'
+    ~/.gdbinit: 'linux/gdbinit'
 
 # GUI, ok to create even if not using
 - defaults:
@@ -22,35 +22,35 @@
     ~/.config/KeePass/KeePass.config.xml:
       path: private/linux/config/KeePass/KeePass.config.xml
     ~/.config/autostart:
-      path: linux-only/config/autostart/**
+      path: linux/config/autostart/**
       glob: true
       force: false
     ~/.config/flameshot/flameshot.ini:
-      path: linux-only/config/flameshot/flameshot.ini
+      path: linux/config/flameshot/flameshot.ini
     ~/.config/redshift.conf:
-      path: linux-only/config/redshift.conf
+      path: linux/config/redshift.conf
     ~/.config/mimeapps.list:
-      path: linux-only/config/mimeapps.list
+      path: linux/config/mimeapps.list
     ~/.config/powershell/Microsoft.PowerShell_profile.ps1:
-      path: win10-only/WindowsPowerShell/profile.ps1
+      path: common/powershell/profile.ps1
     ~/.config/powershell/blue-owl.omp.json:
-      path: win10-only/WindowsPowerShell/blue-owl.omp.json
+      path: common/powershell/blue-owl.omp.json
 
 # code style stuff, better not clutter
 - defaults:
     link:
       relink: true
 - link:
-    ~/dev/ess/essdaq/daquiri/daquiri/.idea: 'code/daquiri/idea'
-    ~/dev/ess/essdaq/efu/event-formation-unit/.idea: 'code/event-formation-unit/idea'
-    ~/dev/ess/h5cpp/.idea: 'code/h5cpp/idea'
-    ~/dev/ess/qplot/.idea: 'code/qplot/idea'
-    ~/dev/nist_arl/daquiri-qpx/.idea: 'code/daquiri-qpx/idea'
-    ~/dev/nist_arl/uncertain/.idea: 'code/uncertain/idea'
+    ~/dev/ess/essdaq/daquiri/daquiri/.idea: 'code-style/daquiri/idea'
+    ~/dev/ess/essdaq/efu/event-formation-unit/.idea: 'code-style/event-formation-unit/idea'
+    ~/dev/ess/h5cpp/.idea: 'code-style/h5cpp/idea'
+    ~/dev/ess/qplot/.idea: 'code-style/qplot/idea'
+    ~/dev/nist_arl/daquiri-qpx/.idea: 'code-style/daquiri-qpx/idea'
+    ~/dev/nist_arl/uncertain/.idea: 'code-style/uncertain/idea'
 
 - shell:
   - description: "[Linux] Guake config"
-    command: dconf load /apps/guake/ < linux-only/dconf-guake-dump.txt
+    command: dconf load /apps/guake/ < linux/dconf-guake-dump.txt
     quiet: true
     stdin: false
     stdout: true
