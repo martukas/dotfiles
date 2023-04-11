@@ -28,6 +28,13 @@ repos:
 
   - repo: local
     hooks:
+      - id: save-guake-settings
+        name: save-guake-settings
+        description: Dumps Guake settings from dconf to file in repo (Linux only)
+        language: script
+        entry: ./linux/dconf-guake-hook.py
+        pass_filenames: false
+        always_run: true
       - id: PSScriptAnalyzer
         name: PSScriptAnalyzer
         description: Run PSScriptAnalyzer on commit

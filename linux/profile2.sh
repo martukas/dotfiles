@@ -66,13 +66,3 @@ create-user() {
 	*) ;;
 	esac
 }
-
-df-save() {
-	pushd ~/.dotfiles || {
-		echo "No dotfiles dir symlinked"
-		exit 1
-	}
-	dconf dump /apps/guake/ >linux/dconf-guake-dump.txt
-	# shellcheck disable=SC2164
-	popd
-}

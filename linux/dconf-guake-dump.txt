@@ -11,6 +11,7 @@ load-guake-yml=true
 max-tab-name-length=100
 mouse-display=true
 open-tab-cwd=false
+prompt-on-close-tab=1
 prompt-on-quit=true
 quick-open-command-line='gedit %(file_path)s'
 restore-tabs-notify=true

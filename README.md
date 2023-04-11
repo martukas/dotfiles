@@ -61,7 +61,6 @@ Pushing local changes to repo:
 
 * The usual add-commit-push ritual, or the `commit-push` alias
 * symlinked files will stay up to date
-* on Xubuntu, occasionally run `df-save` to extract and save settings for guake
 * "dirty" state in the `/private` subrepo will be ignored. Commit changes to that submodule separately, before you commit in parent dir
 
 ## Manual installation required
@@ -79,7 +78,6 @@ Pushing local changes to repo:
 * include .profile?
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
-* pre-commit hook for guake settings
 * Dark mode for Keepass [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
 * Foreign keyboards
 * Linux:

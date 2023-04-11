@@ -44,10 +44,6 @@ else
 	echo "No custom scripts to run for platform '$OS'."
 fi
 
-if [ -n "$XDG_CURRENT_DESKTOP" ]; then
-	echo "GUI Installed"
-fi
-
 echo "Linking dotfiles for general bash use"
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_COMMON}" "${@}"
 
