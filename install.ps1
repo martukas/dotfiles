@@ -16,7 +16,7 @@ if (-not($principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Adm
 $found = [bool] (Get-Command -ErrorAction Ignore -Type Application pwsh)
 if (-not($found))
 {
-    Write-Error "Modern PowerShell(pwsh.exe) is not installed. Pleas run 'winget install -e --id Microsoft.PowerShell'"
+    Write-Error "Latest PowerShell (pwsh.exe) is not installed. Pleas run 'winget install -e --id Microsoft.PowerShell'"
     Exit $FAILURE
 }
 
