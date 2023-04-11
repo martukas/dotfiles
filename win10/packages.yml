@@ -69,7 +69,7 @@
     - id: WhatsApp.WhatsApp
       descr: Whatsapp desktop client
     - id: Discord.Discord
-      descr: Discord client
+      descr: Discord chat
 - defaults:
     type: winget
     category: multimedia

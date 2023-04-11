@@ -19,7 +19,7 @@ These scripts will install the essentials, set up ssh credentials and clone this
 
 ### Linux
 
-This one-line command should get things going:
+This one-liner should get things going:
 
 ```shell
 bash <(wget -qO- https://github.com/martukas/dotfiles/raw/master/bootstrap/bootstrap.sh)
@@ -80,8 +80,6 @@ Pushing local changes to repo:
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
 * pre-commit hook for guake settings
-* Linux gui links optional
-* Code style links optional
 * Dark mode for Keepass [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
 * Foreign keyboards
 * Linux:
@@ -93,9 +91,7 @@ Pushing local changes to repo:
   * circleci
   * libreoffice
 * Windows:
-  * TuneIn
   * steam
-  * discord
   * dotnet
   * jdk
   * google drive

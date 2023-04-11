@@ -54,12 +54,12 @@ if ($confirmation -eq 'y') {
     Start-Process pwsh -WindowStyle Maximized -ArgumentList `
         "-Command & {pipenv run python .\superpack\superpack.py ..\win10\packages.yml}"
     Pop-Location
+
+    Write-Output 'Press any key to continue with dotbot config...';
+    $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 }
 
 #file associations - notepad++, irfanview
-
-Write-Output 'Press any key to continue with dotbot config...';
-$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 
 foreach ($PYTHON in ('python', 'python3')) {
     # Python redirects to Microsoft Store in Windows 10 when not installed

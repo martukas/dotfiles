@@ -8,13 +8,20 @@
     link:
       create: true
       relink: true
+      force: true
 - link:
     ~/.gdb: 'linux/gdb'
     ~/.gdbinit: 'linux/gdbinit'
+    ~/.gitconfig_linux: 'linux/gitconfig_linux'
+    ~/.config/powershell/Microsoft.PowerShell_profile.ps1:
+      path: common/powershell/profile.ps1
+    ~/.config/powershell/blue-owl.omp.json:
+      path: common/powershell/blue-owl.omp.json
 
-# GUI, ok to create even if not using
+# GUI stuff
 - defaults:
     link:
+      if: '[ -n "$XDG_CURRENT_DESKTOP" ]'
       create: true
       relink: true
       force: true
@@ -31,27 +38,33 @@
       path: linux/config/redshift.conf
     ~/.config/mimeapps.list:
       path: linux/config/mimeapps.list
-    ~/.config/powershell/Microsoft.PowerShell_profile.ps1:
-      path: common/powershell/profile.ps1
-    ~/.config/powershell/blue-owl.omp.json:
-      path: common/powershell/blue-owl.omp.json
+- shell:
+    - description: "[Linux] Guake config"
+      command: |
+        if [ -n "$XDG_CURRENT_DESKTOP" ]; then
+          dconf load /apps/guake/ < linux/dconf-guake-dump.txt
+        fi
+      quiet: true
+      stdin: false
+      stdout: true
+      stderr: false
 
-# code style stuff, better not clutter
+# code style ESS projects
 - defaults:
     link:
       relink: true
+      if: '[ -d ~/dev/ess ]'
 - link:
     ~/dev/ess/essdaq/daquiri/daquiri/.idea: 'code-style/daquiri/idea'
     ~/dev/ess/essdaq/efu/event-formation-unit/.idea: 'code-style/event-formation-unit/idea'
     ~/dev/ess/h5cpp/.idea: 'code-style/h5cpp/idea'
     ~/dev/ess/qplot/.idea: 'code-style/qplot/idea'
+
+# code style for NIST/ARL projects
+- defaults:
+    link:
+      relink: true
+      if: '[ -d ~/dev/nist_arl ]'
+- link:
     ~/dev/nist_arl/daquiri-qpx/.idea: 'code-style/daquiri-qpx/idea'
     ~/dev/nist_arl/uncertain/.idea: 'code-style/uncertain/idea'
-
-- shell:
-  - description: "[Linux] Guake config"
-    command: dconf load /apps/guake/ < linux/dconf-guake-dump.txt
-    quiet: true
-    stdin: false
-    stdout: true
-    stderr: false
