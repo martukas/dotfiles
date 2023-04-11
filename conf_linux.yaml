@@ -13,6 +13,10 @@
     ~/.gdb: 'linux/gdb'
     ~/.gdbinit: 'linux/gdbinit'
     ~/.gitconfig_linux: 'linux/gitconfig_linux'
+    ~/.config/powershell/Microsoft.PowerShell_profile.ps1:
+      path: common/powershell/profile.ps1
+    ~/.config/powershell/blue-owl.omp.json:
+      path: common/powershell/blue-owl.omp.json
 
 # GUI stuff
 - defaults:
@@ -34,10 +38,6 @@
       path: linux/config/redshift.conf
     ~/.config/mimeapps.list:
       path: linux/config/mimeapps.list
-    ~/.config/powershell/Microsoft.PowerShell_profile.ps1:
-      path: common/powershell/profile.ps1
-    ~/.config/powershell/blue-owl.omp.json:
-      path: common/powershell/blue-owl.omp.json
 
 # code style stuff, better not clutter
 - defaults:
