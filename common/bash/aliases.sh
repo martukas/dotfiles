@@ -28,15 +28,15 @@ alias rmake='cmake -DCMAKE_BUILD_TYPE=Release'
 # git related aliases
 alias gag='git exec ag'
 
-# git new branch
-function gnb() {
+# git new branch = gnb, but Drum'n'bass sounds better
+function dnb() {
 	git checkout -b "$1"
 	git push --set-upstream origin "$1"
 }
 
 #create new issue branch
 function missue() {
-	gnb issue_"$1"
+	dnb issue_"$1"
 }
 
 function commit-push() {

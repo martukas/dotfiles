@@ -33,8 +33,8 @@ function dfu
     Pop-Location
 }
 
-# git new branch
-function gnb
+# git new branch = gnb, but Drum'n'bass sounds better
+function dnb
 {
     git checkout -b $args[0]
     git push --set-upstream origin $args[0]
