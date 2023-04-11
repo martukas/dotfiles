@@ -93,9 +93,7 @@ Pushing local changes to repo:
   * circleci
   * libreoffice
 * Windows:
-  * TuneIn
   * steam
-  * discord
   * dotnet
   * jdk
   * google drive

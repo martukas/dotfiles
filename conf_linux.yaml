@@ -14,9 +14,10 @@
     ~/.gdbinit: 'linux/gdbinit'
     ~/.gitconfig_linux: 'linux/gitconfig_linux'
 
-# GUI, ok to create even if not using
+# GUI stuff
 - defaults:
     link:
+      if: '[ -n "$XDG_CURRENT_DESKTOP" ]'
       create: true
       relink: true
       force: true
