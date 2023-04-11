@@ -32,7 +32,7 @@ repos:
         name: save-guake-settings
         description: Dumps Guake settings from dconf to file in repo
         language: script
-        entry: ./linux/bin/save-guake-settings.sh
+        entry: ./linux/dconf-guake-hook.py
         pass_filenames: false
       - id: PSScriptAnalyzer
         name: PSScriptAnalyzer
