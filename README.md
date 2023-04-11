@@ -80,7 +80,6 @@ Pushing local changes to repo:
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
 * pre-commit hook for guake settings
-* Code style links optional
 * Dark mode for Keepass [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
 * Foreign keyboards
 * Linux:
