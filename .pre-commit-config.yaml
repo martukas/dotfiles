@@ -34,6 +34,7 @@ repos:
         language: script
         entry: ./linux/dconf-guake-hook.py
         pass_filenames: false
+        always_run: true
       - id: PSScriptAnalyzer
         name: PSScriptAnalyzer
         description: Run PSScriptAnalyzer on commit
