@@ -7,10 +7,17 @@ import logging
 if __name__ == "__main__":
     if os.name == "posix":
         path = "~/.dotfiles"
-        command = "dconf dump /apps/guake/ > linux/dconf-guake-dump.txt"
+        outfile = "linux/dconf-guake-dump.txt"
+        command = f"dconf dump /apps/guake/ > {outfile}"
+        command2 = f"git diff --exit-code {outfile}"
         try:
             os.chdir(os.path.expanduser(path))
             os.popen(command)
-            # \TODO: exit 1 if file changed
+            shell = os.popen(command2)
+            status = shell.close()
+            if status and os.waitstatus_to_exitcode(status) == 1:
+                print(f"New settings saved to {outfile}")
+                exit(1)
         except Exception:
             logging.error(traceback.format_exc())
+            exit(1)
