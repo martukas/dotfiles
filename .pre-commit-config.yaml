@@ -30,7 +30,7 @@ repos:
     hooks:
       - id: save-guake-settings
         name: save-guake-settings
-        description: Dumps Guake settings from dconf to file in repo
+        description: Dumps Guake settings from dconf to file in repo (Linux only)
         language: script
         entry: ./linux/dconf-guake-hook.py
         pass_filenames: false

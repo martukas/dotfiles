@@ -11,5 +11,5 @@ if __name__ == "__main__":
         try:
             os.chdir(os.path.expanduser(path))
             os.popen(command)
-        except Exception as e:
+        except Exception:
             logging.error(traceback.format_exc())
