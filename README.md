@@ -19,7 +19,7 @@ These scripts will install the essentials, set up ssh credentials and clone this
 
 ### Linux
 
-This one-line command should get things going:
+This one-liner should get things going:
 
 ```shell
 bash <(wget -qO- https://github.com/martukas/dotfiles/raw/master/bootstrap/bootstrap.sh)

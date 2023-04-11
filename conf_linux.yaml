@@ -49,7 +49,7 @@
       stdout: true
       stderr: false
 
-# code style ess
+# code style ESS projects
 - defaults:
     link:
       relink: true
@@ -60,7 +60,7 @@
     ~/dev/ess/h5cpp/.idea: 'code-style/h5cpp/idea'
     ~/dev/ess/qplot/.idea: 'code-style/qplot/idea'
 
-# code style nist-arl
+# code style for NIST/ARL projects
 - defaults:
     link:
       relink: true
