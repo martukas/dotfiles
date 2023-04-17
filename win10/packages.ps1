@@ -25,7 +25,7 @@ function CreateStartupApp() {
     if ($null -eq $Path) { New-Item -Path $RegItem.Path }
 
     if ($null -eq (Get-ItemProperty @RegItem -ErrorAction SilentlyContinue)) {
-        New-ItemProperty @RegItem -Value "$RunPath" -PropertyType DWord -Force | Out-Null
+        New-ItemProperty @RegItem -Value "$RunPath" -PropertyType String -Force | Out-Null
         Write-Host 'Added Registry value' -f Green
     } else {
         Write-Host "Value already exists" -f Yellow
