@@ -15,11 +15,11 @@ alias la='ls -AlF --group-directories-first'
 alias cp='cp -i'
 alias mv='mv -i'
 
-alias mx='chmod -R 755'
-alias mw='chmod -R 644'
+alias mx='chmod --recursive 775'
+alias mw='chmod --recursive 664'
 
 alias sudo='sudo '
-alias own='sudo -R chown $(id -un):$(id -gn)'
+alias own='sudo chown --recursive $(id -un):$(id -gn)'
 
 # cmake aliases
 alias dmake='cmake -DCMAKE_BUILD_TYPE=Debug'
@@ -34,16 +34,17 @@ function dnb() {
 	git push --set-upstream origin "$1"
 }
 
-#create new issue branch
-function missue() {
-	dnb issue_"$1"
-}
-
 function commit-push() {
 	message="$*"
 	git add -A
 	git commit -m "${message}"
 	git push
+}
+
+#create new issue branch
+function missue() {
+	#TODO check if it starts with number
+	dnb issue_"$1"
 }
 
 # commit-push, appending an "updates #issue" to one-line commit message
@@ -92,14 +93,6 @@ syspip() {
 	PIP_REQUIRE_VIRTUALENV="" pip "$@"
 }
 
-syspip2() {
-	PIP_REQUIRE_VIRTUALENV="" pip2 "$@"
-}
-
-syspip3() {
-	PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
-}
-
 # cd to git root directory
 cdgr() {
 	cd "$(git root)" || {
@@ -113,14 +106,6 @@ mcd() {
 	mkdir "${1}"
 	cd "${1}" || {
 		echo "Could not enter directory: ${1}"
-		exit 1
-	}
-}
-
-# Jump to directory containing file
-jump() {
-	cd "$(dirname "${1}")" || {
-		echo "Cannot jump to dir containing ${1}"
 		exit 1
 	}
 }

@@ -59,21 +59,21 @@ The following aliases are available (filling gaps in progress):
 | Alias                  | Bash               | PowerShell         | Function                                                                 |
 |------------------------|--------------------|--------------------|--------------------------------------------------------------------------|
 | dfu                    | :white_check_mark: | :white_check_mark: | **dotfiles update:** pulls this repo and runs appropriate install script |
-| df-upgrade             | :white_check_mark: | :x:                | **dotfiles upgrade:** upgrades git sub-modules in this repo              |
+| df-upgrade             | :white_check_mark: | :white_check_mark: | **dotfiles upgrade:** upgrades git sub-modules in this repo              |
 | dnb `new_branch_name`  | :white_check_mark: | :white_check_mark: | **git new branch:** creates and pushes new branch                        |
 | commmit-push "message" | :white_check_mark: | :white_check_mark: | add everything, commit with "message", push                              |
 | git-rm-submodule       | :white_check_mark: | :white_check_mark: | actually removes a git sub-module                                        |
 | upd                    | :white_check_mark: | :white_check_mark: | update all (`apt` and `snap`) or `winget` packages, cleanup              |
-| missue `123_something` | :white_check_mark: | :x:                | creates and pushes branch `issue_123_something`                          |
+| missue `123_something` | :white_check_mark: | :white_check_mark: | creates and pushes branch `issue_123_something`                          |
 | issue "message"        | :white_check_mark: | :x:                | `commit-push` appending "; updates #123" (on an `issue_123` branch)      |
 | la                     | :white_check_mark: | :white_check_mark: | list directory contents, including hidden files                          |
 | Test-Administrator     | :x:                | :white_check_mark: | Return true if in elevated session                                       |
-| cdgr                   | :white_check_mark: | :x:                | cd to git root                                                           |
-| mcd                    | :white_check_mark: | :x:                | make directory and cd into it                                            |
+| cdgr                   | :white_check_mark: | :white_check_mark: | cd to git root                                                           |
+| mcd                    | :white_check_mark: | :white_check_mark: | make directory and cd into it                                            |
 | up `num`               | :white_check_mark: | :x:                | go up `num` directories                                                  |
-| mx                     | :white_check_mark: | :x:                | `make executable:` chmod 755                                             |
-| mw                     | :white_check_mark: | :x:                | `make writable:` chmod 644                                               |
-| own                    | :white_check_mark: | :x:                | take ownership as user:user                                              |
+| mx                     | :white_check_mark: | :penguin:          | `make executable:` chmod 755                                             |
+| mw                     | :white_check_mark: | :penguin:          | `make writable:` chmod 644                                               |
+| own                    | :white_check_mark: | :penguin:          | take ownership as user:user                                              |
 
 Henceforth, you can update locally with these aliases:
 

@@ -15,9 +15,40 @@ function Test-Administrator
     }
 }
 
+function mx
+{
+    chmod --recursive 775 $args
+}
+
+function mw
+{
+    chmod --recursive 664 $args
+}
+
+function own
+{
+    $user_name = id -un
+    $user_group = id -gn
+    sudo chown --recursive $user_name`:$user_group $args
+}
+
 function la
 {
-    Get-ChildItem -Force
+    Get-ChildItem -Force $args
+}
+
+function cdgr
+{
+    $git_root = git root
+    if ($git_root) {
+        Set-Location $git_root
+    }
+}
+
+function mcd
+{
+    mkdir $args[0]
+    Set-Location $args[0]
 }
 
 function upd
@@ -33,13 +64,37 @@ function dfu
     Pop-Location
 }
 
-# git new branch = gnb, but Drum'n'bass sounds better
-function dnb
+# Dotfiles upgrade submodules
+function DotfilesUpgrade() {
+    Push-Location (Get-Item "$HOME\.dotfiles").Target
+    git submodule update --remote private
+    git submodule update --remote dotbot
+    git submodule update --remote superpack
+    git submodule update --remote common/bash-git-prompt
+    git submodule update --remote common/bash/plugins/dircolors-solarized
+    git submodule update --remote linux/logiops
+    git submodule update --remote linux/gdb/qt5printers
+    Pop-Location
+}
+
+New-Alias df-upgrade DotfilesUpgrade
+
+function GitNewBranch
 {
     git checkout -b $args[0]
     git push --set-upstream origin $args[0]
 }
 
+# should be gnb, but Drum'n'bass sounds better
+New-Alias dnb GitNewBranch
+
+function missue
+{
+    #TODO check if it starts with number
+    $subname = $args[0]
+    $fullname = "issue_$subname"
+    GitNewBranch $fullname
+}
 
 function GitRemoveSubmodule($submodule_name)
 {

@@ -45,6 +45,7 @@ create-user() {
 	echo "---------========= ACHTUNG =========---------"
 	echo "This will create a user on this system."
 	echo "With a home directory 'n shit..."
+	echo "... with SUDO powers!!!"
 	echo " "
 	echo " You better have their public ssh key ready!"
 	echo " "
