@@ -36,6 +36,7 @@ git -C $DOTBOT_DIR submodule sync --quiet --recursive
 git submodule update --init --recursive $DOTBOT_DIR
 git submodule update --init --recursive superpack
 git submodule update --init --recursive private
+git submodule update --init --recursive common/bash/plugins/dircolors-solarized
 
 git submodule update
 
