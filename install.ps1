@@ -1,23 +1,20 @@
 #!/usr/bin/env pwsh
 
 if (-Not $IsWindows) {
-    Write-Error "This script only supports Windows"
-    Exit $FAILURE
+    Write-Error "This script only supports Windows" -ErrorAction Stop
 }
 
 $user = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 $principal = New-Object System.Security.Principal.WindowsPrincipal($user)
 if (-not($principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)))
 {
-    Write-Error "Please run this script as an administrator"
-    Exit $FAILURE
+    Write-Error "Please run this script as an administrator" -ErrorAction Stop
 }
 
 $found = [bool] (Get-Command -ErrorAction Ignore -Type Application pwsh)
 if (-not($found))
 {
-    Write-Error "Latest PowerShell (pwsh.exe) is not installed. Pleas run 'winget install -e --id Microsoft.PowerShell'"
-    Exit $FAILURE
+    Write-Error "Latest PowerShell (pwsh.exe) is not installed. Pleas run 'winget install -e --id Microsoft.PowerShell'" -ErrorAction Stop
 }
 
 # Fail on first error

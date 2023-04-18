@@ -43,7 +43,7 @@ Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/master/bootstra
 
 You will have to reboot before you start using the utilities below.
 
-## Routine use
+## First use
 
 For first-time setup:
 
@@ -52,14 +52,34 @@ For first-time setup:
 
 These scripts will set up symlinks, command aliases and also run [SuperPack](https://github.com/martukas/superpack) to offer you installation of packages appropriate for your system.
 
+## Routine use
+
+The following aliases have (nearly) identical behaviour in bash and Powershell, Linux and Windows.
+
+| Alias                       | Function                                                                 |
+|-----------------------------|--------------------------------------------------------------------------|
+| dfu                         | **dotfiles update:** pulls this repo and runs appropriate install script |
+| df-upgrade                  | **dotfiles upgrade:** upgrades git sub-modules in this repo              |
+| dnb `new_branch_name`       | **git new branch:** creates and pushes new branch                        |
+| commmit-push "message"      | add everything, commit with "message", push                              |
+| git-rm-submodule            | actually removes a git sub-module                                        |
+| upd                         | update all (`apt` and `snap`) or `winget` packages, cleanup              |
+| missue `123_something`      | creates and pushes branch `issue_123_something`                          |
+| issue "message"             | `commit-push` appending "; updates #123" (on an `issue_123` branch)      |
+| la                          | list directory contents, including hidden files                          |
+| cdgr                        | cd to git root                                                           |
+| mcd                         | make directory and cd into it                                            |
+| up `num`                    | go up `num` directories                                                  |
+| :penguin: mx                | `make executable:` chmod 775                                             |
+| :penguin: mw                | `make writable:` chmod 664                                               |
+| :penguin: own               | take ownership as user:user                                              |
+| :window: Test-Administrator | Return true if in elevated session                                       |
+
 Henceforth, you can update locally with these aliases:
 
-* `dfu` - dotfiles update, pulls and runs appropriate install script
-* `df-upgrade` - upgrades all submodules to latest versions in remote repos
+### Keeping repo up to date
 
-Pushing local changes to repo:
-
-* The usual add-commit-push ritual, or the `commit-push` alias
+* use the `df*` aliases above
 * symlinked files will stay up to date
 * "dirty" state in the `/private` subrepo will be ignored. Commit changes to that submodule separately, before you commit in parent dir
 
@@ -95,7 +115,6 @@ Pushing local changes to repo:
   * google drive
   * configure night light
   * optional sshd and remote-desktop config
-  * issue-related git aliases for pwsh
 * Configure rustup shell completion [here](https://rust-lang.github.io/rustup/installation/index.html)
 * Try out [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
 * Set up conditional GPG things in `.gitconfig_local` or some such

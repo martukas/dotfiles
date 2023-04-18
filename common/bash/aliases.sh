@@ -15,11 +15,11 @@ alias la='ls -AlF --group-directories-first'
 alias cp='cp -i'
 alias mv='mv -i'
 
-alias mx='chmod -R 755'
-alias mw='chmod -R 644'
+alias mx='chmod --recursive 775'
+alias mw='chmod --recursive 664'
 
 alias sudo='sudo '
-alias own='sudo -R chown $(id -un):$(id -gn)'
+alias own='sudo chown --recursive $(id -un):$(id -gn)'
 
 # cmake aliases
 alias dmake='cmake -DCMAKE_BUILD_TYPE=Debug'
@@ -28,15 +28,10 @@ alias rmake='cmake -DCMAKE_BUILD_TYPE=Release'
 # git related aliases
 alias gag='git exec ag'
 
-# git new branch
-function gnb() {
+# git new branch = gnb, but Drum'n'bass sounds better
+function dnb() {
 	git checkout -b "$1"
 	git push --set-upstream origin "$1"
-}
-
-#create new issue branch
-function missue() {
-	gnb issue_"$1"
 }
 
 function commit-push() {
@@ -46,17 +41,33 @@ function commit-push() {
 	git push
 }
 
+#create new issue branch
+function missue() {
+	SUBNAME="$1"
+	if [[ $SUBNAME =~ ^([0-9]+)(.*)$ ]]; then
+		BRANCH_NAME="issue_${SUBNAME}"
+		echo "Creating git branch = $BRANCH_NAME"
+		dnb "$BRANCH_NAME"
+	else
+		echo "Must provide branch sub-name beginning with ticket number!"
+		return 1
+	fi
+}
+
 # commit-push, appending an "updates #issue" to one-line commit message
 function issue() {
 	BRANCH="$(git symbolic-ref --short HEAD)"
-	# shellcheck disable=SC2001
-	NUMBER=$(echo "$BRANCH" | sed 's@^[^0-9]*\([0-9]\+\).*@\1@')
 
-	if [[ $BRANCH == *"issue"* ]] && [ -n "${NUMBER}" ]; then
+	if [[ $BRANCH =~ ^(issue_)([0-9]+)(.*)$ ]]; then
+		if (($# < 1)); then
+			echo "No commit message provided!"
+			return 1
+		fi
+		NUMBER="${BASH_REMATCH[2]}"
 		message="$*; updates #$NUMBER"
 		commit-push "${message}"
 	else
-		echo "not an issue branch!"
+		echo "Not on an issue branch!"
 		return 1
 	fi
 }
@@ -68,6 +79,23 @@ function git-rm-submodule() {
 	rm -rf .git/modules/"$1"
 	# Remove the entry in .gitmodules and remove the submodule directory located at path/to/submodule
 	git rm -f "$1"
+}
+
+# Dotfiles update
+dfu() {
+	pushd ~/.dotfiles || {
+		echo "No dotfiles dir symlinked"
+		exit 1
+	}
+	git pull
+	OS="$(uname -o)"
+	if [[ $OS == "Msys" ]]; then
+		./install.ps1
+	else
+		./install.sh
+	fi
+	# shellcheck disable=SC2164
+	popd
 }
 
 # Dotfiles upgrade submodules
@@ -87,17 +115,17 @@ df-upgrade() {
 	popd
 }
 
+upd() {
+	if [[ $OS == "Msys" ]]; then
+		winget upgrade --all "$@"
+	else
+		apt-update-wrapper.sh "$@"
+	fi
+}
+
 # Use pip without requiring virtualenv
 syspip() {
 	PIP_REQUIRE_VIRTUALENV="" pip "$@"
-}
-
-syspip2() {
-	PIP_REQUIRE_VIRTUALENV="" pip2 "$@"
-}
-
-syspip3() {
-	PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
 }
 
 # cd to git root directory
@@ -113,14 +141,6 @@ mcd() {
 	mkdir "${1}"
 	cd "${1}" || {
 		echo "Could not enter directory: ${1}"
-		exit 1
-	}
-}
-
-# Jump to directory containing file
-jump() {
-	cd "$(dirname "${1}")" || {
-		echo "Cannot jump to dir containing ${1}"
 		exit 1
 	}
 }

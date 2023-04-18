@@ -1,6 +1,5 @@
 #!/usr/bin/env pwsh
 
-$FAILURE=1
 $SUCCESS=0
 
 # Fail on first error
@@ -100,7 +99,6 @@ Switch ($request)
         Exit $SUCCESS
     }
     default {
-        Write-Error "Request invalid"
-        Exit $FAILURE
+        Write-Error "Request invalid" -ErrorAction Stop
     }
 }

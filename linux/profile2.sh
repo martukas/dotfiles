@@ -1,21 +1,5 @@
 #!/bin/bash
 
-upd() {
-	apt-update-wrapper.sh "$@"
-}
-
-# Dotfiles update
-dfu() {
-	pushd ~/.dotfiles || {
-		echo "No dotfiles dir symlinked"
-		exit 1
-	}
-	git pull
-	./install.sh
-	# shellcheck disable=SC2164
-	popd
-}
-
 osinfo() {
 	uname -a
 	cat /etc/*-release
@@ -45,6 +29,7 @@ create-user() {
 	echo "---------========= ACHTUNG =========---------"
 	echo "This will create a user on this system."
 	echo "With a home directory 'n shit..."
+	echo "... with SUDO powers!!!"
 	echo " "
 	echo " You better have their public ssh key ready!"
 	echo " "
