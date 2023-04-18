@@ -1,6 +1,6 @@
 #!/usr/bin/env pwsh
 
-Import-Module "$HOME\Documents\WindowsPowerShell\GitHelpers.psm1"
+Import-Module "$HOME\.dotfiles\common\powershell\GitHelpers.psm1"
 
 function Test-Administrator
 {

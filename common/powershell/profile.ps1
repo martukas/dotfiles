@@ -1,7 +1,9 @@
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '')]
 param()
 
-. "$HOME\Documents\WindowsPowerShell\Aliases.ps1"
+. "$HOME\.dotfiles\common\powershell\Aliases.ps1"
+
+. "$HOME\.dotfiles\private\common\private_profile.ps1"
 
 $env:PYTHONIOENCODING="utf-8"
 
