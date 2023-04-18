@@ -71,8 +71,8 @@ The following aliases are available (filling gaps in progress):
 | cdgr                   | :white_check_mark: | :white_check_mark: | cd to git root                                                           |
 | mcd                    | :white_check_mark: | :white_check_mark: | make directory and cd into it                                            |
 | up `num`               | :white_check_mark: | :x:                | go up `num` directories                                                  |
-| mx                     | :white_check_mark: | :penguin:          | `make executable:` chmod 755                                             |
-| mw                     | :white_check_mark: | :penguin:          | `make writable:` chmod 644                                               |
+| mx                     | :white_check_mark: | :penguin:          | `make executable:` chmod 775                                             |
+| mw                     | :white_check_mark: | :penguin:          | `make writable:` chmod 664                                               |
 | own                    | :white_check_mark: | :penguin:          | take ownership as user:user                                              |
 
 Henceforth, you can update locally with these aliases:
