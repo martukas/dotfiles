@@ -6,8 +6,7 @@ $FAILURE=1
 $SUCCESS=0
 
 if (-Not $IsWindows) {
-    Write-Error "This script only supports Windows"
-    Exit $FAILURE
+    Write-Error "This script only supports Windows" -ErrorAction Stop
 }
 
 # Fail on first error
