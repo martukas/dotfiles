@@ -107,7 +107,7 @@ df-upgrade() {
 
 upd() {
 	if [[ $OS == "Msys" ]]; then
-		winget upgrade --all
+		winget upgrade --all "$@"
 	else
 		apt-update-wrapper.sh "$@"
 	fi

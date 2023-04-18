@@ -55,7 +55,7 @@ function upd
 {
     if ($IsWindows)
     {
-        winget upgrade --all
+        winget upgrade --all $args
     }
     else
     {
