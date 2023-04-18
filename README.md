@@ -54,7 +54,7 @@ These scripts will set up symlinks, command aliases and also run [SuperPack](htt
 
 ## Routine use
 
-The following aliases are available (filling gaps in progress):
+The following aliases have (nearly) identical behaviour in bash and Powershell, Linux and Windows.
 
 | Alias                       | Function                                                                 |
 |-----------------------------|--------------------------------------------------------------------------|
@@ -67,13 +67,13 @@ The following aliases are available (filling gaps in progress):
 | missue `123_something`      | creates and pushes branch `issue_123_something`                          |
 | issue "message"             | `commit-push` appending "; updates #123" (on an `issue_123` branch)      |
 | la                          | list directory contents, including hidden files                          |
-| :window: Test-Administrator | Return true if in elevated session                                       |
 | cdgr                        | cd to git root                                                           |
 | mcd                         | make directory and cd into it                                            |
 | up `num`                    | go up `num` directories                                                  |
 | :penguin: mx                | `make executable:` chmod 775                                             |
 | :penguin: mw                | `make writable:` chmod 664                                               |
 | :penguin: own               | take ownership as user:user                                              |
+| :window: Test-Administrator | Return true if in elevated session                                       |
 
 Henceforth, you can update locally with these aliases:
 

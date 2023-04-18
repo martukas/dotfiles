@@ -63,6 +63,21 @@ function upd
     }
 }
 
+function GoUp
+{
+    Param
+    (
+        [int]$Num = 1
+    )
+    for ($i = 1; $i -le $Num; $i++)
+    {
+        [string]$up += '../'
+    }
+    Set-Location $up
+}
+
+New-Alias up GoUp
+
 function DotfilesUpdate
 {
     Push-Location (Get-Item "$HOME\.dotfiles").Target
