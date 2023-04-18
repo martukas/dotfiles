@@ -104,13 +104,38 @@ function GitNewBranch
 # should be gnb, but Drum'n'bass sounds better
 New-Alias dnb GitNewBranch
 
-function missue
+function GitMakeIssueBranch
 {
-    #TODO check if it starts with number
     $subname = $args[0]
-    $fullname = "issue_$subname"
-    GitNewBranch $fullname
+    if ($subname -match '^([0-9]+)(.*)$') {
+        $branch_name = "issue_$subname"
+        Write-Output "Creating git branch = $branch_name"
+        GitNewBranch $branch_name
+    }
+    else {
+        Write-Error "Must provide branch sub-name beginning with ticket number!" -ErrorAction Stop
+    }
 }
+
+New-Alias missue GitMakeIssueBranch
+
+function GitCommitIssueBranch
+{
+    $branch = git symbolic-ref --short HEAD
+    if ($branch -match '^(issue_)([0-9]+)(.*)$') {
+        if ($args.Count -lt 1) {
+            Write-Error "No commit message provided!" -ErrorAction Stop
+        }
+        $NUMBER=$Matches[2]
+        $message = "$args; updates #$NUMBER"
+        GitAddAllCommitPush `"$message`"
+    }
+    else {
+        Write-Error "Not on an issue branch!" -ErrorAction Stop
+    }
+}
+
+New-Alias issue GitCommitIssueBranch
 
 function GitRemoveSubmodule($submodule_name)
 {

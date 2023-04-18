@@ -43,21 +43,27 @@ function commit-push() {
 
 #create new issue branch
 function missue() {
-	#TODO check if it starts with number
-	dnb issue_"$1"
+	SUBNAME="$1"
+	if [[ $SUBNAME =~ ^([0-9]+)(.*)$ ]]; then
+		BRANCH_NAME="issue_${SUBNAME}"
+		echo "Creating git branch = $BRANCH_NAME"
+		dnb "$BRANCH_NAME"
+	else
+		echo "Must provide branch sub-name beginning with ticket number!"
+		return 1
+	fi
 }
 
 # commit-push, appending an "updates #issue" to one-line commit message
 function issue() {
 	BRANCH="$(git symbolic-ref --short HEAD)"
-	# shellcheck disable=SC2001
-	NUMBER=$(echo "$BRANCH" | sed 's@^[^0-9]*\([0-9]\+\).*@\1@')
 
-	if [[ $BRANCH == *"issue"* ]] && [ -n "${NUMBER}" ]; then
+	if [[ $BRANCH =~ ^(issue_)([0-9]+)(.*)$ ]]; then
+		NUMBER="${BASH_REMATCH[2]}"
 		message="$*; updates #$NUMBER"
 		commit-push "${message}"
 	else
-		echo "not an issue branch!"
+		echo "Not on an issue branch!"
 		return 1
 	fi
 }
