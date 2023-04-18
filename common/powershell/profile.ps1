@@ -128,7 +128,7 @@ function GitCommitIssueBranch
         }
         $NUMBER=$Matches[2]
         $message = "$args; updates #$NUMBER"
-        GitAddAllCommitPush `"$message`"
+        GitAddAllCommitPush $message
     }
     else {
         Write-Error "Not on an issue branch!" -ErrorAction Stop
@@ -151,7 +151,7 @@ New-Alias git-rm-submodule GitRemoveSubmodule
 
 function GitAddAllCommitPush {
     git add -A
-    git commit -m `"$args`"
+    git commit -m $args
     git push
 }
 
