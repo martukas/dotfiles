@@ -71,6 +71,23 @@ function git-rm-submodule() {
 	git rm -f "$1"
 }
 
+# Dotfiles update
+dfu() {
+	pushd ~/.dotfiles || {
+		echo "No dotfiles dir symlinked"
+		exit 1
+	}
+	git pull
+	OS="$(uname -o)"
+	if [[ $OS == "Msys" ]]; then
+		./install.ps1
+	else
+		./install.sh
+	fi
+	# shellcheck disable=SC2164
+	popd
+}
+
 # Dotfiles upgrade submodules
 df-upgrade() {
 	pushd ~/.dotfiles || {
@@ -86,6 +103,14 @@ df-upgrade() {
 	git submodule update --remote linux/gdb/qt5printers
 	# shellcheck disable=SC2164
 	popd
+}
+
+upd() {
+	if [[ $OS == "Msys" ]]; then
+		winget upgrade --all
+	else
+		apt-update-wrapper.sh "$@"
+	fi
 }
 
 # Use pip without requiring virtualenv

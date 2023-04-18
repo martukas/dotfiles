@@ -1,21 +1,5 @@
 #!/bin/bash
 
-upd() {
-	apt-update-wrapper.sh "$@"
-}
-
-# Dotfiles update
-dfu() {
-	pushd ~/.dotfiles || {
-		echo "No dotfiles dir symlinked"
-		exit 1
-	}
-	git pull
-	./install.sh
-	# shellcheck disable=SC2164
-	popd
-}
-
 osinfo() {
 	uname -a
 	cat /etc/*-release

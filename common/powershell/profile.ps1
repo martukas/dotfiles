@@ -53,16 +53,32 @@ function mcd
 
 function upd
 {
-    winget upgrade --all
+    if ($IsWindows)
+    {
+        winget upgrade --all
+    }
+    else
+    {
+        ~\.dotfiles\linux\bin\apt-update-wrapper.sh $args
+    }
 }
 
-function dfu
+function DotfilesUpdate
 {
     Push-Location (Get-Item "$HOME\.dotfiles").Target
     git pull
-    .\install.ps1
+    if ($IsWindows)
+    {
+        .\install.ps1
+    }
+    else
+    {
+        .\install.sh
+    }
     Pop-Location
 }
+
+New-Alias dfu DotfilesUpdate
 
 # Dotfiles upgrade submodules
 function DotfilesUpgrade() {
