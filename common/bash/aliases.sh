@@ -59,6 +59,10 @@ function issue() {
 	BRANCH="$(git symbolic-ref --short HEAD)"
 
 	if [[ $BRANCH =~ ^(issue_)([0-9]+)(.*)$ ]]; then
+		if (($# < 1)); then
+			echo "No commit message provided!"
+			return 1
+		fi
 		NUMBER="${BASH_REMATCH[2]}"
 		message="$*; updates #$NUMBER"
 		commit-push "${message}"
