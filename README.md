@@ -115,7 +115,6 @@ Henceforth, you can update locally with these aliases:
   * google drive
   * configure night light
   * optional sshd and remote-desktop config
-  * issue-related git aliases for pwsh
 * Configure rustup shell completion [here](https://rust-lang.github.io/rustup/installation/index.html)
 * Try out [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
 * Set up conditional GPG things in `.gitconfig_local` or some such
