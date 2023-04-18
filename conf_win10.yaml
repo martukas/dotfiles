@@ -30,3 +30,7 @@
       path: common/powershell/profile.ps1
     ~/Documents/WindowsPowerShell/blue-owl.omp.json:
       path: common/powershell/blue-owl.omp.json
+    ~/Documents/WindowsPowerShell/Aliases.ps1:
+      path: common/powershell/Aliases.ps1
+    ~/Documents/WindowsPowerShell/GitHelpers.psm1:
+      path: common/powershell/GitHelpers.psm1
