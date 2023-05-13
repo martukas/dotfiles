@@ -93,9 +93,7 @@ Henceforth, you can update locally with these aliases:
 
 <details>
 <summary>Roadmap</summary>
-* thefuck in venv
 * Nordvpn and openvpn
-* 
 * install ohmyposh for ps in linux
 * include .profile?
 * install [conan](https://docs.conan.io/2/installation.html)
@@ -104,6 +102,7 @@ Henceforth, you can update locally with these aliases:
 * Foreign keyboards
 * Linux:
   * Xubuntu dark mode
+  * disable screensaver
   * change terminal name via ssh
   * NPM
   * synaptic

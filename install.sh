@@ -35,6 +35,7 @@ git submodule update --init --recursive "${DOTBOT_DIR}"
 git submodule update --init --recursive superpack
 git submodule update --init --recursive private
 git submodule update --init --recursive common/bash/plugins/dircolors-solarized
+git submodule update --init --recursive common/bash-git-prompt
 
 git submodule update
 
@@ -42,10 +43,9 @@ if [[ $OS == "GNU/Linux" ]]; then
 	read -rp "[Linux] Do you want to run one-time installation scripts? " answer
 	case ${answer:0:1} in
 	y | Y)
-		sudo apt --yes install aptitude snapd silversearcher-ag
-		sudo apt -y purge parole
-		sudo python -m pip install --upgrade pip
-		python -m pip install --upgrade pipenv thefuck pre-commit
+		sudo apt --yes install aptitude snapd silversearcher-ag pipenv pre-commit thefuck
+		sudo apt --yes purge parole
+		#/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 		pushd superpack
 		pipenv install
