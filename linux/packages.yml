@@ -57,6 +57,7 @@
       descr: Flameshot screenshot utility
     - id: keepass2
       descr: Keepass password manager
+      install: "../linux/packages.sh install-keepass-plugins"
     - id: viewnior
       descr: Viewnior minimal image viewer
 - defaults:

@@ -93,6 +93,15 @@ function install_insync() {
 	sudo apt install insync
 }
 
+function install_keepass_plugins() {
+	pushd /usr/lib/keepass2/Plugins
+	sudo wget https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.dll
+	sudo wget https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.plgx
+	sudo mkdir DarkenKP
+	pushd DarkenKP
+	sudo wget https://github.com/BradyThe/DarkenKP/releases/latest/download/KeeTheme.ini
+}
+
 # Script will run in its own path no matter where it's called from.
 pushd "$(dirname "$0")"
 
@@ -144,6 +153,10 @@ elif [ "$1" == "check-insync" ]; then
 	else
 		exit $FAILURE
 	fi
+
+elif [ "$1" == "install-keepass-plugins" ]; then
+	install_keepass_plugins
+	prompt_exit
 
 else
 	echo "ERROR: Bad command or insufficient parameters!"

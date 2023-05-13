@@ -98,7 +98,6 @@ Henceforth, you can update locally with these aliases:
 * include .profile?
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
-* Dark mode for Keepass [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
 * Foreign keyboards
 * Linux:
   * set default screenshot app
@@ -111,6 +110,7 @@ Henceforth, you can update locally with these aliases:
   * circleci
   * libreoffice
 * Windows:
+  * Dark mode for Keepass
   * steam
   * dotnet
   * jdk
