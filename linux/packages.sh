@@ -8,6 +8,11 @@ SUCCESS=0
 set -e
 set -o pipefail
 
+#silent pushd
+pushd() {
+	command pushd "$@" >/dev/null
+}
+
 function prompt_exit() {
 	echo " "
 	read -n1 -srp $'Press any key to continue...\n' _
@@ -78,6 +83,16 @@ function install_platformio() {
 	sudo service udev restart
 }
 
+function install_insync() {
+	# see https://www.insynchq.com/downloads/linux
+	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ACCAF35C
+	# shellcheck disable=SC1091
+	source /etc/lsb-release
+	echo "deb http://apt.insync.io/ubuntu $DISTRIB_CODENAME non-free contrib" | sudo tee /etc/apt/sources.list.d/insync.list
+	sudo apt update
+	sudo apt install insync
+}
+
 # Script will run in its own path no matter where it's called from.
 pushd "$(dirname "$0")"
 
@@ -117,6 +132,18 @@ elif [ "$1" == "check-nvm" ]; then
 elif [ "$1" == "install-platformio" ]; then
 	install_platformio
 	prompt_exit
+
+elif [ "$1" == "install-insync" ]; then
+	install_insync
+	prompt_exit
+
+elif [ "$1" == "check-insync" ]; then
+	if [[ $(command -v insync) ]]; then
+		echo "insync present"
+		exit $SUCCESS
+	else
+		exit $FAILURE
+	fi
 
 else
 	echo "ERROR: Bad command or insufficient parameters!"

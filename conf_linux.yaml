@@ -48,6 +48,16 @@
       stdin: false
       stdout: true
       stderr: false
+- shell:
+    - description: "[Linux] Xfce theme settings"
+      command: |
+        if [ -n "$XDG_CURRENT_DESKTOP" ]; then
+          xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
+        fi
+      quiet: true
+      stdin: false
+      stdout: true
+      stderr: false
 
 # code style ESS projects
 - defaults:

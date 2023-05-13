@@ -85,12 +85,12 @@ Henceforth, you can update locally with these aliases:
 
 ## Manual installation required
 
-* [InSync](https://www.insynchq.com/downloads/linux)
 * [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
 * [CLion + PlatformIO integration](https://docs.platformio.org/en/latest/integration/ide/clion.html)
 
 ## Future improvements
 
+<!-- markdownlint-disable no-space-in-emphasis -->
 <details>
 <summary>Roadmap</summary>
 * Nordvpn and openvpn
@@ -101,8 +101,9 @@ Henceforth, you can update locally with these aliases:
 * Dark mode for Keepass [1](https://github.com/xatupal/KeeTheme) [2](https://github.com/BradyThe/DarkenKP)
 * Foreign keyboards
 * Linux:
-  * Xubuntu dark mode
-  * disable screensaver
+  * set default screenshot app
+  * xfce settings
+  * [Jetbrains Toolbox](https://www.jetbrains.com/help/idea/installation-guide.html#toolbox)
   * change terminal name via ssh
   * NPM
   * synaptic
@@ -121,5 +122,5 @@ Henceforth, you can update locally with these aliases:
 * Set up conditional GPG things in `.gitconfig_local` or some such
 * Adopt <https://github.com/pop-os/shell> ?
 * Migrate to <https://www.chezmoi.io/> ?
-
 </details>
+<!-- markdownlint-enable no-space-in-emphasis -->

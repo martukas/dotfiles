@@ -14,7 +14,7 @@
       install: "../linux/packages.sh install-logiops"
     - id: nerdfonts
       descr: Nerdfonts for fancy terminal shit
-      category: dev-admin
+      category: GUI
       check: ls ~/.local/share/fonts | grep Nerd
       install: "../linux/packages.sh install-nerdfonts"
     - id: rustup
@@ -37,6 +37,11 @@
       descr: Microsoft PowerShell
       check: "snap list | grep powershell"
       install: "../linux/packages.sh install-powershell"
+    - id: insync
+      category: GUI
+      descr: InSync for Google Drive
+      check: "../linux/packages.sh check-insync"
+      install: "../linux/packages.sh install-insync"
 
 - defaults:
     type: apt
