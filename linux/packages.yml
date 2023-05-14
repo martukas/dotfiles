@@ -47,6 +47,11 @@
       descr: JetBrains Toolbox
       check: "test -f ~/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox && echo exists"
       install: "../linux/packages.sh install-jetbrains"
+    - id: brew
+      category: dev-admin
+      descr: Homebrew package manager
+      check: "command -v brew"
+      install: "../linux/packages.sh install-brew"
 
 - defaults:
     type: apt

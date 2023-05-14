@@ -86,8 +86,9 @@
     </property>
     <property name="plugin-10" type="string" value="clock">
       <property name="digital-format" type="string" value=" %d %b, %H:%M "/>
-      <property name="digital-time-format" type="string" value=" %a %d %b, %H:%M "/>
+      <property name="digital-time-format" type="string" value="%d %b, %R %a"/>
       <property name="digital-layout" type="uint" value="3"/>
+      <property name="digital-time-font" type="string" value="Sans 9"/>
     </property>
     <property name="plugin-11" type="string" value="xkb"/>
     <property name="plugin-12" type="string" value="weather">

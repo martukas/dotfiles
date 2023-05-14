@@ -133,6 +133,10 @@ function install_jetbrains() {
 	echo -e "\e[32mDone.\e[39m"
 }
 
+function install_brew() {
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
+
 # Script will run in its own path no matter where it's called from.
 pushd "$(dirname "$0")"
 
@@ -191,6 +195,10 @@ elif [ "$1" == "install-keepass-plugins" ]; then
 
 elif [ "$1" == "install-jetbrains" ]; then
 	install_jetbrains
+	prompt_exit
+
+elif [ "$1" == "install-brew" ]; then
+	install_brew
 	prompt_exit
 
 else

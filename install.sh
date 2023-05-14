@@ -45,7 +45,6 @@ if [[ $OS == "GNU/Linux" ]]; then
 	y | Y)
 		sudo apt --yes install aptitude snapd silversearcher-ag pipenv pre-commit thefuck
 		sudo apt --yes purge parole
-		#/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 		pushd superpack
 		pipenv install
@@ -55,6 +54,8 @@ if [[ $OS == "GNU/Linux" ]]; then
 		read -rp "[Linux] Do you want to install default desktop config? " answer
 		case ${answer:0:1} in
 		y | Y)
+			echo "Left win key as toggle"
+			echo -option altwin:meta_win >>~/.Xkbmap
 			echo "Setting xfce dark theme"
 			xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
 			echo "Copying various xfce settings"

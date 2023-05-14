@@ -37,6 +37,7 @@ show-hide='F11'
 [keybindings/local]
 close-tab='<Primary><Alt><Super>Delete'
 new-tab='<Primary><Alt><Super>b'
+rename-current-tab='<Primary><Shift>r'
 toggle-fullscreen='disabled'
 
 [style/background]
