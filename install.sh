@@ -51,6 +51,20 @@ if [[ $OS == "GNU/Linux" ]]; then
 		pipenv install
 		pipenv run python ./superpack/superpack.py ../linux/packages.yml
 		popd
+
+		read -rp "[Linux] Do you want to install default desktop config? " answer
+		case ${answer:0:1} in
+		y | Y)
+			echo "Setting xfce dark theme"
+			xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
+			echo "Copying various xfce settings"
+			cp -ir ./linux/config/xfce4 ~/.config/xfce4
+			echo "Enforcing guake settings"
+			dconf load /apps/guake/ <linux/dconf-guake-dump.txt
+			;;
+		*) ;;
+		esac
+
 		read -n1 -srp $'Press any key to continue with dotbot config...\n' _
 		;;
 	*) ;;
