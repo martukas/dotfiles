@@ -4,6 +4,7 @@ repos:
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
+        exclude: 'whiskermenu-1.rc'
       - id: trailing-whitespace
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
@@ -33,6 +34,13 @@ repos:
         description: Dumps Guake settings from dconf to file in repo (Linux only)
         language: script
         entry: ./linux/dconf-guake-hook.py
+        pass_filenames: false
+        always_run: true
+      - id: save-xfce-settings
+        name: save-xfce-settings
+        description: Copies xfce4 settings to repo
+        language: script
+        entry: ./linux/xfce-settings-hook.py
         pass_filenames: false
         always_run: true
       - id: PSScriptAnalyzer

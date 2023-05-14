@@ -79,3 +79,4 @@ name=Search for files
 pattern=-
 command=catfish --path=~ --start %s
 regex=false
+
