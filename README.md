@@ -62,6 +62,7 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 | df-upgrade                  | **dotfiles upgrade:** upgrades git sub-modules in this repo              |
 | dnb `new_branch_name`       | **git new branch:** creates and pushes new branch                        |
 | commmit-push "message"      | add everything, commit with "message", push                              |
+| commmit-push-bypass-hooks   | same as above, but skips pre-commit hooks                                |
 | git-rm-submodule            | actually removes a git sub-module                                        |
 | upd                         | update all (`apt` and `snap`) or `winget` packages, cleanup              |
 | missue `123_something`      | creates and pushes branch `issue_123_something`                          |
@@ -98,10 +99,7 @@ Henceforth, you can update locally with these aliases:
 * include .profile?
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
-* Foreign keyboards
 * Linux:
-  * set default screenshot app
-  * xfce settings
   * [Jetbrains Toolbox](https://www.jetbrains.com/help/idea/installation-guide.html#toolbox)
   * change terminal name via ssh
   * NPM
@@ -110,6 +108,7 @@ Henceforth, you can update locally with these aliases:
   * circleci
   * libreoffice
 * Windows:
+  * Foreign keyboards
   * Dark mode for Keepass
   * steam
   * dotnet
@@ -122,5 +121,6 @@ Henceforth, you can update locally with these aliases:
 * Set up conditional GPG things in `.gitconfig_local` or some such
 * Adopt <https://github.com/pop-os/shell> ?
 * Migrate to <https://www.chezmoi.io/> ?
+* Adopt <https://github.com/mehedirm6244/My_XFCE_dotties/tree/Everblush> ?
 </details>
 <!-- markdownlint-enable no-space-in-emphasis -->

@@ -30,6 +30,12 @@ function GitAddAllCommitPush {
     git push
 }
 
+function GitAddAllCommitPushBypassHooks {
+    git add -A
+    git commit --no-verify -m $args
+    git push
+}
+
 function GitMakeIssueBranch
 {
     $subname = $args[0]

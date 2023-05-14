@@ -41,6 +41,13 @@ function commit-push() {
 	git push
 }
 
+function commit-push-bypass-hooks() {
+	message="$*"
+	git add -A
+	git commit --no-verify -m "${message}"
+	git push
+}
+
 #create new issue branch
 function missue() {
 	SUBNAME="$1"

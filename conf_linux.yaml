@@ -38,10 +38,6 @@
       path: linux/config/redshift.conf
     ~/.config/mimeapps.list:
       path: linux/config/mimeapps.list
-    ~/.config/xfce4/xfconf/xfce-perchannel-xml/keyboard-layout.xml:
-      path: linux/config/xfce/keyboard-layout.xml
-    ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml:
-      path: linux/config/xfce/xfce4-keyboard-shortcuts.xml
 - shell:
     - description: "[Linux] Guake config"
       command: |

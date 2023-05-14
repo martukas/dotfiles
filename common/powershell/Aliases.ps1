@@ -106,3 +106,4 @@ New-Alias missue GitMakeIssueBranch
 New-Alias issue GitCommitIssueBranch
 New-Alias git-rm-submodule GitRemoveSubmodule
 New-Alias commit-push GitAddAllCommitPush
+New-Alias commit-push-bypass-hooks GitAddAllCommitPushBypassHooks
