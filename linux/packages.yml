@@ -42,6 +42,11 @@
       descr: InSync for Google Drive
       check: "../linux/packages.sh check-insync"
       install: "../linux/packages.sh install-insync"
+    - id: jetbrains
+      category: GUI
+      descr: JetBrains Toolbox
+      check: "test -f ~/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox && echo exists"
+      install: "../linux/packages.sh install-jetbrains"
 
 - defaults:
     type: apt

@@ -100,7 +100,7 @@ Henceforth, you can update locally with these aliases:
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
 * Linux:
-  * [Jetbrains Toolbox](https://www.jetbrains.com/help/idea/installation-guide.html#toolbox)
+  * Write xfce config
   * change terminal name via ssh
   * NPM
   * synaptic
