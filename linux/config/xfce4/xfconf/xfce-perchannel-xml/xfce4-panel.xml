@@ -61,6 +61,7 @@
         <value type="string" value="nm-applet"/>
       </property>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="slack"/>
         <value type="string" value="jetbrains-toolbox"/>
         <value type="string" value="guake"/>
       </property>

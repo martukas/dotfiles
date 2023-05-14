@@ -30,6 +30,7 @@ function install_logiops() {
 
 function install_powershell() {
 	snap install powershell --classic
+	brew install jandedobbeleer/oh-my-posh/oh-my-posh
 	../win10/packages.ps1 default-modules
 }
 

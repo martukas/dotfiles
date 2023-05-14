@@ -55,9 +55,15 @@ elif [ "$1" == "f" ]; then
 elif [ "$1" == "a" ]; then
 	sudo apt update
 	sudo apt upgrade
-	sudo snap refresh
 	sudo apt autoremove
 	sudo apt autoclean
+
+	sudo snap refresh
+
+	if [ -d /home/linuxbrew ]; then
+		brew update
+		brew upgrade
+	fi
 	exit $SUCCESS
 
 ################

@@ -95,7 +95,6 @@ Henceforth, you can update locally with these aliases:
 <details>
 <summary>Roadmap</summary>
 * Nordvpn and openvpn
-* install ohmyposh for ps in linux
 * include .profile?
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
@@ -105,7 +104,6 @@ Henceforth, you can update locally with these aliases:
   * synaptic
   * baobab
   * circleci
-  * libreoffice
 * Windows:
   * Foreign keyboards
   * Dark mode for Keepass
