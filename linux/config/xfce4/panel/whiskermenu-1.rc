@@ -1,5 +1,5 @@
 favorites=xfce4-file-manager.desktop,xfce4-web-browser.desktop,org.gnome.Software.desktop,xfce4-terminal-emulator.desktop,xfhelp4.desktop
-recent=xfce4-file-manager.desktop,slack_slack.desktop,guake.desktop,xfce-keyboard-settings.desktop,xfce-wmtweaks-settings.desktop,xfce4-terminal-emulator.desktop,jetbrains-toolbox.desktop,xfce4-screensaver-preferences.desktop,xfce-settings-manager.desktop,xfce4-power-manager-settings.desktop
+recent=xfce4-file-manager.desktop,jetbrains-toolbox.desktop,xfce4-web-browser.desktop,signal-desktop_signal-desktop.desktop,telegram-desktop_telegram-desktop.desktop,slack_slack.desktop,pavucontrol.desktop,guake.desktop,xfce-keyboard-settings.desktop,xfce-wmtweaks-settings.desktop
 button-icon=xubuntu-logo-menu
 button-single-row=false
 show-button-title=false

@@ -138,6 +138,11 @@ function install_brew() {
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 }
 
+function install_nordvpn() {
+	sh <(curl -sSf https://downloads.nordcdn.com/apps/linux/install.sh)
+	sudo usermod -aG nordvpn "$USER"
+}
+
 # Script will run in its own path no matter where it's called from.
 pushd "$(dirname "$0")"
 
@@ -200,6 +205,10 @@ elif [ "$1" == "install-jetbrains" ]; then
 
 elif [ "$1" == "install-brew" ]; then
 	install_brew
+	prompt_exit
+
+elif [ "$1" == "install-nordvpn" ]; then
+	install_nordvpn
 	prompt_exit
 
 else

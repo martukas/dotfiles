@@ -51,6 +51,7 @@
       <property name="symbolic-icons" type="bool" value="true"/>
       <property name="icon-size" type="int" value="0"/>
       <property name="known-items" type="array">
+        <value type="string" value="TelegramDesktop"/>
         <value type="string" value="Insync"/>
         <value type="string" value="chrome_status_icon_1"/>
         <value type="string" value="whatsdesk1"/>
@@ -82,7 +83,7 @@
       <property name="enable-mpris" type="bool" value="true"/>
       <property name="enable-wnck" type="bool" value="true"/>
       <property name="mixer-command" type="string" value="pavucontrol"/>
-      <property name="mpris-players" type="string" value="firefox.instance6946;parole;rhythmbox"/>
+      <property name="mpris-players" type="string" value="firefox.instance3068;firefox.instance6946;parole;rhythmbox"/>
       <property name="show-notifications" type="bool" value="true"/>
     </property>
     <property name="plugin-10" type="string" value="clock">

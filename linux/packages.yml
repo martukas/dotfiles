@@ -52,6 +52,11 @@
       descr: Homebrew package manager
       check: "command -v brew"
       install: "../linux/packages.sh install-brew"
+    - id: nordvpn
+      category: dev-admin
+      descr: NordVPN
+      check: "command -v nordvpn"
+      install: "../linux/packages.sh install-nordvpn"
 
 - defaults:
     type: apt
