@@ -1,7 +1,7 @@
 [Desktop Entry]
 X-SnapInstanceName=signal-desktop
 Name=Signal
-Exec=env BAMF_DESKTOP_FILE_HINT=/var/lib/snapd/desktop/applications/signal-desktop_signal-desktop.desktop /snap/bin/signal-desktop --no-sandbox %U
+Exec=env BAMF_DESKTOP_FILE_HINT=/var/lib/snapd/desktop/applications/signal-desktop_signal-desktop.desktop /snap/bin/signal-desktop --start-in-tray --no-sandbox %U
 Terminal=false
 Type=Application
 Icon=/snap/signal-desktop/495/meta/gui/icon.png
