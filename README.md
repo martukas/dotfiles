@@ -94,7 +94,6 @@ Henceforth, you can update locally with these aliases:
 <!-- markdownlint-disable no-space-in-emphasis -->
 <details>
 <summary>Roadmap</summary>
-* Nordvpn and openvpn
 * include .profile?
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
@@ -107,6 +106,7 @@ Henceforth, you can update locally with these aliases:
 * Windows:
   * Foreign keyboards
   * Dark mode for Keepass
+  * Nordvpn
   * steam
   * dotnet
   * jdk
