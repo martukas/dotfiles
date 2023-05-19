@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <channel name="xfce4-panel" version="1.0">
-  <property name="panels" type="array">
-    <value type="int" value="1"/>
-    <property name="panel-1" type="empty">
+  <property name="panels" type="uint" value="1">
+    <property name="panel-0" type="empty">
       <property name="position" type="string" value="p=6;x=0;y=0"/>
       <property name="length" type="uint" value="100"/>
       <property name="position-locked" type="bool" value="true"/>
@@ -14,8 +13,6 @@
         <value type="int" value="4"/>
         <value type="int" value="5"/>
         <value type="int" value="6"/>
-        <value type="int" value="7"/>
-        <value type="int" value="8"/>
         <value type="int" value="9"/>
         <value type="int" value="10"/>
         <value type="int" value="11"/>
@@ -45,89 +42,43 @@
       <property name="expand" type="bool" value="true"/>
     </property>
     <property name="plugin-5" type="string" value="systray">
-      <property name="menu-is-primary" type="bool" value="true"/>
       <property name="show-frame" type="bool" value="false"/>
       <property name="square-icons" type="bool" value="true"/>
       <property name="size-max" type="uint" value="22"/>
-      <property name="symbolic-icons" type="bool" value="true"/>
-      <property name="icon-size" type="int" value="0"/>
+      <property name="known-legacy-items" type="array">
+        <value type="string" value="redshift-gtk"/>
+        <value type="string" value="blueman-tray"/>
+        <value type="string" value="update-notifier"/>
+        <value type="string" value="networkmanager applet"/>
+        <value type="string" value="guake"/>
+        <value type="string" value="ibus panel"/>
+      </property>
       <property name="known-items" type="array">
-        <value type="string" value="TelegramDesktop"/>
+        <value type="string" value="zoom"/>
+        <value type="string" value="toolbox"/>
         <value type="string" value="Insync"/>
-        <value type="string" value="chrome_status_icon_1"/>
-        <value type="string" value="whatsdesk1"/>
         <value type="string" value="flameshot"/>
         <value type="string" value="redshift"/>
-        <value type="string" value="toolbox"/>
+        <value type="string" value="chrome_status_icon_1"/>
         <value type="string" value="blueman"/>
         <value type="string" value="nm-applet"/>
       </property>
-      <property name="known-legacy-items" type="array">
-        <value type="string" value="slack"/>
-        <value type="string" value="jetbrains-toolbox"/>
-        <value type="string" value="guake"/>
-      </property>
     </property>
     <property name="plugin-6" type="string" value="notification-plugin"/>
-    <property name="plugin-7" type="string" value="indicator">
-      <property name="blacklist" type="array">
-        <value type="string" value="libappmenu.so"/>
-      </property>
-      <property name="square-icons" type="bool" value="true"/>
-      <property name="known-indicators" type="array">
-        <value type="string" value="libayatana-application.so"/>
-      </property>
-    </property>
-    <property name="plugin-8" type="string" value="power-manager-plugin"/>
-    <property name="plugin-9" type="string" value="pulseaudio">
+    <property name="plugin-9" type="string" value="power-manager-plugin"/>
+    <property name="plugin-10" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
       <property name="enable-mpris" type="bool" value="true"/>
-      <property name="enable-wnck" type="bool" value="true"/>
       <property name="mixer-command" type="string" value="pavucontrol"/>
-      <property name="mpris-players" type="string" value="firefox.instance26704;firefox.instance3049;firefox.instance3068;firefox.instance3069;firefox.instance3089;firefox.instance3299;firefox.instance53466;firefox.instance6946;parole;rhythmbox"/>
+      <property name="mpris-players" type="string" value="parole"/>
       <property name="show-notifications" type="bool" value="true"/>
     </property>
-    <property name="plugin-10" type="string" value="clock">
-      <property name="digital-format" type="string" value=" %d %b, %H:%M "/>
-      <property name="digital-time-format" type="string" value="%d %b, %R %a"/>
-      <property name="digital-layout" type="uint" value="3"/>
-      <property name="digital-time-font" type="string" value="Sans 9"/>
+    <property name="plugin-11" type="string" value="separator">
+      <property name="style" type="uint" value="0"/>
+      <property name="expand" type="bool" value="false"/>
     </property>
-    <property name="plugin-11" type="string" value="xkb"/>
-    <property name="plugin-12" type="string" value="weather">
-      <property name="location" type="empty">
-        <property name="name" type="string" value="Oakland, California"/>
-        <property name="latitude" type="string" value="37.848700"/>
-        <property name="longitude" type="string" value="-122.220900"/>
-      </property>
-      <property name="msl" type="int" value="238"/>
-      <property name="timezone" type="string" value="America/Los_Angeles"/>
-      <property name="offset" type="string" value="-07:00"/>
-      <property name="cache-max-age" type="int" value="172800"/>
-      <property name="power-saving" type="bool" value="true"/>
-      <property name="units" type="empty">
-        <property name="temperature" type="int" value="0"/>
-        <property name="pressure" type="int" value="2"/>
-        <property name="windspeed" type="int" value="1"/>
-        <property name="precipitation" type="int" value="1"/>
-        <property name="altitude" type="int" value="1"/>
-        <property name="apparent-temperature" type="int" value="0"/>
-      </property>
-      <property name="round" type="bool" value="true"/>
-      <property name="single-row" type="bool" value="true"/>
-      <property name="tooltip-style" type="int" value="1"/>
-      <property name="forecast" type="empty">
-        <property name="layout" type="int" value="1"/>
-        <property name="days" type="int" value="5"/>
-      </property>
-      <property name="theme-dir" type="string" value="/usr/share/xfce4/weather/icons/liquid-dark"/>
-      <property name="scrollbox" type="empty">
-        <property name="show" type="bool" value="true"/>
-        <property name="animate" type="bool" value="true"/>
-        <property name="lines" type="int" value="1"/>
-        <property name="color" type="string" value="rgba(0,0,0,0)"/>
-        <property name="use-color" type="bool" value="false"/>
-      </property>
+    <property name="plugin-12" type="string" value="clock">
+      <property name="digital-format" type="string" value="%d %b, %H:%M"/>
     </property>
   </property>
   <property name="configver" type="int" value="2"/>

@@ -1,5 +1,5 @@
-favorites=xfce4-file-manager.desktop,xfce4-web-browser.desktop,org.gnome.Software.desktop,xfce4-terminal-emulator.desktop,xfhelp4.desktop
-recent=jetbrains-toolbox.desktop,firefox_firefox.desktop,xfce4-file-manager.desktop,xfce4-web-browser.desktop,signal-desktop_signal-desktop.desktop,panel-preferences.desktop,xfce-settings-manager.desktop,xfce4-taskmanager.desktop,telegram-desktop_telegram-desktop.desktop,slack_slack.desktop
+favorites=org.gnome.Software.desktop,xfhelp4.desktop,thunar.desktop
+recent=thunar.desktop,xfce4-screensaver-preferences.desktop,xfce-mouse-settings.desktop,zoom-client_zoom-client.desktop,xfce4-terminal-emulator.desktop,org.gnome.meld.desktop,firefox_firefox.desktop,org.gnome.Nautilus.desktop,xfce-display-settings.desktop,google-chrome.desktop
 button-icon=xubuntu-logo-menu
 button-single-row=false
 show-button-title=false
@@ -18,7 +18,7 @@ recent-items-max=10
 favorites-in-recent=true
 position-search-alternate=true
 position-commands-alternate=false
-position-categories-alternate=false
+position-categories-alternate=true
 position-categories-horizontal=false
 stay-on-focus-out=false
 profile-shape=0

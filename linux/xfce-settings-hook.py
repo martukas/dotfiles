@@ -37,7 +37,6 @@ if __name__ == "__main__":
             changed = copy_file_and_diff(machine / "panel", repo / "panel", "whiskermenu-1.rc") or changed
             machine2 = machine / "xfconf/xfce-perchannel-xml"
             repo2 = repo / "xfconf/xfce-perchannel-xml"
-            changed = copy_file_and_diff(machine2, repo2, "keyboard-layout.xml") or changed
             changed = copy_file_and_diff(machine2, repo2, "xfce4-keyboard-shortcuts.xml") or changed
             changed = copy_file_and_diff(machine2, repo2, "xfce4-panel.xml") or changed
             changed = copy_file_and_diff(machine2, repo2, "xfce4-power-manager.xml") or changed
