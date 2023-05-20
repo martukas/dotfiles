@@ -38,6 +38,7 @@
     <property name="plugin-3" type="string" value="tasklist">
       <property name="show-handle" type="bool" value="false"/>
       <property name="flat-buttons" type="bool" value="true"/>
+      <property name="sort-order" type="uint" value="4"/>
     </property>
     <property name="plugin-4" type="string" value="separator">
       <property name="style" type="uint" value="0"/>
@@ -83,7 +84,7 @@
       <property name="enable-mpris" type="bool" value="true"/>
       <property name="enable-wnck" type="bool" value="true"/>
       <property name="mixer-command" type="string" value="pavucontrol"/>
-      <property name="mpris-players" type="string" value="firefox.instance3068;firefox.instance6946;parole;rhythmbox"/>
+      <property name="mpris-players" type="string" value="firefox.instance26704;firefox.instance3049;firefox.instance3068;firefox.instance3069;firefox.instance3089;firefox.instance3299;firefox.instance53466;firefox.instance6946;parole;rhythmbox"/>
       <property name="show-notifications" type="bool" value="true"/>
     </property>
     <property name="plugin-10" type="string" value="clock">

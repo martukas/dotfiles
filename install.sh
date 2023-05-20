@@ -43,8 +43,19 @@ if [[ $OS == "GNU/Linux" ]]; then
 	read -rp "[Linux] Do you want to run one-time installation scripts? " answer
 	case ${answer:0:1} in
 	y | Y)
-		sudo apt --yes install aptitude snapd silversearcher-ag pipenv pre-commit thefuck
-		sudo apt --yes purge parole
+		sudo apt --yes install aptitude snapd silversearcher-ag
+		sudo apt -y purge parole
+
+		# shellcheck disable=SC1091
+		. /etc/lsb-release
+		echo "DISTRIB_RELEASE = $DISTRIB_RELEASE"
+		if [[ $DISTRIB_RELEASE == "23.04" ]]; then
+			echo "[Ubuntu 23.04] installing global python packages via apt"
+			sudo apt --yes install pipenv pre-commit thefuck
+		else
+			sudo python -m pip install --upgrade pip
+			python -m pip install --upgrade pipenv thefuck pre-commit
+		fi
 
 		pushd superpack
 		pipenv install
