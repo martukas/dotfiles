@@ -143,6 +143,10 @@ function install_nordvpn() {
 	sudo usermod -aG nordvpn "$USER"
 }
 
+function install_docker() {
+	sudo usermod -aG docker "${USER}"
+}
+
 # Script will run in its own path no matter where it's called from.
 pushd "$(dirname "$0")"
 
@@ -209,6 +213,11 @@ elif [ "$1" == "install-brew" ]; then
 
 elif [ "$1" == "install-nordvpn" ]; then
 	install_nordvpn
+	prompt_exit
+
+elif [ "$1" == "install-docker" ]; then
+	install_docker
+	echo "CAUTION: You should log in anew for docker to work without sudo"
 	prompt_exit
 
 else

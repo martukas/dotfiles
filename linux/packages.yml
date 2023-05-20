@@ -91,6 +91,7 @@
       descr: Glogg log explorer
     - id: docker.io
       descr: Docker container framework
+      install: "../linux/packages.sh install-docker"
     - id: dotnet-sdk-7.0
       descr: Microsoft .NET SDK
     - id: remmina
