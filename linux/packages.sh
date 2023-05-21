@@ -148,20 +148,23 @@ function install_docker() {
 }
 
 function check_bing_wallpaper() {
-  cron_entry="* */6 * * * bing-wallpaper >/dev/null 2>&1"
-  if crontab -lu $USER | fgrep "$cron_entry"; then
-    exit $SUCCESS
-  else
-    exit $FAILURE
-  fi
+	cron_entry="* */6 * * * ~/.dotfiles/linux/bin/bing-wallpaper >/dev/null 2>&1"
+	if crontab -lu "$USER" | grep -F "$cron_entry"; then
+		exit $SUCCESS
+	else
+		exit $FAILURE
+	fi
 }
 
 function install_bing_wallpaper() {
-  cron_entry="* */6 * * * bing-wallpaper >/dev/null 2>&1"
-  if ! crontab -lu "$USER" | fgrep "$cron_entry"; then
-      echo "Creating CRON entry: $cron_entry"
-      { crontab -lu "$USER"; echo "$cron_entry"; } | crontab -u "$USER" -
-  fi
+	cron_entry="* */6 * * * ~/.dotfiles/linux/bin/bing-wallpaper >/dev/null 2>&1"
+	if ! crontab -lu "$USER" | grep -F "$cron_entry"; then
+		echo "Creating CRON entry: $cron_entry"
+		{
+			crontab -lu "$USER"
+			echo "$cron_entry"
+		} | crontab -u "$USER" -
+	fi
 }
 
 # Script will run in its own path no matter where it's called from.
@@ -239,7 +242,6 @@ elif [ "$1" == "install-docker" ]; then
 
 elif [ "$1" == "check-bing-wallpaper" ]; then
 	check_bing_wallpaper
-	exit $FAILURE
 
 elif [ "$1" == "install-bing-wallpaper" ]; then
 	install_bing_wallpaper
