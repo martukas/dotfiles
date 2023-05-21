@@ -22,7 +22,8 @@ fi-FI fr-FR de-DE zh-HK en-IN en-ID it-IT ja-JP ko-KR en-MY es-MX nl-NL en-NZ \
 no-NO zh-CN pl-PL en-PH ru-RU en-ZA es-ES sv-SE fr-CH de-CH zh-TW tr-TR en-GB \
 en-US es-US"
 ranMkt=$((RANDOM % 39))
-mkt_array=("$BING_MARKET_LIST")
+# shellcheck disable=SC2206
+mkt_array=($BING_MARKET_LIST)
 selMkt=${mkt_array[$ranMkt]}
 echo "random market = $selMkt"
 market="&mkt=$selMkt"
