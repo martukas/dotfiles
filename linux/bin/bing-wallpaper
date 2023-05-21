@@ -102,9 +102,8 @@ PID=$(pgrep xfce4-session)
 DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS "/proc/$PID/environ" | cut -d= -f2-)
 export DBUS_SESSION_BUS_ADDRESS
 
-xres=$(xfconf-query --channel xfce4-desktop --list | grep last-image)
-for x in "${xres[@]}"; do
-	xfconf-query --channel xfce4-desktop --property "$x" --set "$path$imgName"
+xfconf-query --channel xfce4-desktop --list | grep last-image | while read -r line; do
+	xfconf-query --channel xfce4-desktop --property "$line" --set "$path$imgName"
 done
 
 echo "New wallpaper set successfully for $XDG_CURRENT_DESKTOP."

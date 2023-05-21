@@ -12,6 +12,7 @@
       <property name="delay" type="int" value="15"/>
     </property>
     <property name="fullscreen-inhibit" type="bool" value="true"/>
+    <property name="enabled" type="bool" value="false"/>
   </property>
   <property name="lock" type="empty">
     <property name="saver-activation" type="empty">
