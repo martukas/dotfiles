@@ -57,6 +57,11 @@
       descr: NordVPN
       check: "command -v nordvpn"
       install: "../linux/packages.sh install-nordvpn"
+    - id: bing-wallpaper
+      category: GUI
+      descr: Microsoft Bing Wallpaper cron job
+      check: "../linux/packages.sh check-bing-wallpaper"
+      install: "../linux/packages.sh install-bing-wallpaper"
 
 - defaults:
     type: apt

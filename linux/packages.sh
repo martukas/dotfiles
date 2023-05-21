@@ -147,6 +147,23 @@ function install_docker() {
 	sudo usermod -aG docker "${USER}"
 }
 
+function check_bing_wallpaper() {
+  cron_entry="* */6 * * * bing-wallpaper >/dev/null 2>&1"
+  if crontab -lu $USER | fgrep "$cron_entry"; then
+    exit $SUCCESS
+  else
+    exit $FAILURE
+  fi
+}
+
+function install_bing_wallpaper() {
+  cron_entry="* */6 * * * bing-wallpaper >/dev/null 2>&1"
+  if ! crontab -lu "$USER" | fgrep "$cron_entry"; then
+      echo "Creating CRON entry: $cron_entry"
+      { crontab -lu "$USER"; echo "$cron_entry"; } | crontab -u "$USER" -
+  fi
+}
+
 # Script will run in its own path no matter where it's called from.
 pushd "$(dirname "$0")"
 
@@ -218,6 +235,14 @@ elif [ "$1" == "install-nordvpn" ]; then
 elif [ "$1" == "install-docker" ]; then
 	install_docker
 	echo "CAUTION: You should log in anew for docker to work without sudo"
+	prompt_exit
+
+elif [ "$1" == "check-bing-wallpaper" ]; then
+	check_bing_wallpaper
+	exit $FAILURE
+
+elif [ "$1" == "install-bing-wallpaper" ]; then
+	install_bing_wallpaper
 	prompt_exit
 
 else
