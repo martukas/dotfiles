@@ -62,6 +62,11 @@
       descr: Microsoft Bing Wallpaper cron job
       check: "../linux/packages.sh check-bing-wallpaper"
       install: "../linux/packages.sh install-bing-wallpaper"
+    - id: touchpad-indicator
+      category: GUI
+      descr: Touchpad indicator
+      check: "command -v touchpad-indicator"
+      install: "../linux/packages.sh install-touchpad-indicator"
 
 - defaults:
     type: apt

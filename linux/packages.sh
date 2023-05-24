@@ -167,6 +167,12 @@ function install_bing_wallpaper() {
 	fi
 }
 
+function install_touchpad_indicator() {
+	sudo add-apt-repository ppa:atareao/atareao
+	sudo apt update
+	sudo apt install touchpad-indicator
+}
+
 # Script will run in its own path no matter where it's called from.
 pushd "$(dirname "$0")"
 
@@ -245,6 +251,10 @@ elif [ "$1" == "check-bing-wallpaper" ]; then
 
 elif [ "$1" == "install-bing-wallpaper" ]; then
 	install_bing_wallpaper
+	prompt_exit
+
+elif [ "$1" == "install-touchpad-indicator" ]; then
+	install_touchpad_indicator
 	prompt_exit
 
 else

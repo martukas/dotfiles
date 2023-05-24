@@ -54,6 +54,8 @@
         <value type="string" value="thunar"/>
       </property>
       <property name="known-items" type="array">
+        <value type="string" value="Touchpad-Indicator"/>
+        <value type="string" value="zoom"/>
         <value type="string" value="TelegramDesktop"/>
         <value type="string" value="whatsdesk1"/>
         <value type="string" value="chrome_status_icon_1"/>
