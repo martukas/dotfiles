@@ -17,7 +17,7 @@
 [submodule "logiops"]
 	path = linux/logiops
 	url = https://github.com/PixlOne/logiops.git
-	branch = master
+	branch = main
 [submodule "superpack"]
 	path = superpack
 	url = https://github.com/martukas/superpack.git

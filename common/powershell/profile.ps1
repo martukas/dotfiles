@@ -7,7 +7,7 @@ param()
 
 $env:PYTHONIOENCODING="utf-8"
 
-Invoke-Expression "$(thefuck --alias)"
+#Invoke-Expression "$(thefuck --alias)"
 
 Import-Module posh-git
 

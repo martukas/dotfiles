@@ -67,7 +67,7 @@ function DarkThemeUI() {
       -Name 'AppsUseLightTheme' -Value 0
 }
 
-function Install-KeepassPlugins() {
+function Install-KeepassDarkTheme() {
     Write-Output "[Win10] Installing Keepass plugins"
     Push-Location 'C:\Program Files (x86)\KeePass2x\Plugins'
     Invoke-WebRequest -Uri "https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.dll" -OutFile "KeeTheme.dll"
@@ -107,7 +107,7 @@ Switch ($request)
         Exit $SUCCESS
     }
     {$_ -match 'install-keepass-plugins'} {
-        Install-KeepassPlugins
+        Install-KeepassDarkTheme
         Exit $SUCCESS
     }
     {$_ -match 'colorize'} {
