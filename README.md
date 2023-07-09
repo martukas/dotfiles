@@ -75,6 +75,8 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 | :penguin: mw                | `make writable:` chmod 664                                               |
 | :penguin: own               | take ownership as user:user                                              |
 | :window: Test-Administrator | Return true if in elevated session                                       |
+| :window: kom                | Start komorebi tiled window manager                                      |
+| :window: kom-stop           | Stop komorebi and kill associated AutoHotKey script                      |
 
 Henceforth, you can update locally with these aliases:
 
@@ -99,6 +101,7 @@ Henceforth, you can update locally with these aliases:
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
 * Linux:
+  * Window tiling manager
   * Get rid of ubuntu-pro ads
   * Install fake webcam pre-reqs
   * minimize whatsapp and slack on startup
@@ -108,7 +111,6 @@ Henceforth, you can update locally with these aliases:
   * baobab
   * circleci
 * Windows:
-  * [AHK](https://github.com/AutoHotkey/AutoHotkey)
   * Foreign keyboards
   * Nordvpn
   * steam
