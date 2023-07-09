@@ -28,6 +28,7 @@
       descr: Bing wallpaper daily images
     - id: DominikReichl.KeePass
       descr: KeePass password manager
+      install: "..\\win10\\packages.ps1 install-keepass-plugins"
 - defaults:
     type: winget
     category: dev-admin

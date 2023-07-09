@@ -67,6 +67,18 @@ function DarkThemeUI() {
       -Name 'AppsUseLightTheme' -Value 0
 }
 
+function Install-KeepassPlugins() {
+    Write-Output "[Win10] Installing Keepass plugins"
+    Push-Location 'C:\Program Files (x86)\KeePass2x\Plugins'
+    Invoke-WebRequest -Uri "https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.dll" -OutFile "KeeTheme.dll"
+    Invoke-WebRequest -Uri "https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.plgx" -OutFile "KeeTheme.plgx"
+    mkdir 'DarkenKP'
+    Push-Location 'DarkenKP'
+    Invoke-WebRequest -Uri "https://github.com/BradyThe/DarkenKP/releases/latest/download/KeeTheme.ini" -OutFile "KeeTheme.ini"
+    Pop-Location
+    Pop-Location
+}
+
 $request=$args[0]
 
 Switch ($request)
@@ -92,6 +104,10 @@ Switch ($request)
         DefaultFileExplorerSettings
         NumLockOnStartup
         DarkThemeUI
+        Exit $SUCCESS
+    }
+    {$_ -match 'install-keepass-plugins'} {
+        Install-KeepassPlugins
         Exit $SUCCESS
     }
     {$_ -match 'colorize'} {
