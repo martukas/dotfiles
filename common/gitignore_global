@@ -39,3 +39,4 @@ Thumbs.db
 .idea/
 CMakeLists.txt.user
 cmake-build-*/
+compile_commands.json

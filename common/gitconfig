@@ -49,8 +49,8 @@
 	cleanall = clean -fdx # this is dangerous, so it's intentionally long to type
 	stsh = stash --keep-index
 	staash = stash --include-untracked
-	update-submodules = submodule update --init --recursive
-	upgrade-submodules = submodule update --init --remote
+	sub-update = submodule update --init --recursive
+	sub-upgrade = submodule update --init --remote
 	empty-tree-hash = hash-object -t tree /dev/null
 	root = rev-parse --show-toplevel
 	ctags = ! "ctg() { trap \"rm -f .git/tags.$$\" EXIT; ctags --tag-relative -Rf.git/tags.$$ --exclude=.git; mv .git/tags.$$ .git/tags; }; ctg"

@@ -94,10 +94,13 @@ Henceforth, you can update locally with these aliases:
 <!-- markdownlint-disable no-space-in-emphasis -->
 <details>
 <summary>Roadmap</summary>
+
 * include .profile?
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
 * Linux:
+  * Get rid of ubuntu-pro ads
+  * Install fake webcam pre-reqs
   * minimize whatsapp and slack on startup
   * change terminal name via ssh
   * NPM
