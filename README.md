@@ -108,8 +108,8 @@ Henceforth, you can update locally with these aliases:
   * baobab
   * circleci
 * Windows:
+  * [AHK](https://github.com/AutoHotkey/AutoHotkey)
   * Foreign keyboards
-  * Dark mode for Keepass
   * Nordvpn
   * steam
   * dotnet
@@ -123,5 +123,6 @@ Henceforth, you can update locally with these aliases:
 * Adopt <https://github.com/pop-os/shell> ?
 * Migrate to <https://www.chezmoi.io/> ?
 * Adopt <https://github.com/mehedirm6244/My_XFCE_dotties/tree/Everblush> ?
+
 </details>
 <!-- markdownlint-enable no-space-in-emphasis -->

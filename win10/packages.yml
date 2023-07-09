@@ -7,6 +7,11 @@
       category: dev-admin
       check: winget list -q JanDeDobbeleer.OhMyPosh | findstr 'JanDeDobbeleer.OhMyPosh'
       install: "..\\win10\\packages.ps1 colorize"
+    - id: komorebi
+      descr: Komorebi - Tiling window manager
+      category: GUI
+      check: winget list -q LGUG2Z.komorebi | findstr 'LGUG2Z.komorebi'
+      install: "..\\win10\\packages.ps1 install-komorebi"
     - id: dummy
       descr: Dummy test package
       category: xtras

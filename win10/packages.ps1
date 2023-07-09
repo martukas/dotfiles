@@ -79,6 +79,12 @@ function Install-KeepassDarkTheme() {
     Pop-Location
 }
 
+function Install-Komorebi() {
+    Write-Output "[Win10] Installing Komorebi"
+    winget install LGUG2Z.whkd
+    winget install LGUG2Z.komorebi
+}
+
 $request=$args[0]
 
 Switch ($request)
@@ -108,6 +114,10 @@ Switch ($request)
     }
     {$_ -match 'install-keepass-plugins'} {
         Install-KeepassDarkTheme
+        Exit $SUCCESS
+    }
+    {$_ -match 'install-komorebi'} {
+        Install-Komorebi
         Exit $SUCCESS
     }
     {$_ -match 'colorize'} {

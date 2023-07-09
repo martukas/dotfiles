@@ -1,5 +1,7 @@
 #!/bin/bash
 
+eval "$(thefuck --alias)"
+
 osinfo() {
 	uname -a
 	cat /etc/*-release
@@ -26,8 +28,8 @@ mouse-untweak() {
 }
 
 keychron-fn() {
-  echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode
-#  TODO: follow this to make persistent https://www.reddit.com/r/Keychron/comments/gptnpt/k1_no_access_to_fkeys_in_linux_help/
+	echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode
+	#  TODO: follow this to make persistent https://www.reddit.com/r/Keychron/comments/gptnpt/k1_no_access_to_fkeys_in_linux_help/
 }
 
 create-user() {

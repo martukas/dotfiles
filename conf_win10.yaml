@@ -30,3 +30,7 @@
       path: common/powershell/profile.ps1
     ~/Documents/WindowsPowerShell/blue-owl.omp.json:
       path: common/powershell/blue-owl.omp.json
+    ~/.config/komorebi:
+      path: win10/config/komorebi
+    ~/.config/whkdrc:
+      path: win10/config/whkdrc

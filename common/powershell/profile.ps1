@@ -7,6 +7,7 @@ param()
 
 $env:PYTHONIOENCODING="utf-8"
 
+# \todo reenable this when package resolves python3.12 problem
 #Invoke-Expression "$(thefuck --alias)"
 
 Import-Module posh-git
@@ -17,5 +18,7 @@ if ($IsWindows) {
 } else {
     $theme_path="$HOME\.config\powershell\$theme.omp.json"
 }
+
+$Env:KOMOREBI_CONFIG_HOME = "$HOME\.config\komorebi"
 
 oh-my-posh init pwsh --config $theme_path | Invoke-Expression
