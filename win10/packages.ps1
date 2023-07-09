@@ -81,8 +81,9 @@ function Install-KeepassDarkTheme() {
 
 function Install-Komorebi() {
     Write-Output "[Win10] Installing Komorebi"
-    winget install LGUG2Z.whkd
-    winget install LGUG2Z.komorebi
+    winget install -e --id AutoHotkey.AutoHotkey
+    winget install -e --id LGUG2Z.whkd
+    winget install -e --id LGUG2Z.komorebi
 }
 
 $request=$args[0]

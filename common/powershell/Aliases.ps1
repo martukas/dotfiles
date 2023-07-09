@@ -98,10 +98,13 @@ function DotfilesUpgradeSubmodules() {
 
 function KomorebiStart() {
     komorebic start --await-configuration
+    . "$HOME\.config\komorebi\komorebi.ahk"
 }
 
 function KomorebiStop() {
     komorebic stop
+    Get-CimInstance -ClassName win32_process -Filter "commandline like '%%komorebi.ahk""'" `
+        | Invoke-CimMethod -MethodName Terminate
 }
 
 New-Alias up GoUp

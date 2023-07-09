@@ -20,5 +20,6 @@ if ($IsWindows) {
 }
 
 $Env:KOMOREBI_CONFIG_HOME = "$HOME\.config\komorebi"
+$Env:KOMOREBI_AHK_EXE = "$Env:LOCALAPPDATA\Programs\AutoHotkey\v2\AutoHotkey.exe"
 
 oh-my-posh init pwsh --config $theme_path | Invoke-Expression
