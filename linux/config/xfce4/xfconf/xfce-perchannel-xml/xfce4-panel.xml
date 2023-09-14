@@ -50,10 +50,15 @@
       <property name="size-max" type="uint" value="22"/>
       <property name="symbolic-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="onboard"/>
+        <value type="string" value="system-config-printer"/>
         <value type="string" value="guake"/>
         <value type="string" value="thunar"/>
       </property>
       <property name="known-items" type="array">
+        <value type="string" value="livepatch"/>
+        <value type="string" value="vlc"/>
+        <value type="string" value="Clementine"/>
         <value type="string" value="Touchpad-Indicator"/>
         <value type="string" value="zoom"/>
         <value type="string" value="TelegramDesktop"/>
@@ -83,7 +88,7 @@
       <property name="enable-mpris" type="bool" value="true"/>
       <property name="enable-wnck" type="bool" value="true"/>
       <property name="mixer-command" type="string" value="pavucontrol"/>
-      <property name="mpris-players" type="string" value="firefox.instance15738;firefox.instance3259;parole;rhythmbox"/>
+      <property name="mpris-players" type="string" value="clementine;firefox.instance14150;firefox.instance15738;firefox.instance287107;firefox.instance3259;firefox.instance3310;firefox.instance3528;firefox.instance3554;firefox.instance3683;firefox.instance3716;firefox.instance3849;firefox.instance3870;firefox.instance3885;firefox.instance3900;firefox.instance4064;firefox.instance4296;firefox.instance76898;firefox.instance8478;parole;rhythmbox;vlc"/>
       <property name="show-notifications" type="bool" value="true"/>
     </property>
     <property name="plugin-10" type="string" value="clock">

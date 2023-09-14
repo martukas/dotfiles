@@ -78,8 +78,6 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 | :window: kom                | Start komorebi tiled window manager                                      |
 | :window: kom-stop           | Stop komorebi and kill associated AutoHotKey script                      |
 
-Henceforth, you can update locally with these aliases:
-
 ### Keeping repo up to date
 
 * use the `df*` aliases above
