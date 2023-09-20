@@ -157,6 +157,7 @@ function check_bing_wallpaper() {
 }
 
 function install_bing_wallpaper() {
+# @todo ask user to run crontab -e and save+exit
 	cron_entry="* */6 * * * ~/.dotfiles/linux/bin/bing-wallpaper >/dev/null 2>&1"
 	if ! crontab -lu "$USER" | grep -F "$cron_entry"; then
 		echo "Creating CRON entry: $cron_entry"

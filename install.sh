@@ -40,6 +40,7 @@ git submodule update --init --recursive common/bash-git-prompt
 git submodule update
 
 if [[ $OS == "GNU/Linux" ]]; then
+# @todo do not even try to run these on bootstrap, get the dotfiles symlinked first
 	read -rp "[Linux] Do you want to run one-time installation scripts? " answer
 	case ${answer:0:1} in
 	y | Y)
