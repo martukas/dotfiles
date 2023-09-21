@@ -84,10 +84,18 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 * symlinked files will stay up to date
 * "dirty" state in the `/private` subrepo will be ignored. Commit changes to that submodule separately, before you commit in parent dir
 
-## Manual installation required
+## Manual steps required
+
+The following cannot be automated:
 
 * [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
 * [CLion + PlatformIO integration](https://docs.platformio.org/en/latest/integration/ide/clion.html)
+* Linux:
+  * flameshot kbd shortcut
+  * panel items layout
+  * movable window manager tabs
+  * mugshot avatar
+  * whisker favorites
 
 ## Future improvements
 
@@ -99,6 +107,7 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
 * Linux:
+  * Numlock on startup
   * Window tiling manager
   * Get rid of ubuntu-pro ads
   * Install fake webcam pre-reqs
