@@ -1,5 +1,5 @@
-favorites=xfce4-web-browser.desktop,xfce4-file-manager.desktop,org.gnome.Software.desktop,xfce4-terminal-emulator.desktop,xfhelp4.desktop
-recent=firefox_firefox.desktop,xfce-keyboard-settings.desktop,xfce4-web-browser.desktop,xfce4-file-manager.desktop,whatsdesk_whatsdesk.desktop,jetbrains-toolbox.desktop,org.xfce.mousepad.desktop,org.gnome.meld.desktop,org.gnome.baobab.desktop,signal-desktop_signal-desktop.desktop
+favorites=xfce4-file-manager.desktop,xfce4-terminal-emulator.desktop,xfhelp4.desktop,firefox_firefox.desktop
+recent=slack_slack.desktop,xfce-display-settings.desktop,clementine.desktop,xfce4-file-manager.desktop,jetbrains-toolbox.desktop,firefox_firefox.desktop,xfce4-mail-reader.desktop,xfce-keyboard-settings.desktop,software-properties-gtk.desktop,xfce-ui-settings.desktop
 button-icon=xubuntu-logo-menu
 button-single-row=false
 show-button-title=false

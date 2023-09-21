@@ -21,7 +21,9 @@ def git_file_changed(root_path, file_path):
 
 
 def copy_file_and_diff(machine_path, repo_path, file_path):
-    shutil.copy(machine_path / file_path, repo_path)
+    machine_file = machine_path / file_path
+    if machine_file.exists() and machine_file.is_file():
+        shutil.copy(machine_file, repo_path)
     ret = git_file_changed(repo_path, file_path)
     return ret
 

@@ -107,6 +107,7 @@ The following cannot be automated:
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
 * Linux:
+  * Clone with pre-commit enabled
   * Numlock on startup
   * Window tiling manager
   * Get rid of ubuntu-pro ads
