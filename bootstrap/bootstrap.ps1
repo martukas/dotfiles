@@ -5,8 +5,10 @@ param()
 $FAILURE=1
 $SUCCESS=0
 
-if (-Not $IsWindows) {
-    Write-Error "This script only supports Windows" -ErrorAction Stop
+# @todo check if linux or windows (in old powershell!)
+$confirmation = Read-Host "This script only supports Windows. Do you want to continue?"
+if ($confirmation -ne 'y') {
+    Write-Error "Aborted" -ErrorAction Stop
 }
 
 # Fail on first error
@@ -33,22 +35,22 @@ Write-Output "Running script in $dir"
 
 Push-Location $dir
 
-Write-Output "[Win10] Remove OneDrive"
+Write-Output "Remove OneDrive"
 winget uninstall Microsoft.OneDrive
 
-Write-Output "[Win10] Set new PowerShell profile root"
+Write-Output "Set new PowerShell profile root"
 New-ItemProperty `
   'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' `
   Personal -Value "$HOME\Documents" -Type ExpandString -Force
 
-Write-Output "[Win10] Installing modern PowerShell"
+Write-Output "Installing modern PowerShell"
 winget install -e --id Microsoft.PowerShell
 
-Write-Output "[Win10] Installing Git"
+Write-Output "Installing Git"
 winget install --id Git.Git -e --source winget
 
 #Must install python here, so that we have it available in bash for dotbot
-Write-Output "[Win10] Installing Python"
+Write-Output "Installing Python"
 winget install --id Python.Python.3.12 -e --source winget --scope=machine
 #Temporary solution until bash profiles are imported
 $py_alias = "alias python='winpty python.exe'"
@@ -58,11 +60,7 @@ $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
 
 Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/master/bootstrap/config_ssh.sh" -OutFile "config_ssh.sh"
 
-Start-Process -FilePath "$Env:Programfiles\Git\bin\sh.exe" `
-	-ArgumentList "--login","-i","-c",'"./config_ssh.sh start"'
-
-Remove-Item .\config_ssh.sh
-Remove-Item .\bootstrap.ps1
+Start-Process -FilePath "$Env:Programfiles\Git\bin\sh.exe" -ArgumentList "--login","-i","-c",'"./config_ssh.sh start"'
 
 Pop-Location
 

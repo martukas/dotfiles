@@ -12,7 +12,7 @@ function CreateStartupApp() {
     $Name = $args[0]
     $RunPath = $args[1]
 
-    Write-Output "[Win10] Creating startup app '$Name' -> $RunPath"
+    Write-Output "Creating startup app '$Name' -> $RunPath"
 
     $RegItem = @{
         Path = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
@@ -38,14 +38,14 @@ function DefaultModules() {
 }
 
 function ColorizePrompt() {
-    Write-Output "[Win10] Setting up colorized and git-aware PowerShell prompt"
+    Write-Output "Setting up colorized and git-aware PowerShell prompt"
     winget install JanDeDobbeleer.OhMyPosh -s winget
     oh-my-posh font install Hack
     oh-my-posh font install Meslo
 }
 
 function DefaultFileExplorerSettings() {
-    Write-Output "[Win10] Show extensions and hidden files in file explorer"
+    Write-Output "Show extensions and hidden files in file explorer"
     Set-Itemproperty -path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' `
       -Name 'HideFileExt' -value 0
     Set-Itemproperty -path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' `
@@ -55,20 +55,20 @@ function DefaultFileExplorerSettings() {
 }
 
 function NumLockOnStartup() {
-    Write-Output "[Win10] NumLock on at startup"
+    Write-Output "NumLock on at startup"
     Set-Itemproperty -path 'registry::HKEY_USERS\.DEFAULT\Control Panel\Keyboard' `
       -Name 'InitialKeyboardIndicators' -value 2147483650
     # could also be =2 on some systems
 }
 
 function DarkThemeUI() {
-    Write-Output "[Win10] Use dark UI theme"
+    Write-Output "Use dark UI theme"
     Set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' `
       -Name 'AppsUseLightTheme' -Value 0
 }
 
 function Install-KeepassDarkTheme() {
-    Write-Output "[Win10] Installing Keepass plugins"
+    Write-Output "Installing Keepass plugins"
     Push-Location 'C:\Program Files (x86)\KeePass2x\Plugins'
     Invoke-WebRequest -Uri "https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.dll" -OutFile "KeeTheme.dll"
     Invoke-WebRequest -Uri "https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.plgx" -OutFile "KeeTheme.plgx"
@@ -80,7 +80,7 @@ function Install-KeepassDarkTheme() {
 }
 
 function Install-Komorebi() {
-    Write-Output "[Win10] Installing Komorebi"
+    Write-Output "Installing Komorebi"
     winget install -e --id AutoHotkey.AutoHotkey
     winget install -e --id LGUG2Z.whkd
     winget install -e --id LGUG2Z.komorebi

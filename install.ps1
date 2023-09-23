@@ -37,7 +37,7 @@ git submodule update --init --recursive common/bash/plugins/dircolors-solarized
 
 git submodule update
 
-$confirmation = Read-Host "[Win10] Do you want to run one-time installation scripts?"
+$confirmation = Read-Host "Do you want to run one-time installation scripts?"
 if ($confirmation -eq 'y') {
     # Configure file exporer, numlock, theme
     .\win10\packages.ps1 default-modules

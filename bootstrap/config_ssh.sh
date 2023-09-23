@@ -91,7 +91,7 @@ read -n 1 -srp "Press any key to clone the dotfiles repository and continue setu
 mkdir -p "${HOME}/dev"
 cd "${HOME}/dev"
 git config --global pull.ff only
-git clone git@github.com:martukas/dotfiles.git
+git clone  --recurse-submodules git@github.com:martukas/dotfiles.git
 cd dotfiles
 
 echo "SSH and GitHub config completed successfully. You will now return to your OS-specific installation scripts."
