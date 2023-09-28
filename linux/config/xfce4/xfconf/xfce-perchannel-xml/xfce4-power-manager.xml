@@ -18,5 +18,6 @@
     <property name="show-tray-icon" type="bool" value="false"/>
     <property name="brightness-switch-restore-on-exit" type="int" value="1"/>
     <property name="brightness-switch" type="int" value="0"/>
+    <property name="lid-action-on-battery" type="uint" value="1"/>
   </property>
 </channel>

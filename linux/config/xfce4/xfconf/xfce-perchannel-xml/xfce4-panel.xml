@@ -82,7 +82,7 @@
       <property name="enable-mpris" type="bool" value="true"/>
       <property name="enable-wnck" type="bool" value="true"/>
       <property name="mixer-command" type="string" value="pavucontrol"/>
-      <property name="mpris-players" type="string" value="clementine;parole;rhythmbox"/>
+      <property name="mpris-players" type="string" value="clementine;parole;rhythmbox;vlc"/>
       <property name="show-notifications" type="bool" value="true"/>
     </property>
     <property name="plugin-10" type="string" value="clock">
@@ -125,16 +125,16 @@
     </property>
     <property name="plugin-12" type="string" value="systemload">
       <property name="cpu" type="empty">
-        <property name="label" type="string" value="C"/>
+        <property name="label" type="string" value="C  "/>
       </property>
       <property name="memory" type="empty">
-        <property name="label" type="string" value="M"/>
+        <property name="label" type="string" value="M  "/>
       </property>
       <property name="network" type="empty">
-        <property name="label" type="string" value="N"/>
+        <property name="label" type="string" value="N  "/>
       </property>
       <property name="swap" type="empty">
-        <property name="label" type="string" value="S"/>
+        <property name="label" type="string" value="S  "/>
       </property>
       <property name="uptime" type="empty">
         <property name="enabled" type="bool" value="false"/>

@@ -35,8 +35,8 @@ Thumbs.db
 
 # IDE #
 ######################
-.idea
-.idea/
-CMakeLists.txt.user
-cmake-build-*/
+# .idea
+# .idea/
+# CMakeLists.txt.user
+# cmake-build-*/
 compile_commands.json

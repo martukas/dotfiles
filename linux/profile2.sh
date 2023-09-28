@@ -19,6 +19,10 @@ reset-wifi() {
 	sudo /etc/init.d/network-manager start
 }
 
+reset-bt() {
+	sudo service bluetooth restart
+}
+
 mouse-tweak() {
 	sudo systemctl enable --now logid
 }
