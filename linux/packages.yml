@@ -72,6 +72,11 @@
       descr: Fake webcam
       check: "../linux/packages.sh check-fake-webcam"
       install: "../linux/packages.sh install-fake-webcam"
+    - id: edge-browser
+      category: web
+      descr: Microsoft Edge browser
+      check: "command -v microsoft-edge-stable"
+      install: "../linux/packages.sh install-ms-edge"
 
 - defaults:
     type: apt

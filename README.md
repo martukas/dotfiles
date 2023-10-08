@@ -107,9 +107,8 @@ The following cannot be automated:
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
 * Linux:
-  * Edge browser
-  * Clone with pre-commit enabled
   * Numlock on startup
+  * Clone with pre-commit enabled
   * Window tiling manager
   * change terminal name via ssh
   * NPM

@@ -190,6 +190,14 @@ function install_fake_webcam() {
 	popd
 }
 
+function install_ms_edge() {
+	curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >microsoft.gpg
+	sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+	rm microsoft.gpg
+	sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
+	sudo apt update && sudo apt install microsoft-edge-stable
+}
+
 # Script will run in its own path no matter where it's called from.
 pushd "$(dirname "$0")"
 
@@ -285,6 +293,10 @@ elif [ "$1" == "install-touchpad-indicator" ]; then
 
 elif [ "$1" == "install-fake-webcam" ]; then
 	install_fake_webcam
+	prompt_exit
+
+elif [ "$1" == "install-ms-edge" ]; then
+	install_ms_edge
 	prompt_exit
 
 else
