@@ -1,3 +1,21 @@
 #!/bin/bash
 
-python ~/dev/Linux-Fake-Background-Webcam/fake.py -c ~/.dotfiles/linux/config/fake-cam.ini
+# Fail if any command fails
+set -e
+set -o pipefail
+
+#silent pushd
+pushd() {
+	command pushd "$@" >/dev/null
+}
+
+#silent popd
+popd() {
+	command popd >/dev/null
+}
+
+pushd "${HOME}/.dotfiles/linux/Linux-Fake-Background-Webcam"
+
+poetry run ./fake.py -c ~/.dotfiles/linux/config/fake-cam.ini
+
+popd

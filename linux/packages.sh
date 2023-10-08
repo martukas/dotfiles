@@ -13,6 +13,11 @@ pushd() {
 	command pushd "$@" >/dev/null
 }
 
+#silent popd
+popd() {
+	command popd >/dev/null
+}
+
 function prompt_exit() {
 	echo " "
 	read -n1 -srp $'Press any key to continue...\n' _
@@ -75,9 +80,9 @@ function install_nvm() {
 
 function install_platformio() {
 	python3 -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"
-	ln -s ~/.platformio/penv/bin/platformio ~/.local/bin/platformio
-	ln -s ~/.platformio/penv/bin/pio ~/.local/bin/pio
-	ln -s ~/.platformio/penv/bin/piodebuggdb ~/.local/bin/piodebuggdb
+	ln -s "${HOME}/.platformio/penv/bin/platformio" "${HOME}/.local/bin/platformio"
+	ln -s "${HOME}/.platformio/penv/bin/pio" "${HOME}/.local/bin/pio"
+	ln -s "${HOME}/.platformio/penv/bin/piodebuggdb" "${HOME}/.local/bin/piodebuggdb"
 	curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules | sudo tee /etc/udev/rules.d/99-platformio-udev.rules
 	sudo usermod -a -G dialout "$USER"
 	sudo usermod -a -G plugdev "$USER"
@@ -157,7 +162,7 @@ function check_bing_wallpaper() {
 }
 
 function install_bing_wallpaper() {
-# @todo ask user to run crontab -e and save+exit
+	# @todo ask user to run crontab -e and save+exit
 	cron_entry="* */6 * * * ~/.dotfiles/linux/bin/bing-wallpaper >/dev/null 2>&1"
 	if ! crontab -lu "$USER" | grep -F "$cron_entry"; then
 		echo "Creating CRON entry: $cron_entry"
@@ -172,6 +177,17 @@ function install_touchpad_indicator() {
 	sudo add-apt-repository ppa:atareao/atareao
 	sudo apt update
 	sudo apt install touchpad-indicator
+}
+
+function install_fake_webcam() {
+	sudo apt install v4l-utils v4l2loopback-*
+	v4l2-ctl --list-devices
+	echo "Please identify the highest X where /dev/videoX and select the next lowest number X+1."
+	read -rp "Enter number to use for fake cam device: " video_nr
+	pushd "${HOME}/.dotfiles/linux/Linux-Fake-Background-Webcam"
+	./v4l2loopback-install.sh "$video_nr"
+	poetry install
+	popd
 }
 
 # Script will run in its own path no matter where it's called from.
@@ -226,6 +242,15 @@ elif [ "$1" == "check-insync" ]; then
 		exit $FAILURE
 	fi
 
+elif [ "$1" == "install-fake-webcam" ]; then
+	OPT_FILE="/etc/modprobe.d/linux-fake-background.conf"
+	if [[ -f ${OPT_FILE} ]]; then
+		echo "fake webcam present"
+		exit $SUCCESS
+	else
+		exit $FAILURE
+	fi
+
 elif [ "$1" == "install-keepass-plugins" ]; then
 	install_keepass_plugins
 	prompt_exit
@@ -256,6 +281,10 @@ elif [ "$1" == "install-bing-wallpaper" ]; then
 
 elif [ "$1" == "install-touchpad-indicator" ]; then
 	install_touchpad_indicator
+	prompt_exit
+
+elif [ "$1" == "install-fake-webcam" ]; then
+	install_fake_webcam
 	prompt_exit
 
 else

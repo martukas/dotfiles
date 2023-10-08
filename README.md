@@ -107,11 +107,10 @@ The following cannot be automated:
 * install [conan](https://docs.conan.io/2/installation.html)
 * clementine remote config & script
 * Linux:
+  * Edge browser
   * Clone with pre-commit enabled
   * Numlock on startup
   * Window tiling manager
-  * Get rid of ubuntu-pro ads
-  * Install fake webcam pre-reqs
   * minimize whatsapp and slack on startup
   * change terminal name via ssh
   * NPM

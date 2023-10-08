@@ -1,5 +1,5 @@
-favorites=xfce4-file-manager.desktop,xfce4-terminal-emulator.desktop,xfhelp4.desktop,firefox_firefox.desktop
-recent=xfce4-file-manager.desktop,clementine.desktop,xfce4-power-manager-settings.desktop,xfce-display-settings.desktop,xfce-wmtweaks-settings.desktop,slack_slack.desktop,firefox_firefox.desktop,jetbrains-toolbox.desktop,timeshift-gtk.desktop,xfce4-terminal-emulator.desktop
+favorites=xfce4-file-manager.desktop,xfce4-terminal-emulator.desktop,jetbrains-toolbox.desktop,firefox_firefox.desktop,microsoft-edge.desktop,slack_slack.desktop,xfhelp4.desktop
+recent=jetbrains-toolbox.desktop,firefox_firefox.desktop,org.gnome.Cheese.desktop,xfce4-file-manager.desktop,zoom-client_zoom-client.desktop,microsoft-edge.desktop,clementine.desktop,gimp.desktop,timeshift-gtk.desktop,org.xfce.mousepad.desktop
 button-icon=xubuntu-logo-menu
 button-single-row=false
 show-button-title=false

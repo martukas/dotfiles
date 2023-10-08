@@ -67,6 +67,11 @@
       descr: Touchpad indicator
       check: "command -v touchpad-indicator"
       install: "../linux/packages.sh install-touchpad-indicator"
+    - id: fake-webcam
+      category: graphics
+      descr: Fake webcam
+      check: "../linux/packages.sh check-fake-webcam"
+      install: "../linux/packages.sh install-fake-webcam"
 
 - defaults:
     type: apt

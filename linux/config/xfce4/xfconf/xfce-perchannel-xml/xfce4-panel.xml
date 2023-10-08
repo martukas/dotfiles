@@ -82,7 +82,7 @@
       <property name="enable-mpris" type="bool" value="true"/>
       <property name="enable-wnck" type="bool" value="true"/>
       <property name="mixer-command" type="string" value="pavucontrol"/>
-      <property name="mpris-players" type="string" value="clementine;parole;rhythmbox;vlc"/>
+      <property name="mpris-players" type="string" value="clementine;edge.instance510581;edge.instance55005;parole;rhythmbox;vlc"/>
       <property name="show-notifications" type="bool" value="true"/>
     </property>
     <property name="plugin-10" type="string" value="clock">

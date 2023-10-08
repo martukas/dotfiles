@@ -27,3 +27,7 @@
 	url = git@github.com:martukas/dotfiles-private.git
 	branch = main
 	ignore = dirty
+[submodule "linux/Linux-Fake-Background-Webcam"]
+	path = linux/Linux-Fake-Background-Webcam
+	url = git@github.com:martukas/Linux-Fake-Background-Webcam.git
+	branch = master

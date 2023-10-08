@@ -52,10 +52,10 @@ if [[ $OS == "GNU/Linux" ]]; then
 		echo "DISTRIB_RELEASE = $DISTRIB_RELEASE"
 		if [[ $DISTRIB_RELEASE == "23.04" ]]; then
 			echo "[Ubuntu 23.04] installing global python packages via apt"
-			sudo apt --yes install pipenv pre-commit thefuck
+			sudo apt --yes install pipenv poetry pre-commit thefuck compiledb
 		else
 			sudo python -m pip install --upgrade pip
-			python -m pip install --upgrade pipenv thefuck pre-commit compiledb
+			python -m pip install --upgrade pipenv poetry thefuck pre-commit compiledb
 		fi
 
 		pushd superpack
