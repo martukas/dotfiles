@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Fail if any command fails
+set -e
+set -o pipefail
+
+#silent pushd
+pushd() {
+	command pushd "$@" >/dev/null
+}
+
+#silent popd
+popd() {
+	command popd >/dev/null
+}
+
+pushd "${HOME}/.dotfiles/linux/Linux-Fake-Background-Webcam"
+
+poetry run ./fake.py -c "${HOME}/.dotfiles/linux/config/cam-clean.ini"
+
+popd

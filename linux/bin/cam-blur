@@ -16,6 +16,6 @@ popd() {
 
 pushd "${HOME}/.dotfiles/linux/Linux-Fake-Background-Webcam"
 
-poetry run ./fake.py -c ~/.dotfiles/linux/config/fake-cam.ini
+poetry run ./fake.py -c "${HOME}/.dotfiles/linux/config/cam-blur.ini"
 
 popd
