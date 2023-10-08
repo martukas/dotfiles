@@ -111,19 +111,18 @@ The following cannot be automated:
   * Clone with pre-commit enabled
   * Numlock on startup
   * Window tiling manager
-  * minimize whatsapp and slack on startup
   * change terminal name via ssh
   * NPM
   * synaptic
   * baobab
   * circleci
 * Windows:
-  * Foreign keyboards
+  * InSync
   * Nordvpn
-  * steam
+  * Foreign keyboards
+  * Steam
   * dotnet
   * jdk
-  * google drive
   * configure night light
   * optional sshd and remote-desktop config
 * Configure rustup shell completion [here](https://rust-lang.github.io/rustup/installation/index.html)

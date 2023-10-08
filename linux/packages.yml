@@ -153,7 +153,7 @@
     category: web
     type: snap
   packages:
-    - id: whatsdesk
+    - id: whatsapp-for-linux
       descr: Whatsapp desktop client
     - id: zoom-client
       descr: Zoom client

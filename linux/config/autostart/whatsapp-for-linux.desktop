@@ -1,0 +1,13 @@
+[Desktop Entry]
+X-SnapInstanceName=whatsapp-for-linux
+Type=Application
+Version=1.0
+Name=WhatsApp for Linux
+GenericName=Unofficial WhatsApp client
+Comment=An unofficial WhatsApp desktop application for Linux
+Exec=env BAMF_DESKTOP_FILE_HINT=/var/lib/snapd/desktop/applications/whatsapp-for-linux_whatsapp-for-linux.desktop /snap/bin/whatsapp-for-linux %u
+Icon=/snap/whatsapp-for-linux/58/usr/local/share/icons/hicolor/256x256/apps/com.github.eneshecan.WhatsAppForLinux.png
+MimeType=x-scheme-handler/whatsapp
+StartupWMClass=whatsapp-for-linux
+Categories=GTK;GNOME;Network;
+Keywords=chat;im;messaging;messenger;sms;whatsapp;whatsapp-desktop;
