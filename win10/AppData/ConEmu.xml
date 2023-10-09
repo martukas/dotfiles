@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <key name="Software">
 	<key name="ConEmu">
-		<key name=".Vanilla" modified="2023-07-09 14:24:16" build="221218">
+		<key name=".Vanilla" modified="2023-09-23 09:29:20" build="230724">
 			<value name="StartType" type="hex" data="02"/>
 			<value name="CmdLine" type="string" data=""/>
 			<value name="StartTasksFile" type="string" data=""/>
@@ -314,11 +314,11 @@
 			<value name="Multi.SplitWidth" type="hex" data="04"/>
 			<value name="Multi.SplitHeight" type="hex" data="04"/>
 			<value name="ResetTerminalConfirm" type="hex" data="01"/>
-			<value name="FontName" type="string" data="Hack NFM"/>
-			<value name="FontName2" type="string" data="MesloLGM NF"/>
+			<value name="FontName" type="string" data="Hack Nerd Font Mono"/>
+			<value name="FontName2" type="string" data="MesloLGM Nerd Font"/>
 			<value name="FontAutoSize" type="hex" data="00"/>
 			<value name="FontSizeX" type="ulong" data="0"/>
-			<value name="FontSizeX2" type="ulong" data="10"/>
+			<value name="FontSizeX2" type="ulong" data="0"/>
 			<value name="FontSizeX3" type="ulong" data="0"/>
 			<value name="FontCharSet" type="hex" data="01"/>
 			<value name="Anti-aliasing" type="ulong" data="6"/>
@@ -343,9 +343,9 @@
 			<value name="Cascaded" type="hex" data="01"/>
 			<value name="IntegralSize" type="hex" data="00"/>
 			<value name="WindowMode" type="dword" data="00000520"/>
-			<value name="ConWnd X" type="long" data="-1"/>
+			<value name="ConWnd X" type="long" data="-3"/>
 			<value name="ConWnd Y" type="long" data="0"/>
-			<value name="LastMonitor" type="string" data="0,0,3840,2100"/>
+			<value name="LastMonitor" type="string" data="0,0,3840,2280"/>
 			<value name="ConWnd Width" type="dword" data="00000077"/>
 			<value name="ConWnd Height" type="dword" data="00000019"/>
 			<value name="16bit Height" type="ulong" data="0"/>
@@ -749,3 +749,4 @@
 		</key>
 	</key>
 </key>
+
