@@ -21,7 +21,7 @@ if (-not($found))
 $ErrorActionPreference = "Stop"
 
 $CONFIG_COMMON = "conf_common.yaml"
-$CONFIG_WINDOWS = "conf_win10.yaml"
+$CONFIG_WINDOWS = "conf_windows.yaml"
 $DOTBOT_DIR = "dotbot"
 
 $DOTBOT_BIN = "bin/dotbot"
@@ -37,11 +37,11 @@ git submodule update --init --recursive common/bash/plugins/dircolors-solarized
 
 git submodule update
 
-$confirmation = Read-Host "[Win10] Do you want to run one-time installation scripts?"
+$confirmation = Read-Host "Do you want to run one-time installation scripts?"
 if ($confirmation -eq 'y') {
     # Configure file exporer, numlock, theme
-    .\win10\packages.ps1 default-modules
-    .\win10\packages.ps1 win10-defaults
+    .\windows\packages.ps1 default-modules
+    .\windows\packages.ps1 windows-defaults
 
     # Need pip and pipenv for what comes next
     python -m pip install --upgrade pip
@@ -50,7 +50,7 @@ if ($confirmation -eq 'y') {
     Push-Location superpack
     pipenv install
     Start-Process pwsh -WindowStyle Maximized -ArgumentList `
-        "-Command & {pipenv run python .\superpack\superpack.py ..\win10\packages.yml}"
+        "-Command & {pipenv run python .\superpack\superpack.py ..\windows\packages.yml}"
     Pop-Location
 
     Write-Output 'Press any key to continue with dotbot config...';
@@ -69,7 +69,7 @@ foreach ($PYTHON in ('python', 'python3')) {
         &$PYTHON $(Join-Path $BASEDIR -ChildPath $DOTBOT_DIR | Join-Path -ChildPath $DOTBOT_BIN) `
             -d $BASEDIR -c $CONFIG_COMMON $Args
 
-        Write-Output "Linking Win10-specific dotfiles"
+        Write-Output "Linking Windows-specific dotfiles"
         &$PYTHON $(Join-Path $BASEDIR -ChildPath $DOTBOT_DIR | Join-Path -ChildPath $DOTBOT_BIN) `
             -d $BASEDIR -c $CONFIG_WINDOWS $Args
 

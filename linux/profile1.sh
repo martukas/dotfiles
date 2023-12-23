@@ -4,7 +4,7 @@
 
 # Enable Rust tools
 if [ -f "${HOME}/.cargo/bin/rustup" ]; then
-	. "${HOME}/.cargo/env"
+  . "${HOME}/.cargo/env"
 fi
 
 # Enable Node version manager
@@ -29,5 +29,5 @@ export PATH=~/.npm-global/bin:$PATH
 export PATH=~/.dotfiles/linux/bin:${PATH}
 
 if [ -d /home/linuxbrew ]; then
-	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi

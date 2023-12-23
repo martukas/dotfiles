@@ -6,12 +6,12 @@ set -o pipefail
 
 #silent pushd
 pushd() {
-	command pushd "$@" >/dev/null
+  command pushd "$@" >/dev/null
 }
 
 #silent popd
 popd() {
-	command popd >/dev/null
+  command popd >/dev/null
 }
 
 pushd "${HOME}/.dotfiles/linux/Linux-Fake-Background-Webcam"

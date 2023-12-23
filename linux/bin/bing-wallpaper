@@ -55,8 +55,8 @@ echo "Pinging Bing API at $(date)"
 apiResp=$(curl -s "$reqImg")
 # shellcheck disable=SC2181
 if [ $? -gt 0 ]; then
-	echo "Ping failed!"
-	exit 1
+  echo "Ping failed!"
+  exit 1
 fi
 
 # Default image URL in case the required is not available.
@@ -70,7 +70,7 @@ copyright=$(echo "$apiResp" | grep -oP 'copyright":"[^"]*' | cut -d '"' -f 3)
 
 # Checking if reqImgURL exists.
 if ! wget --quiet --spider --max-redirect 0 "$reqImgURL"; then
-	reqImgURL=$defImgURL
+  reqImgURL=$defImgURL
 fi
 
 # Logging.
@@ -89,13 +89,13 @@ mkdir -p "$path"
 # If the Image is not found in the collection or it has a zero bytes size,
 # then save it and apply it to the desktop.
 if [ ! -s "$path$imgName" ]; then
-	curl -L -s -o "$path$imgName" "$reqImgURL"
+  curl -L -s -o "$path$imgName" "$reqImgURL"
 
-	# Writing copyright for new Image file.
-	echo "$copyright" >"$path${imgName/%.jpg/.txt}"
+  # Writing copyright for new Image file.
+  echo "$copyright" >"$path${imgName/%.jpg/.txt}"
 
-	# Logging.
-	echo "Image was saved to $path$imgName"
+  # Logging.
+  echo "Image was saved to $path$imgName"
 fi
 
 PID=$(pgrep xfce4-session)
@@ -103,7 +103,7 @@ DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS "/proc/$PID/environ"
 export DBUS_SESSION_BUS_ADDRESS
 
 xfconf-query --channel xfce4-desktop --list | grep last-image | while read -r line; do
-	xfconf-query --channel xfce4-desktop --property "$line" --set "$path$imgName"
+  xfconf-query --channel xfce4-desktop --property "$line" --set "$path$imgName"
 done
 
 echo "New wallpaper set successfully for $XDG_CURRENT_DESKTOP."

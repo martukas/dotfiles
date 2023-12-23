@@ -119,7 +119,7 @@
 [include]
 	path = ~/.gitconfig_private
 	path = ~/.gitconfig_linux
-	path = ~/.gitconfig_win10
+	path = ~/.gitconfig_windows
 	path = ~/.gitconfig_local
 
 [fetch]

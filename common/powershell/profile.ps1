@@ -1,3 +1,4 @@
+#!/usr/bin/env pwsh
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '')]
 param()
 

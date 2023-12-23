@@ -6,34 +6,34 @@
       descr: Colorize PowerShell prompt
       category: dev-admin
       check: winget list -q JanDeDobbeleer.OhMyPosh | findstr 'JanDeDobbeleer.OhMyPosh'
-      install: "..\\win10\\packages.ps1 colorize"
+      install: "..\\windows\\packages.ps1 colorize"
     - id: komorebi
       descr: Komorebi - Tiling window manager
       category: GUI
       check: winget list -q LGUG2Z.komorebi | findstr 'LGUG2Z.komorebi'
-      install: "..\\win10\\packages.ps1 install-komorebi"
+      install: "..\\windows\\packages.ps1 install-komorebi"
     - id: dummy
       descr: Dummy test package
       category: xtras
       check: winget list -q nonexistent | findstr 'nothingtofind'
-      install: "..\\win10\\packages.ps1 test"
+      install: "..\\windows\\packages.ps1 test"
 - defaults:
     type: winget
     category: GUI
   packages:
     - id: Maximus5.ConEmu
       descr: Conemu terminal
-      install: "..\\win10\\packages.ps1 startup ConEmu 'C:\\Program Files\\ConEmu\\ConEmu64.exe'"
+      install: "..\\windows\\packages.ps1 startup ConEmu 'C:\\Program Files\\ConEmu\\ConEmu64.exe'"
     - id: Flameshot.Flameshot
       descr: Flameshot screenshot utility
-      install: "..\\win10\\packages.ps1 startup Flameshot 'C:\\Program Files\\Flameshot\\bin\\flameshot.exe'"
+      install: "..\\windows\\packages.ps1 startup Flameshot 'C:\\Program Files\\Flameshot\\bin\\flameshot.exe'"
     - id: IrfanSkiljan.IrfanView
       descr: Irfanview minimal image viewer
     - id: Microsoft.BingWallpaper
       descr: Bing wallpaper daily images
     - id: DominikReichl.KeePass
       descr: KeePass password manager
-      install: "..\\win10\\packages.ps1 install-keepass-plugins"
+      install: "..\\windows\\packages.ps1 install-keepass-plugins"
 - defaults:
     type: winget
     category: dev-admin

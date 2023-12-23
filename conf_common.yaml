@@ -11,9 +11,9 @@
       relink: true
 
 - link:
-    ~/.dotfiles: ''
-    ~/.bash-git-prompt: 'common/bash-git-prompt'
-    ~/.bash: 'common/bash'
+    ~/.dotfiles: ""
+    ~/.bash-git-prompt: "common/bash-git-prompt"
+    ~/.bash: "common/bash"
     ~/.bashrc:
       path: common/rc.bash
       force: true
@@ -26,6 +26,6 @@
     ~/.gitconfig:
       path: common/gitconfig
       force: true
-    ~/.gitignore_global: 'common/gitignore_global'
-    ~/.ssh/config: 'private/common/ssh/config'
-    ~/.gitconfig_private: 'private/common/gitconfig_private'
+    ~/.gitignore_global: "common/gitignore_global"
+    ~/.ssh/config: "private/common/ssh/config"
+    ~/.gitconfig_private: "private/common/gitconfig_private"
