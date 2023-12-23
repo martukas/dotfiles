@@ -69,7 +69,7 @@ function DarkThemeUI() {
 
 function Install-KeepassDarkTheme() {
     Write-Output "Installing Keepass plugins"
-    Push-Location 'C:\Program Files\KeePass Password Safe 2\Plugins'
+    Push-Location "$env:LOCALAPPDATA\Programs\KeePass2x\Plugins"
     Invoke-WebRequest -Uri "https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.dll" -OutFile "KeeTheme.dll"
     Invoke-WebRequest -Uri "https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.plgx" -OutFile "KeeTheme.plgx"
     mkdir 'DarkenKP'
