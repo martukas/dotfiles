@@ -86,22 +86,40 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 - symlinked files will stay up to date
 - "dirty" state in the `/private` subrepo will be ignored. Commit changes to that submodule separately, before you commit in parent dir
 
+<!-- markdownlint-disable no-space-in-emphasis -->
+
 ## Manual steps required
 
 The following cannot be automated:
 
 - [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
 - [CLion + PlatformIO integration](https://docs.platformio.org/en/latest/integration/ide/clion.html)
-- Linux:
-  - flameshot kbd shortcut
-  - panel items layout
-  - movable window manager tabs
-  - mugshot avatar
-  - whisker favorites
+
+<details>
+<summary>Linux manual steps</summary>
+
+- flameshot kbd shortcut
+- panel items layout
+- movable window manager tabs
+- mugshot avatar
+- whisker favorites
+
+</details>
+
+<details>
+<summary>Windows manual steps</summary>
+
+- Mouse cursor color `Settings` > `Bluetooth & devices` > `Mouse` > `Mouse pointer`
+- File associations `Settings` > `Apps` > `Default apps`
+  - Clementine: XSPF
+  - VLC: everything else it wants
+  - IrfanView: Everything else it wants, except TTF
+- [Unblock Flameshot shortcut](https://flameshot.org/docs/guide/windows-help/) & reboot
+
+</details>
 
 ## Future improvements
 
-<!-- markdownlint-disable no-space-in-emphasis -->
 <details>
 <summary>Roadmap</summary>
 

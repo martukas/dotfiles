@@ -60,6 +60,8 @@
     type: winget
     category: web
   packages:
+    - id: NordSecurity.NordVPN
+      descr: NordVPN
     - id: Zoom.Zoom
       descr: Zoom client
     - id: Telegram.TelegramDesktop
@@ -72,8 +74,6 @@
       descr: Chrome browser
     - id: SlackTechnologies.Slack
       descr: Slack
-    - id: WhatsApp.WhatsApp
-      descr: Whatsapp desktop client
     - id: Discord.Discord
       descr: Discord chat
 - defaults:
