@@ -30,151 +30,151 @@ alias gag='git exec ag'
 
 # git new branch = gnb, but Drum'n'bass sounds better
 function dnb() {
-	git checkout -b "$1"
-	git push --set-upstream origin "$1"
+  git checkout -b "$1"
+  git push --set-upstream origin "$1"
 }
 
 function commit-push() {
-	message="$*"
-	git add -A
-	git commit -m "${message}"
-	git push
+  message="$*"
+  git add -A
+  git commit -m "${message}"
+  git push
 }
 
 function commit-push-bypass-hooks() {
-	message="$*"
-	git add -A
-	git commit --no-verify -m "${message}"
-	git push
+  message="$*"
+  git add -A
+  git commit --no-verify -m "${message}"
+  git push
 }
 
 #create new issue branch
 function missue() {
-	SUBNAME="$1"
-	if [[ $SUBNAME =~ ^([0-9]+)(.*)$ ]]; then
-		BRANCH_NAME="issue_${SUBNAME}"
-		echo "Creating git branch = $BRANCH_NAME"
-		dnb "$BRANCH_NAME"
-	else
-		echo "Must provide branch sub-name beginning with ticket number!"
-		return 1
-	fi
+  SUBNAME="$1"
+  if [[ $SUBNAME =~ ^([0-9]+)(.*)$ ]]; then
+    BRANCH_NAME="issue_${SUBNAME}"
+    echo "Creating git branch = $BRANCH_NAME"
+    dnb "$BRANCH_NAME"
+  else
+    echo "Must provide branch sub-name beginning with ticket number!"
+    return 1
+  fi
 }
 
 # commit-push, appending an "updates #issue" to one-line commit message
 function issue() {
-	BRANCH="$(git symbolic-ref --short HEAD)"
+  BRANCH="$(git symbolic-ref --short HEAD)"
 
-	if [[ $BRANCH =~ ^(issue_)([0-9]+)(.*)$ ]]; then
-		if (($# < 1)); then
-			echo "No commit message provided!"
-			return 1
-		fi
-		NUMBER="${BASH_REMATCH[2]}"
-		message="$*; updates #$NUMBER"
-		commit-push "${message}"
-	else
-		echo "Not on an issue branch!"
-		return 1
-	fi
+  if [[ $BRANCH =~ ^(issue_)([0-9]+)(.*)$ ]]; then
+    if (($# < 1)); then
+      echo "No commit message provided!"
+      return 1
+    fi
+    NUMBER="${BASH_REMATCH[2]}"
+    message="$*; updates #$NUMBER"
+    commit-push "${message}"
+  else
+    echo "Not on an issue branch!"
+    return 1
+  fi
 }
 
 function git-rm-submodule() {
-	# Remove the submodule entry from .git/config
-	git submodule deinit -f "$1"
-	# Remove the submodule directory from the super-project's .git/modules directory
-	rm -rf .git/modules/"$1"
-	# Remove the entry in .gitmodules and remove the submodule directory located at path/to/submodule
-	git rm -f "$1"
+  # Remove the submodule entry from .git/config
+  git submodule deinit -f "$1"
+  # Remove the submodule directory from the super-project's .git/modules directory
+  rm -rf .git/modules/"$1"
+  # Remove the entry in .gitmodules and remove the submodule directory located at path/to/submodule
+  git rm -f "$1"
 }
 
 # Dotfiles update
 dfu() {
-	pushd ~/.dotfiles || {
-		echo "No dotfiles dir symlinked"
-		exit 1
-	}
-	git pull
-	OS="$(uname -o)"
-	if [[ $OS == "Msys" ]]; then
-		./install.ps1
-	else
-		./install.sh
-	fi
-	# shellcheck disable=SC2164
-	popd
+  pushd ~/.dotfiles || {
+    echo "No dotfiles dir symlinked"
+    exit 1
+  }
+  git pull
+  OS="$(uname -o)"
+  if [[ $OS == "Msys" ]]; then
+    ./install.ps1
+  else
+    ./install.sh
+  fi
+  # shellcheck disable=SC2164
+  popd
 }
 
 # Dotfiles upgrade submodules
 df-upgrade() {
-	pushd ~/.dotfiles || {
-		echo "Could not go to .dotfiles"
-		exit 1
-	}
-	git submodule update --remote private
-	git submodule update --remote dotbot
-	git submodule update --remote superpack
-	git submodule update --remote common/bash-git-prompt
-	git submodule update --remote common/bash/plugins/dircolors-solarized
-	git submodule update --remote linux/logiops
-	git submodule update --remote linux/gdb/qt5printers
-	# shellcheck disable=SC2164
-	popd
+  pushd ~/.dotfiles || {
+    echo "Could not go to .dotfiles"
+    exit 1
+  }
+  git submodule update --remote private
+  git submodule update --remote dotbot
+  git submodule update --remote superpack
+  git submodule update --remote common/bash-git-prompt
+  git submodule update --remote common/bash/plugins/dircolors-solarized
+  git submodule update --remote linux/logiops
+  git submodule update --remote linux/gdb/qt5printers
+  # shellcheck disable=SC2164
+  popd
 }
 
 upd() {
-	if [[ $OS == "Msys" ]]; then
-		winget upgrade --all "$@"
-	else
-		apt-update-wrapper.sh "$@"
-	fi
+  if [[ $OS == "Msys" ]]; then
+    winget upgrade --all "$@"
+  else
+    apt-update-wrapper.sh "$@"
+  fi
 }
 
 # Use pip without requiring virtualenv
 syspip() {
-	PIP_REQUIRE_VIRTUALENV="" pip "$@"
+  PIP_REQUIRE_VIRTUALENV="" pip "$@"
 }
 
 # cd to git root directory
 cdgr() {
-	cd "$(git root)" || {
-		echo "Could not jump to git root"
-		exit 1
-	}
+  cd "$(git root)" || {
+    echo "Could not jump to git root"
+    exit 1
+  }
 }
 
 # Create a directory and cd into it
 mcd() {
-	mkdir "${1}"
-	cd "${1}" || {
-		echo "Could not enter directory: ${1}"
-		exit 1
-	}
+  mkdir "${1}"
+  cd "${1}" || {
+    echo "Could not enter directory: ${1}"
+    exit 1
+  }
 }
 
 # Go up [n] directories
 up() {
-	local cdir
-	cdir="$(pwd)"
-	if [[ ${1} == "" ]]; then
-		cdir="$(dirname "${cdir}")"
-	elif ! [[ ${1} =~ ^[0-9]+$ ]]; then
-		echo "Error: argument must be a number"
-	elif ! [[ ${1} -gt "0" ]]; then
-		echo "Error: argument must be positive"
-	else
-		for ((i = 0; i < ${1}; i++)); do
-			local ncdir
-			ncdir="$(dirname "${cdir}")"
-			if [[ ${cdir} == "${ncdir}" ]]; then
-				break
-			else
-				cdir="${ncdir}"
-			fi
-		done
-	fi
-	cd "${cdir}" || {
-		echo "Could not go up ${1} dirs"
-		exit 1
-	}
+  local cdir
+  cdir="$(pwd)"
+  if [[ ${1} == "" ]]; then
+    cdir="$(dirname "${cdir}")"
+  elif ! [[ ${1} =~ ^[0-9]+$ ]]; then
+    echo "Error: argument must be a number"
+  elif ! [[ ${1} -gt "0" ]]; then
+    echo "Error: argument must be positive"
+  else
+    for ((i = 0; i < ${1}; i++)); do
+      local ncdir
+      ncdir="$(dirname "${cdir}")"
+      if [[ ${cdir} == "${ncdir}" ]]; then
+        break
+      else
+        cdir="${ncdir}"
+      fi
+    done
+  fi
+  cd "${cdir}" || {
+    echo "Could not go up ${1} dirs"
+    exit 1
+  }
 }

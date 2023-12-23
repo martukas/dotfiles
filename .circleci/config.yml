@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   pre-commit-checks:
     machine:
-      image: 'windows-server-2022-gui:current'
+      image: "windows-server-2022-gui:current"
     resource_class: windows.medium
     steps:
       - checkout
@@ -27,12 +27,7 @@ jobs:
           shell: powershell.exe
           command: |
             $ErrorActionPreference = "Stop"
-            $merge_base = git merge-base -a HEAD origin/master
-            Write-Output "Merge base: $merge_base"
-            $changed_files = git diff --name-only $merge_base`...HEAD
-            Write-Output "Changed files since branched from origin/master: $changed_files"
-            git reset --soft $merge_base
-            pre-commit run --show-diff-on-failure --files $changed_files
+            pre-commit run --show-diff-on-failure --all-files
 
 workflows:
   circle-ci-tests:

@@ -30,10 +30,10 @@ bash <(wget -qO- https://github.com/martukas/dotfiles/raw/master/bootstrap/boots
 
 Firstly, you want to prevent OneDrive from taking over your home directories as described [here](https://answers.microsoft.com/en-us/windows/forum/all/taking-back-control-of-your-folders-from-onedrive/7b7ad05e-8b05-4bcd-9772-9e4eee880346):
 
-* Open 'gpedit' from the Start menu
-* Follow `Local Computer Policy` > `Computer Configuration` > `Administrative Templates`>`Windows Components`>`OneDrive`
-* Edit and enable `Prevent the usage of OneDrive for file storage`.
-* Reboot and make sure that OneDrive is not running
+- Open 'gpedit' from the Start menu
+- Follow `Local Computer Policy` > `Computer Configuration` > `Administrative Templates`>`Windows Components`>`OneDrive`
+- Edit and enable `Prevent the usage of OneDrive for file storage`.
+- Reboot and make sure that OneDrive is not running
 
 Start PowerShell (64 bit, with Admin privileges), and run these commands
 
@@ -49,8 +49,8 @@ You will have to reboot before you start using the utilities below.
 
 For first-time setup:
 
-* go to `~/dev/dotfiles`
-* run either `install.ps1` or `install.sh` as per shell type
+- go to `~/dev/dotfiles`
+- run either `install.ps1` or `install.sh` as per shell type
 
 These scripts will set up symlinks, command aliases and also run [SuperPack](https://github.com/martukas/superpack) to offer you installation of packages appropriate for your system.
 
@@ -59,7 +59,7 @@ These scripts will set up symlinks, command aliases and also run [SuperPack](htt
 The following aliases have (nearly) identical behaviour in bash and Powershell, Linux and Windows.
 
 | Alias                       | Function                                                                 |
-|-----------------------------|--------------------------------------------------------------------------|
+| --------------------------- | ------------------------------------------------------------------------ |
 | dfu                         | **dotfiles update:** pulls this repo and runs appropriate install script |
 | df-upgrade                  | **dotfiles upgrade:** upgrades git sub-modules in this repo              |
 | dnb `new_branch_name`       | **git new branch:** creates and pushes new branch                        |
@@ -82,22 +82,22 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 
 ### Keeping repo up to date
 
-* use the `df*` aliases above
-* symlinked files will stay up to date
-* "dirty" state in the `/private` subrepo will be ignored. Commit changes to that submodule separately, before you commit in parent dir
+- use the `df*` aliases above
+- symlinked files will stay up to date
+- "dirty" state in the `/private` subrepo will be ignored. Commit changes to that submodule separately, before you commit in parent dir
 
 ## Manual steps required
 
 The following cannot be automated:
 
-* [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
-* [CLion + PlatformIO integration](https://docs.platformio.org/en/latest/integration/ide/clion.html)
-* Linux:
-  * flameshot kbd shortcut
-  * panel items layout
-  * movable window manager tabs
-  * mugshot avatar
-  * whisker favorites
+- [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
+- [CLion + PlatformIO integration](https://docs.platformio.org/en/latest/integration/ide/clion.html)
+- Linux:
+  - flameshot kbd shortcut
+  - panel items layout
+  - movable window manager tabs
+  - mugshot avatar
+  - whisker favorites
 
 ## Future improvements
 
@@ -105,33 +105,33 @@ The following cannot be automated:
 <details>
 <summary>Roadmap</summary>
 
-* include .profile?
-* install [conan](https://docs.conan.io/2/installation.html)
-* clementine remote config & script
-* Linux:
-  * Numlock on startup
-  * Clone with pre-commit enabled
-  * Window tiling manager
-  * change terminal name via ssh
-  * NPM
-  * synaptic
-  * baobab
-  * circleci
-* Windows:
-  * InSync
-  * Nordvpn
-  * Foreign keyboards
-  * Steam
-  * dotnet
-  * jdk
-  * configure night light
-  * optional sshd and remote-desktop config
-* Configure rustup shell completion [here](https://rust-lang.github.io/rustup/installation/index.html)
-* Try out [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
-* Set up conditional GPG things in `.gitconfig_local` or some such
-* Adopt <https://github.com/pop-os/shell> ?
-* Migrate to <https://www.chezmoi.io/> ?
-* Adopt <https://github.com/mehedirm6244/My_XFCE_dotties/tree/Everblush> ?
+- include .profile?
+- install [conan](https://docs.conan.io/2/installation.html)
+- clementine remote config & script
+- Linux:
+  - Numlock on startup
+  - Clone with pre-commit enabled
+  - Window tiling manager
+  - change terminal name via ssh
+  - NPM
+  - synaptic
+  - baobab
+  - circleci
+- Windows:
+  - InSync
+  - Nordvpn
+  - Foreign keyboards
+  - Steam
+  - dotnet
+  - jdk
+  - configure night light
+  - optional sshd and remote-desktop config
+- Configure rustup shell completion [here](https://rust-lang.github.io/rustup/installation/index.html)
+- Try out [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
+- Set up conditional GPG things in `.gitconfig_local` or some such
+- Adopt <https://github.com/pop-os/shell> ?
+- Migrate to <https://www.chezmoi.io/> ?
+- Adopt <https://github.com/mehedirm6244/My_XFCE_dotties/tree/Everblush> ?
 
 </details>
 <!-- markdownlint-enable no-space-in-emphasis -->

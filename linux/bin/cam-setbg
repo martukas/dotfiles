@@ -6,8 +6,8 @@ set -o pipefail
 
 # If parameter supplied, use that
 if [ "$#" -lt 2 ]; then
-	echo "No parameter provided"
-	exit 1
+  echo "No parameter provided"
+  exit 1
 fi
 
 TYPE=$1
@@ -15,8 +15,8 @@ echo "type = $TYPE"
 
 FILE=$2
 if [ ! -f "$FILE" ]; then
-	echo "$FILE does not exist."
-	exit 1
+  echo "$FILE does not exist."
+  exit 1
 fi
 
 ln -sf "${FILE}" "${HOME}/Pictures/linked-background-${TYPE}.jpg"
