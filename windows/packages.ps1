@@ -107,7 +107,7 @@ Switch ($request)
     {$_ -match 'default-modules'} {
         DefaultModules
     }
-    {$_ -match 'win10-defaults'} {
+    {$_ -match 'windows-defaults'} {
         DefaultFileExplorerSettings
         NumLockOnStartup
         DarkThemeUI

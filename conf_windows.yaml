@@ -15,15 +15,15 @@
       relink: true
       force: true
 - link:
-    ~/.gitconfig_win10:
-      path: win10/gitconfig_win10
+    ~/.gitconfig_windows:
+      path: windows/gitconfig_windows
     $APPDATA/ConEmu.xml:
-      path: win10/AppData/ConEmu.xml
+      path: windows/AppData/ConEmu.xml
     $APPDATA/Notepad++/:
       glob: true
       path: private/windows/AppData/Notepad++/**
     $APPDATA/flameshot/flameshot.ini:
-      path: win10/AppData/flameshot/flameshot.ini
+      path: windows/AppData/flameshot/flameshot.ini
     ~/Documents/WindowsPowerShell/profile.ps1:
       path: common/powershell/profile.ps1
     ~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1:
@@ -31,6 +31,6 @@
     ~/Documents/WindowsPowerShell/blue-owl.omp.json:
       path: common/powershell/blue-owl.omp.json
     ~/.config/komorebi:
-      path: win10/config/komorebi
+      path: windows/config/komorebi
     ~/.config/whkdrc:
-      path: win10/config/whkdrc
+      path: windows/config/whkdrc

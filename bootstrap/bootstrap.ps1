@@ -14,9 +14,9 @@ if ($confirmation -ne 'y') {
 # Fail on first error
 $ErrorActionPreference = "Stop"
 
-Write-Output "==============================================================="
-Write-Output "============== MGS personal bootstrapper - Win10 =============="
-Write-Output "==============================================================="
+Write-Output "================================================================="
+Write-Output "============== MGS personal bootstrapper - Windows =============="
+Write-Output "================================================================="
 Write-Output " "
 Write-Output "  -- removes OneDrive"
 Write-Output "  -- installs esenstials: PowerShell7, Git, Python"
