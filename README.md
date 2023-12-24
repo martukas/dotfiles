@@ -117,6 +117,7 @@ The following cannot be automated:
 - [Unblock Flameshot shortcut](https://flameshot.org/docs/guide/windows-help/) & reboot
 - Configure foreign keyboards
 - Turn on night light
+- Configure 24h clock
 
 </details>
 

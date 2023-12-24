@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <key name="Software">
 	<key name="ConEmu">
-		<key name=".Vanilla" modified="2023-09-23 09:29:20" build="230724">
+		<key name=".Vanilla" modified="2023-12-23 23:02:38" build="230724">
 			<value name="StartType" type="hex" data="02"/>
 			<value name="CmdLine" type="string" data=""/>
 			<value name="StartTasksFile" type="string" data=""/>
@@ -343,9 +343,9 @@
 			<value name="Cascaded" type="hex" data="01"/>
 			<value name="IntegralSize" type="hex" data="00"/>
 			<value name="WindowMode" type="dword" data="00000520"/>
-			<value name="ConWnd X" type="long" data="-3"/>
+			<value name="ConWnd X" type="long" data="-2"/>
 			<value name="ConWnd Y" type="long" data="0"/>
-			<value name="LastMonitor" type="string" data="0,0,3840,2280"/>
+			<value name="LastMonitor" type="string" data="0,0,2880,1728"/>
 			<value name="ConWnd Width" type="dword" data="00000077"/>
 			<value name="ConWnd Height" type="dword" data="00000019"/>
 			<value name="16bit Height" type="ulong" data="0"/>
@@ -705,10 +705,10 @@
 					<value name="Count" type="long" data="1"/>
 					<value name="Cmd1" type="string" data='set "PATH=%ProgramFiles%\Git\usr\bin;%PATH%" &amp; %ProgramFiles%\Git\git-cmd.exe --no-cd --command=%ConEmuBaseDirShort%\conemu-msys2-64.exe /usr/bin/bash.exe -l -i -new_console:a'/>
 				</key>
-				<key name="Task12" modified="2023-03-25 07:08:42" build="221218">
+				<key name="Task12" modified="2023-12-23 23:02:38" build="230724">
 					<value name="Name" type="string" data="{WSL::WSL}"/>
 					<value name="Flags" type="dword" data="00000004"/>
-					<value name="Hotkey" type="dword" data="00000000"/>
+					<value name="Hotkey" type="dword" data="a4a25b59"/>
 					<value name="GuiArgs" type="string" data=""/>
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
