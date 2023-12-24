@@ -31,6 +31,8 @@
       descr: Irfanview minimal image viewer
     - id: Microsoft.BingWallpaper
       descr: Bing wallpaper daily images
+    - id: Insynchq.Insync
+      descr: Insync cloud storage
     - id: DominikReichl.KeePass
       descr: KeePass password manager
       install: "..\\windows\\packages.ps1 install-keepass-plugins"
@@ -86,6 +88,8 @@
       descr: Clementine music player
     - id: Spotify.Spotify
       descr: Spotify desktop client
+    - id: Valve.Steam
+      descr: Steam games
 - defaults:
     type: winget
     category: graphics

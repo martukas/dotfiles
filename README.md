@@ -115,6 +115,8 @@ The following cannot be automated:
   - VLC: everything else it wants
   - IrfanView: Everything else it wants, except TTF
 - [Unblock Flameshot shortcut](https://flameshot.org/docs/guide/windows-help/) & reboot
+- Configure foreign keyboards
+- Turn on night light
 
 </details>
 
@@ -136,13 +138,10 @@ The following cannot be automated:
   - baobab
   - circleci
 - Windows:
-  - InSync
-  - Nordvpn
-  - Foreign keyboards
-  - Steam
+  - add whkrdc config to repo
+  - WLS
   - dotnet
   - jdk
-  - configure night light
   - optional sshd and remote-desktop config
 - Configure rustup shell completion [here](https://rust-lang.github.io/rustup/installation/index.html)
 - Try out [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
