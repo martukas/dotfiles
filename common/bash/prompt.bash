@@ -34,14 +34,14 @@ CBC_ROOT=$COLOR_RED
 
 # shellcheck disable=SC2143
 if [[ $(grep -i Microsoft /proc/version) ]]; then
-  CBC_TIME=$COLOR_LGRAY
-  CBC_STATIC=$COLOR_LGRAY
   GIT_PROMPT_THEME=Solarized_UserHost
+  CBC_TIME=$COLOR_DGRAY
+  CBC_STATIC=$COLOR_DGRAY
   CBC_PREFIX="WSL"
 else
+  GIT_PROMPT_THEME=Minimal_UserHost
   CBC_TIME=$COLOR_BLUE
   CBC_STATIC=$COLOR_BLUE
-  GIT_PROMPT_THEME=Minimal_UserHost
   CBC_PREFIX=""
 fi
 
