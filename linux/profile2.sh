@@ -2,6 +2,11 @@
 
 eval "$(thefuck --alias)"
 
+if [[ $(grep -i Microsoft /proc/version) ]]; then
+ eval `ssh-agent -s`
+ ssh-add -t 0 .ssh/id_ed25519
+fi
+
 osinfo() {
   uname -a
   cat /etc/*-release

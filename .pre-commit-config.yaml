@@ -6,7 +6,7 @@ exclude: |
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
@@ -23,28 +23,28 @@ repos:
         exclude: "linux\/config\/autostart\/.*"
 
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.1.0
+    rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
         files: \.(json|yaml|yml|markdown|md)$
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.4
+    rev: v1.5.5
     hooks:
       - id: remove-crlf
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.35.0
+    rev: v0.39.0
     hooks:
       - id: markdownlint-fix
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.9.0.5
+    rev: v0.10.0.1
     hooks:
       - id: shellcheck
 
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.7.0-4
+    rev: v3.8.0-1
     hooks:
       - id: shfmt
         args: [-w, -s, -ci, -bn, -i, "2"]

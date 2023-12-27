@@ -35,6 +35,7 @@ echo " "
 read -n1 -srp $'Press any key to continue...\n' _
 
 ### Install git-lfs
+sudo apt update
 sudo apt --yes install curl git-lfs ssh python3-pip python-is-python3 xclip
 
 browser_call='echo [RUNNING HEADLESS] Please open this URL manually: '
