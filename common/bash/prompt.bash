@@ -26,8 +26,6 @@ machine_name() {
 }
 
 PROMPT_DIRTRIM=5
-CBC_TIME=$COLOR_BLUE
-CBC_STATIC=$COLOR_BLUE
 CBC_USER=$COLOR_CYAN
 CBC_PREP=$COLOR_DGRAY
 CBC_PC=$COLOR_MAGENTA
@@ -36,9 +34,13 @@ CBC_ROOT=$COLOR_RED
 
 # shellcheck disable=SC2143
 if [[ $(grep -i Microsoft /proc/version) ]]; then
+  CBC_TIME=$COLOR_LGRAY
+  CBC_STATIC=$COLOR_LGRAY
   GIT_PROMPT_THEME=Solarized_UserHost
   CBC_PREFIX="WSL"
 else
+  CBC_TIME=$COLOR_BLUE
+  CBC_STATIC=$COLOR_BLUE
   GIT_PROMPT_THEME=Minimal_UserHost
   CBC_PREFIX=""
 fi
