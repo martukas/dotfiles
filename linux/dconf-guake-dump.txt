@@ -41,7 +41,7 @@ rename-current-tab='<Primary><Shift>r'
 toggle-fullscreen='disabled'
 
 [style/background]
-transparency=79
+transparency=83
 
 [style/font]
 allow-bold=true

@@ -20,6 +20,7 @@
         <value type="int" value="9"/>
         <value type="int" value="10"/>
         <value type="int" value="11"/>
+        <value type="int" value="13"/>
       </property>
       <property name="background-style" type="uint" value="0"/>
       <property name="size" type="uint" value="32"/>
@@ -52,6 +53,7 @@
       <property name="size-max" type="uint" value="22"/>
       <property name="symbolic-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="insync"/>
         <value type="string" value="thunar"/>
         <value type="string" value="guake"/>
       </property>
@@ -82,21 +84,22 @@
       <property name="enable-mpris" type="bool" value="true"/>
       <property name="enable-wnck" type="bool" value="true"/>
       <property name="mixer-command" type="string" value="pavucontrol"/>
-      <property name="mpris-players" type="string" value="clementine;edge.instance510581;edge.instance55005;parole;rhythmbox;vlc"/>
+      <property name="mpris-players" type="string" value="clementine;edge.instance10713;edge.instance11929;edge.instance11976;edge.instance12124;edge.instance13957;edge.instance15130;edge.instance15537;edge.instance158184;edge.instance17719;edge.instance17752;edge.instance20211;edge.instance220521;edge.instance27030;edge.instance349028;edge.instance4451;edge.instance4519;edge.instance4547;edge.instance4630;edge.instance4654;edge.instance46874;edge.instance4874;edge.instance4953;edge.instance510581;edge.instance5131;edge.instance5183;edge.instance5408;edge.instance55005;edge.instance5578;edge.instance5739;edge.instance5891;edge.instance5961;edge.instance6439;edge.instance6577;edge.instance6626;edge.instance6918;edge.instance7191;edge.instance7381;edge.instance8090;edge.instance8111;edge.instance8955;edge.instance9104;edge.instance9271;edge.instance9285;parole;rhythmbox;vlc"/>
       <property name="show-notifications" type="bool" value="true"/>
     </property>
     <property name="plugin-10" type="string" value="clock">
       <property name="digital-format" type="string" value=" %d %b, %H:%M "/>
+      <property name="timezone" type="string" value="PST8PDT"/>
     </property>
     <property name="plugin-11" type="string" value="weather">
       <property name="location" type="empty">
-        <property name="name" type="string" value="Palo Alto, California"/>
-        <property name="latitude" type="string" value="37.440500"/>
-        <property name="longitude" type="string" value="-122.147800"/>
+        <property name="name" type="string" value="Germantown, Montgomery County"/>
+        <property name="latitude" type="string" value="39.171308"/>
+        <property name="longitude" type="string" value="-77.265579"/>
       </property>
-      <property name="msl" type="int" value="12"/>
-      <property name="timezone" type="string" value="America/Los_Angeles"/>
-      <property name="offset" type="string" value="-07:00"/>
+      <property name="msl" type="int" value="131"/>
+      <property name="timezone" type="string" value="America/New_York"/>
+      <property name="offset" type="string" value="-04:00"/>
       <property name="cache-max-age" type="int" value="172800"/>
       <property name="power-saving" type="bool" value="true"/>
       <property name="units" type="empty">
@@ -146,6 +149,7 @@
         <property name="never-confirm-history-clear" type="bool" value="false"/>
       </property>
     </property>
+    <property name="plugin-13" type="string" value="xkb"/>
   </property>
   <property name="configver" type="int" value="2"/>
 </channel>
