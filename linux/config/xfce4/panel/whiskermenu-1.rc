@@ -1,5 +1,5 @@
-favorites=xfce4-file-manager.desktop,xfce4-terminal-emulator.desktop,jetbrains-toolbox.desktop,firefox_firefox.desktop,microsoft-edge.desktop,slack_slack.desktop,xfhelp4.desktop
-recent=xfce4-file-manager.desktop,jetbrains-toolbox.desktop,whatsapp-for-linux_whatsapp-for-linux.desktop,xfce-session-settings.desktop,org.gnome.Cheese.desktop,firefox_firefox.desktop,zoom-client_zoom-client.desktop,microsoft-edge.desktop,clementine.desktop,gimp.desktop
+favorites=xfce4-file-manager.desktop,jetbrains-toolbox.desktop,microsoft-edge.desktop,slack_slack.desktop,code_code.desktop,xfce4-terminal-emulator.desktop,xfhelp4.desktop,clementine.desktop
+recent=microsoft-edge.desktop,jetbrains-toolbox.desktop,zoom-client_zoom-client.desktop,xfce4-file-manager.desktop,clementine.desktop,powershell_powershell.desktop,org.xfce.mousepad.desktop,xfce-mouse-settings.desktop,xfce4-terminal-emulator.desktop,snap-store_snap-store.desktop
 button-icon=xubuntu-logo-menu
 button-single-row=false
 show-button-title=false
