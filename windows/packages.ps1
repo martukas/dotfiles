@@ -79,13 +79,6 @@ function Install-KeepassDarkTheme() {
     Pop-Location
 }
 
-function Install-Komorebi() {
-    Write-Output "Installing Komorebi"
-    winget install -e --id AutoHotkey.AutoHotkey
-    winget install -e --id LGUG2Z.whkd
-    winget install -e --id LGUG2Z.komorebi
-}
-
 $request=$args[0]
 
 Switch ($request)
