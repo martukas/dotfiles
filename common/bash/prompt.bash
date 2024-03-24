@@ -25,23 +25,21 @@ machine_name() {
   fi
 }
 
+GIT_PROMPT_THEME=Custom
+
 PROMPT_DIRTRIM=5
 CBC_USER=$COLOR_CYAN
 CBC_PREP=$COLOR_DGRAY
 CBC_PC=$COLOR_MAGENTA
 CBC_DIR=$COLOR_YELLOW
 CBC_ROOT=$COLOR_RED
+CBC_TIME=$COLOR_DGRAY
+CBC_STATIC=$COLOR_DGRAY
 
 # shellcheck disable=SC2143
 if [[ $(grep -i Microsoft /proc/version) ]]; then
-  GIT_PROMPT_THEME=Solarized_UserHost
-  CBC_TIME=$COLOR_DGRAY
-  CBC_STATIC=$COLOR_DGRAY
   CBC_PROMPT="WSL>"
 else
-  GIT_PROMPT_THEME=Minimal_UserHost
-  CBC_TIME=$COLOR_BLUE
-  CBC_STATIC=$COLOR_BLUE
   CBC_PROMPT="NUX>"
   case "$OSTYPE" in
     darwin*) CBC_PROMPT="MAC>" ;;
@@ -52,8 +50,10 @@ else
   esac
 fi
 
-PS1="\n${CBC_TIME}\t${COLOR_DEFAULT} ${CBC_USER}\\u${COLOR_DEFAULT}${CBC_PREP}@${COLOR_DEFAULT}${CBC_PC}$(machine_name)${COLOR_DEFAULT} ${CBC_DIR}\w${COLOR_DEFAULT}\n\$(if [ \$? -ne 0 ]; then echo \"${CBC_ROOT}!${COLOR_DEFAULT} \"; fi)${CBC_STATIC}${CBC_PROMPT}${COLOR_DEFAULT} "
-PS2="${CBC_STATIC}${CBC_PROMPT}${COLOR_DEFAULT} "
+export CBC_PROMPT
+
+PS1="\n${CBC_TIME}\t ${CBC_USER}\\u${CBC_PREP}@${CBC_PC}$(machine_name) ${CBC_DIR}\w${COLOR_DEFAULT}\n\$(if [ \$? -ne 0 ]; then echo \"${CBC_ROOT}!${COLOR_DEFAULT} \"; fi)${CBC_STATIC}${CBC_PROMPT}${COLOR_DEFAULT} "
+PS2="${CBC_STATIC}>${COLOR_DEFAULT} "
 
 export PS4="$0.$LINENO+ "
 
