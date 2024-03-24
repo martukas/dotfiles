@@ -13,6 +13,7 @@
 - link:
     ~/.dotfiles: ""
     ~/.bash-git-prompt: "common/bash-git-prompt"
+    ~/.git-prompt-colors.sh: "common/git-prompt-colors.sh"
     ~/.bash: "common/bash"
     ~/.bashrc:
       path: common/rc.bash

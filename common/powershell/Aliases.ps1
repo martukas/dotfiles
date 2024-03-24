@@ -96,17 +96,6 @@ function DotfilesUpgradeSubmodules() {
     Pop-Location
 }
 
-function KomorebiStart() {
-    komorebic start --await-configuration
-    . "$HOME\.config\komorebi\komorebi.ahk"
-}
-
-function KomorebiStop() {
-    komorebic stop
-    Get-CimInstance -ClassName win32_process -Filter "commandline like '%%komorebi.ahk""'" `
-        | Invoke-CimMethod -MethodName Terminate
-}
-
 New-Alias up GoUp
 New-Alias dfu DotfilesUpdate
 New-Alias df-upgrade DotfilesUpgradeSubmodules
@@ -118,5 +107,3 @@ New-Alias issue GitCommitIssueBranch
 New-Alias git-rm-submodule GitRemoveSubmodule
 New-Alias commit-push GitAddAllCommitPush
 New-Alias commit-push-bypass-hooks GitAddAllCommitPushBypassHooks
-New-Alias kom KomorebiStart
-New-Alias kom-stop KomorebiStop
