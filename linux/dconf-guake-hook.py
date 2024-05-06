@@ -5,7 +5,7 @@ import traceback
 import logging
 
 if __name__ == "__main__":
-    if os.name == "posix":
+    if os.name == "posix" and os.getenv("XDG_CURRENT_DESKTOP", None) is not None:
         path = "~/.dotfiles"
         outfile = "linux/dconf-guake-dump.txt"
         command = f"dconf dump /apps/guake/ > {outfile}"

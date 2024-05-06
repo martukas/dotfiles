@@ -2,9 +2,10 @@
 
 eval "$(thefuck --alias)"
 
-if [[ $(grep -i Microsoft /proc/version) ]]; then
- eval `ssh-agent -s`
- ssh-add -t 0 .ssh/id_ed25519
+if grep -qi Microsoft /proc/version; then
+  echo "Starting bash in WSL"
+  eval "$(ssh-agent -s)" >/dev/null
+  ssh-add -t 0 .ssh/id_ed25519
 fi
 
 osinfo() {
