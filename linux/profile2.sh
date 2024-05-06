@@ -2,6 +2,12 @@
 
 eval "$(thefuck --alias)"
 
+if grep -qi Microsoft /proc/version; then
+  echo "Starting bash in WSL"
+  eval "$(ssh-agent -s)" >/dev/null
+  ssh-add -t 0 .ssh/id_ed25519
+fi
+
 osinfo() {
   uname -a
   cat /etc/*-release

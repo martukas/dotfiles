@@ -79,7 +79,10 @@ function install_nvm() {
 }
 
 function install_platformio() {
-  python3 -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"
+  sudo apt install python3-venv
+  curl -fsSL -o get-platformio.py https://raw.githubusercontent.com/platformio/platformio-core-installer/master/get-platformio.py
+  python3 ./get-platformio.py
+  rm ./get-platformio.py
   ln -s "${HOME}/.platformio/penv/bin/platformio" "${HOME}/.local/bin/platformio"
   ln -s "${HOME}/.platformio/penv/bin/pio" "${HOME}/.local/bin/pio"
   ln -s "${HOME}/.platformio/penv/bin/piodebuggdb" "${HOME}/.local/bin/piodebuggdb"

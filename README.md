@@ -77,8 +77,6 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 | :penguin: mw                | `make writable:` chmod 664                                               |
 | :penguin: own               | take ownership as user:user                                              |
 | :window: Test-Administrator | Return true if in elevated session                                       |
-| :window: kom                | Start komorebi tiled window manager                                      |
-| :window: kom-stop           | Stop komorebi and kill associated AutoHotKey script                      |
 
 ### Keeping repo up to date
 

@@ -29,7 +29,7 @@ def copy_file_and_diff(machine_path, repo_path, file_path):
 
 
 if __name__ == "__main__":
-    if os.name == "posix":
+    if os.name == "posix" and os.getenv("XDG_CURRENT_DESKTOP", None) is not None:
         from pathlib import Path
         p = Path('~').expanduser()
         machine = p / ".config/xfce4"
