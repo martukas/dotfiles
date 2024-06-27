@@ -1,6 +1,8 @@
 #!/bin/bash
 
-eval "$(thefuck --alias)"
+if [[ $(command -v thefuck) ]]; then
+  eval "$(thefuck --alias)"
+fi
 
 if grep -qi Microsoft /proc/version; then
   echo "Starting bash in WSL"

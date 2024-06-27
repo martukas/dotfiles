@@ -50,9 +50,11 @@ if [[ $OS == "GNU/Linux" ]]; then
       # shellcheck disable=SC1091
       . /etc/lsb-release
       echo "DISTRIB_RELEASE = $DISTRIB_RELEASE"
-      if [[ $DISTRIB_RELEASE == "23.04" ]]; then
+      if [[ $DISTRIB_RELEASE == "24.04" ]]; then
         echo "[Ubuntu 23.04] installing global python packages via apt"
-        sudo apt --yes install pipenv poetry pre-commit thefuck compiledb
+        sudo apt --yes install pipenv python3-poetry pre-commit
+        pip3 install compiledb --user --break-system-packages
+        # todo install thefuck via brew? souce it optionally only
       else
         sudo python -m pip install --upgrade pip
         python -m pip install --upgrade pipenv poetry thefuck pre-commit compiledb
