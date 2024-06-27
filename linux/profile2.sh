@@ -68,3 +68,17 @@ create-user() {
     *) ;;
   esac
 }
+
+function rm-ext() {
+  ext=$1
+  find . -name "*.${ext}" -type f
+  read -rp "Will delete the above files. Continue? " answer
+  case ${answer:0:1} in
+    y | Y)
+      find . -name "*.${ext}" -type f -delete
+      ;;
+    *)
+      echo "Aborting"
+      ;;
+  esac
+}
