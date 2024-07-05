@@ -44,8 +44,10 @@ if [[ $OS == "GNU/Linux" ]]; then
   read -rp "[Linux] Do you want to run one-time installation scripts? " answer
   case ${answer:0:1} in
     y | Y)
-      sudo apt --yes install aptitude snapd silversearcher-ag
+      sudo apt --yes install aptitude snapd silversearcher-ag ubuntu-advantage-tools
+      # @todo run:   sudo pro attach 
       sudo apt -y purge parole
+      # @todo for firefox profile switcher: sudo apt install libglib2.0-dev libatk1.0-dev libgdk3.0-cil-dev libgdk-pixbuf2.0-dev libgtk-3-dev
 
       # shellcheck disable=SC1091
       . /etc/lsb-release
