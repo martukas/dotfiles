@@ -58,6 +58,9 @@
         <value type="string" value="guake"/>
       </property>
       <property name="known-items" type="array">
+        <value type="string" value="NordVPN"/>
+        <value type="string" value="example-simple-client"/>
+        <value type="string" value="zoom"/>
         <value type="string" value="Clementine"/>
         <value type="string" value="chrome_status_icon_1"/>
         <value type="string" value="toolbox"/>
@@ -84,7 +87,7 @@
       <property name="enable-mpris" type="bool" value="true"/>
       <property name="enable-wnck" type="bool" value="true"/>
       <property name="mixer-command" type="string" value="pavucontrol"/>
-      <property name="mpris-players" type="string" value="clementine;edge.instance10713;edge.instance11929;edge.instance11976;edge.instance12124;edge.instance13957;edge.instance15130;edge.instance15537;edge.instance158184;edge.instance17719;edge.instance17752;edge.instance20211;edge.instance220521;edge.instance27030;edge.instance34611;edge.instance349028;edge.instance4451;edge.instance4519;edge.instance4547;edge.instance4630;edge.instance4654;edge.instance46874;edge.instance4874;edge.instance4953;edge.instance510581;edge.instance5131;edge.instance5183;edge.instance5408;edge.instance55005;edge.instance5578;edge.instance5739;edge.instance5891;edge.instance5961;edge.instance6439;edge.instance6577;edge.instance6626;edge.instance6918;edge.instance7191;edge.instance7381;edge.instance8090;edge.instance8111;edge.instance8955;edge.instance9104;edge.instance9271;edge.instance9285;parole;rhythmbox;vlc"/>
+      <property name="mpris-players" type="string" value="clementine;edge.instance10713;edge.instance11475;edge.instance11929;edge.instance11976;edge.instance12124;edge.instance13720;edge.instance13740;edge.instance13957;edge.instance15130;edge.instance15537;edge.instance158184;edge.instance17719;edge.instance17752;edge.instance20211;edge.instance21500;edge.instance21642;edge.instance220521;edge.instance239442;edge.instance27030;edge.instance34611;edge.instance349028;edge.instance4279;edge.instance4451;edge.instance4519;edge.instance4547;edge.instance4630;edge.instance4654;edge.instance46874;edge.instance4713;edge.instance4778;edge.instance4874;edge.instance4953;edge.instance510581;edge.instance5131;edge.instance5183;edge.instance5408;edge.instance55005;edge.instance5535;edge.instance5578;edge.instance5739;edge.instance5754;edge.instance5891;edge.instance5920;edge.instance5961;edge.instance6108;edge.instance63026;edge.instance6439;edge.instance6577;edge.instance6626;edge.instance6918;edge.instance6985;edge.instance69856;edge.instance7191;edge.instance7381;edge.instance8090;edge.instance8111;edge.instance8130;edge.instance8187;edge.instance8955;edge.instance9104;edge.instance9189;edge.instance9207;edge.instance9271;edge.instance9285;edge.instance9440;firefox.instance_1_113;parole;rhythmbox;vlc"/>
       <property name="show-notifications" type="bool" value="true"/>
     </property>
     <property name="plugin-10" type="string" value="clock">

@@ -76,6 +76,8 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 | :penguin: mx                | `make executable:` chmod 775                                             |
 | :penguin: mw                | `make writable:` chmod 664                                               |
 | :penguin: own               | take ownership as user:user                                              |
+| :penguin: rm-ext            | remove all files recursively with given extension (asks to confirm)      |
+| :penguin: create-user       | create user with sudo privileges, home directory, authorized ssh key     |
 | :window: Test-Administrator | Return true if in elevated session                                       |
 
 ### Keeping repo up to date
