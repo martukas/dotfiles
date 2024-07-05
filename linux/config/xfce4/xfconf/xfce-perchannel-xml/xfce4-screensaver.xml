@@ -8,15 +8,5 @@
         <value type="string" value="screensavers-xfce-floaters"/>
       </property>
     </property>
-    <property name="idle-activation" type="empty">
-      <property name="delay" type="int" value="20"/>
-    </property>
-    <property name="enabled" type="bool" value="false"/>
-  </property>
-  <property name="lock" type="empty">
-    <property name="saver-activation" type="empty">
-      <property name="enabled" type="bool" value="true"/>
-      <property name="delay" type="int" value="0"/>
-    </property>
   </property>
 </channel>
