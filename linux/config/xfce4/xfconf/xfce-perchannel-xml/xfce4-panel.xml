@@ -35,6 +35,7 @@
       <property name="recent" type="array">
         <value type="string" value="xfce4-file-manager.desktop"/>
         <value type="string" value="jetbrains-toolbox.desktop"/>
+        <value type="string" value="microsoft-edge.desktop"/>
         <value type="string" value="xfce4-web-browser.desktop"/>
         <value type="string" value="firefox_firefox.desktop"/>
         <value type="string" value="org.clementine_player.Clementine.desktop"/>
@@ -42,12 +43,12 @@
         <value type="string" value="xfce4-power-manager-settings.desktop"/>
         <value type="string" value="org.xfce.mousepad.desktop"/>
         <value type="string" value="xfce4-clipman.desktop"/>
-        <value type="string" value="xfce-settings-manager.desktop"/>
       </property>
       <property name="favorites" type="array">
         <value type="string" value="xfce4-file-manager.desktop"/>
         <value type="string" value="jetbrains-toolbox.desktop"/>
         <value type="string" value="xfce4-web-browser.desktop"/>
+        <value type="string" value="microsoft-edge.desktop"/>
         <value type="string" value="firefox_firefox.desktop"/>
         <value type="string" value="snap-store_snap-store.desktop"/>
         <value type="string" value="xfce4-terminal-emulator.desktop"/>
@@ -113,7 +114,7 @@
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
       <property name="enable-mpris" type="bool" value="true"/>
       <property name="enable-wnck" type="bool" value="true"/>
-      <property name="known-players" type="string" value="clementine;firefox;org.gnome.Rhythmbox3;parole;vlc"/>
+      <property name="known-players" type="string" value="clementine;firefox;Microsoft Edge;org.gnome.Rhythmbox3;parole;vlc"/>
       <property name="mixer-command" type="string" value="pavucontrol"/>
       <property name="persistent-players" type="string" value="parole;org.gnome.Rhythmbox3"/>
       <property name="show-notifications" type="bool" value="true"/>
