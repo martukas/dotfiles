@@ -34,8 +34,8 @@
     <property name="plugin-1" type="string" value="whiskermenu">
       <property name="recent" type="array">
         <value type="string" value="xfce4-file-manager.desktop"/>
-        <value type="string" value="jetbrains-toolbox.desktop"/>
         <value type="string" value="microsoft-edge.desktop"/>
+        <value type="string" value="jetbrains-toolbox.desktop"/>
         <value type="string" value="xfce4-web-browser.desktop"/>
         <value type="string" value="firefox_firefox.desktop"/>
         <value type="string" value="org.clementine_player.Clementine.desktop"/>

@@ -40,9 +40,17 @@ copy_to_clipboard() {
   read -n 1 -srp "Please add it to your keys in GitHub and press any key to continue"$'\n' _
 }
 
-read -rp "Do you want to set up a local ssh key? " answer
+echo "=========================================================================="
+echo "Time to configure an SSH key."
+echo ""
+echo "Do you want to?"
+echo "  g/G -- generate new key pair and add to GitHub"
+echo "  a/A -- configure permissions for transferred key pair, add to ssh-agent"
+echo "   *  -- do nothing, you know what you are doing"
+echo "=========================================================================="
+read -rp "Type y to confirm: " answer
 case ${answer:0:1} in
-  y | Y)
+  g | G)
     read -n 1 -srp "*** Press any key to to begin ssh key generation process ***"$'\n' _
     ssh-keygen -t ${KEY_TYPE} -f "${KEY_FILE}"
     eval "$(ssh-agent -s)"
@@ -74,6 +82,13 @@ case ${answer:0:1} in
         read -n 1 -srp "Press any key to continue"$'\n' _
         ;;
     esac
+    ;;
+  a | A)
+    echo "Configuring permissions for copied keys."
+    chmod 600 "${KEY_FILE}"
+    chmod 644 "${PUB_KEY_FILE}"
+    eval "$(ssh-agent -s)"
+    ssh-add "${KEY_FILE}"
     ;;
   *)
     echo "Ok then. Let's assume you have already done it or you have ssh-agent forwarding working here."
