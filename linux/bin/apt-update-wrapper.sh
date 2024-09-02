@@ -53,6 +53,7 @@ elif [ "$1" == "f" ]; then
 # AUTO #
 ########
 elif [ "$1" == "a" ]; then
+  sudo systemctl daemon-reload
   sudo apt update
   sudo apt upgrade
   sudo apt autoremove
