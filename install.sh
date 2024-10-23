@@ -48,11 +48,11 @@ if [[ $OS == "GNU/Linux" ]]; then
       # @todo run:   sudo pro attach
       sudo apt -y purge parole
 
-      pipx install poetry
-      pipx install pre-commit
-      pipx install ruff
-      pipx install compiledb
-      pipx install pipenv
+      pipx install --force poetry
+      pipx install --force pre-commit
+      pipx install --force ruff
+      pipx install --force compiledb
+      pipx install --force pipenv
 
       pushd superpack
       pipenv install

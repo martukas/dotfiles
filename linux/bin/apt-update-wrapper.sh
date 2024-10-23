@@ -30,6 +30,7 @@ Update system
 The following options are available:
   a           Automatically update with apt and snap, autoremove and clean cache after
   f           Force install of held back packages
+  ff          Fast-forward, i.e. update the distribution
   help/-h     Display this help info
 EOF
 }
@@ -47,6 +48,10 @@ if [ "$1" == "help" ] || [ "$1" == "-h" ]; then
 #########
 elif [ "$1" == "f" ]; then
   sudo aptitude safe-upgrade
+  exit $SUCCESS
+
+elif [ "$1" == "ff" ]; then
+  sudo sudo do-release-upgrade
   exit $SUCCESS
 
 ########
