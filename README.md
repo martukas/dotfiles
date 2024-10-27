@@ -103,6 +103,7 @@ The following cannot be automated:
 - movable window manager tabs
 - mugshot avatar
 - whisker favorites
+- Enable [Ubuntu pro](https://ubuntu.com/pro/dashboard?) and run `sudo pro enable esm-apps`
 
 </details>
 
