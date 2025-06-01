@@ -77,6 +77,9 @@ GIT_PROMPT_ONLY_IN_REPO=1
 export GIT_PROMPT_ONLY_IN_REPO
 source ~/.bash-git-prompt/gitprompt.sh
 
+# Ensure ssh agent
+source ~/.bash/load_ssh_agent.bash
+
 # Allow local customizations in the ~/.bashrc_local_after file
 if [ -f ~/.bashrc_local_after ]; then
   source ~/.bashrc_local_after
