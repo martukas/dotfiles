@@ -1,8 +1,8 @@
 #!/usr/bin/env pwsh
 
-if (-Not $IsWindows) {
-    Write-Error "This script only supports Windows" -ErrorAction Stop
-}
+#if (-Not $IsWindows) {
+#    Write-Error "This script only supports Windows" -ErrorAction Stop
+#}
 
 $user = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 $principal = New-Object System.Security.Principal.WindowsPrincipal($user)

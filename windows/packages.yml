@@ -85,13 +85,15 @@
       descr: Spotify desktop client
     - id: Valve.Steam
       descr: Steam games
+    - id:  PeterPawlowski.foobar2000
+      descr: Foobar2000 media player
 - defaults:
     type: winget
     category: graphics
   packages:
     - id: Inkscape.Inkscape
       descr: Inkscape graphics editor
-    - id: GIMP.GIMP
+    - id: GIMP.GIMP.3
       descr: GIMP graphics editor
-    - id: dotPDNLLC.paintdotnet
+    - id: dotPDN.PaintDotNet
       descr: Paint.NET graphics editor
