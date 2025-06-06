@@ -7,6 +7,20 @@
       "alignment": "left",
       "segments": [
         {
+          "template": "⚡ ",
+          "foreground": "#FFEB3B",
+          "background": "#a313a8",
+          "type": "root",
+          "style": "plain"
+        },
+        {
+          "template": "{{ if .WSL }}WSL at {{ end }}{{.Icon}} ",
+          "foreground": "#ffffff",
+          "background": "transparent",
+          "type": "os",
+          "style": "plain"
+        },
+        {
           "properties": {
             "cache_duration": "none"
           },

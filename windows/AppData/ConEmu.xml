@@ -342,12 +342,12 @@
 			<value name="AutoSaveSizePos" type="hex" data="01"/>
 			<value name="Cascaded" type="hex" data="01"/>
 			<value name="IntegralSize" type="hex" data="00"/>
-			<value name="WindowMode" type="dword" data="00000520"/>
+			<value name="WindowMode" type="dword" data="0000051f"/>
 			<value name="ConWnd X" type="long" data="-2"/>
 			<value name="ConWnd Y" type="long" data="0"/>
-			<value name="LastMonitor" type="string" data="0,0,3840,2088"/>
-			<value name="ConWnd Width" type="dword" data="0000004f"/>
-			<value name="ConWnd Height" type="dword" data="0000000d"/>
+			<value name="LastMonitor" type="string" data="0,0,2880,1728"/>
+			<value name="ConWnd Width" type="dword" data="00000077"/>
+			<value name="ConWnd Height" type="dword" data="00000019"/>
 			<value name="16bit Height" type="ulong" data="0"/>
 			<value name="Restore2ActiveMon" type="hex" data="00"/>
 			<value name="RestoreInactive" type="hex" data="00"/>
@@ -749,4 +749,3 @@
 		</key>
 	</key>
 </key>
-
