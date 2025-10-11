@@ -47,11 +47,11 @@ if [ "$1" == "help" ] || [ "$1" == "-h" ]; then
 # FORCE #
 #########
 elif [ "$1" == "f" ]; then
-  sudo aptitude safe-upgrade
+  sudo aptitude safe-upgrade -y
   exit $SUCCESS
 
 elif [ "$1" == "ff" ]; then
-  sudo sudo do-release-upgrade
+  sudo sudo do-release-upgrade -d
   exit $SUCCESS
 
 ########
@@ -59,10 +59,10 @@ elif [ "$1" == "ff" ]; then
 ########
 elif [ "$1" == "a" ]; then
   sudo systemctl daemon-reload
-  sudo apt update
-  sudo apt upgrade
-  sudo apt autoremove
-  sudo apt autoclean
+  sudo apt update -y
+  sudo apt upgrade -y
+  sudo apt autoremove -y
+  sudo apt autoclean -y
 
   sudo snap refresh
   # shellcheck disable=SC2162
