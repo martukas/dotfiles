@@ -29,6 +29,7 @@ Update system
 
 The following options are available:
   a           Automatically update with apt and snap, autoremove and clean cache after
+  g           Update any firmware
   f           Force install of held back packages
   ff          Fast-forward, i.e. update the distribution
   help/-h     Display this help info
@@ -52,6 +53,10 @@ elif [ "$1" == "f" ]; then
 
 elif [ "$1" == "ff" ]; then
   sudo sudo do-release-upgrade -d
+  exit $SUCCESS
+
+elif [ "$1" == "g" ]; then
+  fwupdmgr update
   exit $SUCCESS
 
 ########
