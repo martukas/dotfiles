@@ -149,6 +149,7 @@ function install_brew() {
 function install_nordvpn() {
   sh <(curl -sSf https://downloads.nordcdn.com/apps/linux/install.sh)
   sudo usermod -aG nordvpn "$USER"
+  nordvpn set autoconnect off
 }
 
 function install_docker() {
