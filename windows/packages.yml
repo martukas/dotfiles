@@ -53,6 +53,8 @@
       descr: WinDirStat
     - id: GNU.Nano
       descr: Nano text editor for terminal
+    - id: CoreyButler.NVMforWindows
+      descr: Node.js toolchain (nvm)
 - defaults:
     type: winget
     category: web
