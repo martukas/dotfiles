@@ -52,11 +52,11 @@ if [[ $OS == "GNU/Linux" ]]; then
       pipx install --force pre-commit
       pipx install --force ruff
       pipx install --force compiledb
-      pipx install --force pipenv
+      pipx install --force uv
 
       pushd superpack
-      pipenv install
-      pipenv run python ./superpack/superpack.py ../linux/packages.yml
+      uv sync
+      uv run python ./superpack/superpack.py ../linux/packages.yml
       popd
 
       read -rp "[Linux] Do you want to install default desktop config? " answer

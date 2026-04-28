@@ -20,7 +20,7 @@
 	branch = main
 [submodule "superpack"]
 	path = superpack
-	url = https://github.com/martukas/superpack.git
+	url = git@github.com:martukas/superpack.git
 	branch = main
 [submodule "private"]
 	path = private
