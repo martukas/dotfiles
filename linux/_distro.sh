@@ -1,0 +1,18 @@
+#!/bin/bash
+# Source to expose: DISTRO_ID, DISTRO_VERSION, DISTRO_VERSION_MAJOR, DISTRO_CODENAME
+
+if [[ -f /etc/os-release ]]; then
+  # shellcheck disable=SC1091
+  . /etc/os-release
+  DISTRO_ID="${ID:-unknown}"
+  DISTRO_VERSION="${VERSION_ID:-0}"
+  DISTRO_VERSION_MAJOR="${DISTRO_VERSION%%.*}"
+  DISTRO_CODENAME="${VERSION_CODENAME:-unknown}"
+else
+  DISTRO_ID="unknown"
+  DISTRO_VERSION="0"
+  DISTRO_VERSION_MAJOR="0"
+  DISTRO_CODENAME="unknown"
+fi
+
+export DISTRO_ID DISTRO_VERSION DISTRO_VERSION_MAJOR DISTRO_CODENAME
