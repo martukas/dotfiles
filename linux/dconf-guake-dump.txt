@@ -32,6 +32,7 @@ window-tabbar=true
 window-width=100
 
 [keybindings/global]
+show-focus='disabled'
 show-hide='F11'
 
 [keybindings/local]

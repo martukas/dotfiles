@@ -77,5 +77,5 @@ image/tiff=viewnior.desktop
 image/gif=viewnior.desktop
 application/pdf=FoxitReader.desktop
 application/ppdf=FoxitReader.desktop
-x-scheme-handler/jetbrains=jetbrains-toolbox.desktop
+x-scheme-handler/jetbrains=jetbrainsd.desktop
 x-scheme-handler/tg=userapp-Telegram Desktop-RNE7H1.desktop

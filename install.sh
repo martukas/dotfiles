@@ -67,9 +67,14 @@ if [[ $OS == "GNU/Linux" ]]; then
           echo "Setting xfce dark theme"
           xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
           echo "Copying various xfce settings"
-          cp -ir ./linux/config/xfce4 ~/.config/xfce4
+          cp -r ./linux/config/xfce4 ~/.config/
           echo "Enforcing guake settings"
-          dconf load /apps/guake/ <linux/dconf-guake-dump.txt
+          if gsettings list-schemas | grep -qE "^(org\.)?guake$"; then
+            GUAKE_PATH="/org/guake/"
+          else
+            GUAKE_PATH="/apps/guake/"
+          fi
+          dconf load "$GUAKE_PATH" <linux/dconf-guake-dump.txt
           ;;
         *) ;;
       esac
