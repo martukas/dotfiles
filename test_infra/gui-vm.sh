@@ -20,6 +20,9 @@
 #   ssh [cmd...]      SSH into the VM as martu with agent forwarding (-A). Waits up
 #                     to 60s for sshd. With cmd, runs it remotely; without, opens an
 #                     interactive session.
+#   sync              Rsync the host repo into the VM's ~/dev/dotfiles/, excluding
+#                     .git so the VM keeps its own history. Lets you test uncommitted
+#                     host changes without a commit/push round-trip.
 #   snapshot [name] [--replace]
 #                     Snapshot a shut-off VM (default name `pristine`). Refuses to
 #                     overwrite an existing snapshot; pass --replace to delete first.
@@ -309,6 +312,30 @@ cmd_ssh() {
     ssh "${SSH_OPTS[@]}" "$SSH_USER@localhost" "$@"
 }
 
+cmd_sync() {
+    require_defined
+    [[ "$(domstate)" == "running" ]] || { echo "VM is not running. Use: $0 start or reset" >&2; exit 1; }
+    command -v rsync >/dev/null || { echo "rsync not installed on host" >&2; exit 1; }
+    wait_for_ssh || exit 1
+    local src
+    src="$(cd "$SCRIPT_DIR/.." && pwd)"
+    rsync -a --delete \
+        --exclude='.git/' \
+        --exclude='.venv/' \
+        --exclude='__pycache__/' \
+        --exclude='*.pyc' \
+        --exclude='node_modules/' \
+        --exclude='*.bak' \
+        --exclude='workspace.xml' \
+        --exclude='.idea*' \
+        --exclude='.claude/' \
+        --exclude='.superpowers/' \
+        --exclude='docs/superpowers/' \
+        -e "ssh ${SSH_OPTS[*]}" \
+        "$src/" "$SSH_USER@localhost:dev/dotfiles/"
+    echo "Synced $src/ → $NAME:~/dev/dotfiles/"
+}
+
 cmd_teardown() {
     if [[ "${1:-}" != "--yes" ]]; then
         echo "Refusing destructive teardown without --yes." >&2
@@ -353,6 +380,7 @@ case "${1:-}" in
     snapshot)          cmd_snapshot "${@:2}" ;;
     reset)             cmd_reset "${2:-}" ;;
     ssh)               cmd_ssh "${@:2}" ;;
+    sync)              cmd_sync ;;
     teardown)          cmd_teardown "${2:-}" ;;
     status)            cmd_status ;;
     -h|--help|help|"") usage ;;
