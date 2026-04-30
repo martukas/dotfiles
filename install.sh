@@ -45,6 +45,8 @@ pipx_ensure() {
   fi
 }
 
+export PATH="${HOME}/.local/bin:${PATH}"
+
 git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
 git submodule update --init --recursive "${DOTBOT_DIR}"
 git submodule update --init --recursive superpack
