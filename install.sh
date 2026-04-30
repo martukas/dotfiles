@@ -30,6 +30,21 @@ OS="$(uname -o)"
 # This script should work no matter where you call it from.
 cd "${BASEDIR}"
 
+if [[ $OS == "GNU/Linux" ]]; then
+  # shellcheck disable=SC1091
+  . "${BASEDIR}/linux/_distro.sh"
+  echo "Detected: ${DISTRO_ID} ${DISTRO_VERSION} (${DISTRO_CODENAME})"
+fi
+
+pipx_ensure() {
+  local pkg="$1"
+  if pipx list --short 2>/dev/null | awk '{print $1}' | grep -qx "$pkg"; then
+    pipx upgrade "$pkg"
+  else
+    pipx install "$pkg"
+  fi
+}
+
 git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
 git submodule update --init --recursive "${DOTBOT_DIR}"
 git submodule update --init --recursive superpack
@@ -48,15 +63,15 @@ if [[ $OS == "GNU/Linux" ]]; then
       # @todo run:   sudo pro attach
       sudo apt -y purge parole
 
-      pipx install --force poetry
-      pipx install --force pre-commit
-      pipx install --force ruff
-      pipx install --force compiledb
-      pipx install --force pipenv
+      pipx_ensure poetry
+      pipx_ensure pre-commit
+      pipx_ensure ruff
+      pipx_ensure compiledb
+      pipx_ensure uv
 
       pushd superpack
-      pipenv install
-      pipenv run python ./superpack/superpack.py ../linux/packages.yml
+      uv sync
+      uv run python ./superpack/superpack.py ../linux/packages.yml
       popd
 
       read -rp "[Linux] Do you want to install default desktop config? " answer
@@ -67,9 +82,14 @@ if [[ $OS == "GNU/Linux" ]]; then
           echo "Setting xfce dark theme"
           xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
           echo "Copying various xfce settings"
-          cp -ir ./linux/config/xfce4 ~/.config/xfce4
+          cp -r ./linux/config/xfce4 ~/.config/
           echo "Enforcing guake settings"
-          dconf load /apps/guake/ <linux/dconf-guake-dump.txt
+          if gsettings list-schemas | grep -qE "^(org\.)?guake$"; then
+            GUAKE_PATH="/org/guake/"
+          else
+            GUAKE_PATH="/apps/guake/"
+          fi
+          dconf load "$GUAKE_PATH" <linux/dconf-guake-dump.txt
           ;;
         *) ;;
       esac

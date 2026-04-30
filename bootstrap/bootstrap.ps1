@@ -58,7 +58,7 @@ $out_path = "$HOME\.bash_profile"
 $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
 [System.IO.File]::WriteAllLines($out_path, $py_alias, $Utf8NoBomEncoding)
 
-Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/master/bootstrap/config_ssh.sh" -OutFile "config_ssh.sh"
+Invoke-WebRequest -Uri "https://github.com/martukas/dotfiles/raw/ubuntu26/bootstrap/config_ssh.sh" -OutFile "config_ssh.sh"
 
 Start-Process -FilePath "$Env:Programfiles\Git\bin\sh.exe" -ArgumentList "--login","-i","-c",'"./config_ssh.sh start"'
 

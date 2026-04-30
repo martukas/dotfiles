@@ -1,6 +1,9 @@
 #!/bin/bash
 # shellcheck disable=SC2317
 
+# shellcheck disable=SC1091
+. "$(dirname "${BASH_SOURCE[0]}")/_distro.sh"
+
 FAILURE=1
 SUCCESS=0
 
