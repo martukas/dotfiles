@@ -21,7 +21,7 @@
 # GUI stuff
 - defaults:
     link:
-      if: '[ -n "$XDG_CURRENT_DESKTOP" ]'
+      if: '[ -n "$(ls /usr/share/xsessions/*.desktop /usr/share/wayland-sessions/*.desktop 2>/dev/null)" ]'
       create: true
       relink: true
       force: true
