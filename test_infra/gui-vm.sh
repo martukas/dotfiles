@@ -15,12 +15,18 @@
 #                     Single host command. Only manual step is the Xubuntu installer
 #                     itself + one curl-bash line in the VM after first reboot.
 #   start             Boot the VM (no-op if already running) and open the spice viewer.
-#   reset             Force-off if running, revert to `pristine`, start, open viewer.
-#   ssh [cmd...]      SSH into the VM as martu (waits up to 60s for sshd). With cmd,
-#                     runs it remotely; without, opens an interactive session.
-#   snapshot          Re-capture `pristine` from a shut-off VM (rare — setup auto-snaps).
-#                     Refuses to overwrite; pass --replace to delete existing first.
-#   teardown --yes    Destroy + undefine + remove storage + remove snapshots. Destructive.
+#   reset [name]      Force-off if running, revert to snapshot (default `pristine`),
+#                     start, open viewer.
+#   ssh [cmd...]      SSH into the VM as martu with agent forwarding (-A). Waits up
+#                     to 60s for sshd. With cmd, runs it remotely; without, opens an
+#                     interactive session.
+#   snapshot [name] [--replace]
+#                     Snapshot a shut-off VM (default name `pristine`). Refuses to
+#                     overwrite an existing snapshot; pass --replace to delete first.
+#                     The VM must be shut off — xfce's power manager intercepts
+#                     virsh shutdown, so `sudo poweroff` from inside the VM first.
+#   teardown --yes    Destroy + undefine + remove qcow2 disk + remove snapshots.
+#                     Does NOT touch the install ISO.
 #   status            Show VM state, snapshots, and disk path.
 #
 # VM specs:
@@ -47,7 +53,7 @@ ISO="$HOME/Downloads/xubuntu-26.04-desktop-amd64.iso"
 DISK_PATH="$HOME/.local/share/libvirt/images/$NAME.qcow2"
 SSH_PORT=2222
 SSH_USER=martu
-SSH_OPTS=(-p "$SSH_PORT" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR)
+SSH_OPTS=(-A -p "$SSH_PORT" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR)
 HOST_PUBKEY="$HOME/.ssh/id_ed25519.pub"
 HTTP_PORT=8000
 SETUP_TIMEOUT=3600  # seconds — covers Xubuntu install + bake
@@ -65,7 +71,7 @@ require_defined() {
 
 domstate() { virsh domstate "$NAME" 2>/dev/null || echo "undefined"; }
 
-snapshot_exists() { virsh snapshot-info "$NAME" "$SNAPSHOT" >/dev/null 2>&1; }
+snapshot_exists() { virsh snapshot-info "$NAME" "${1:-$SNAPSHOT}" >/dev/null 2>&1; }
 
 wait_for_shutoff() {
     local timeout=${1:-90} i=0
@@ -254,31 +260,44 @@ EOF
 
 cmd_snapshot() {
     require_defined
-    local replace="${1:-}"
-    if snapshot_exists; then
-        if [[ "$replace" == "--replace" ]]; then
-            echo "Deleting existing '$SNAPSHOT' snapshot..."
-            virsh snapshot-delete "$NAME" "$SNAPSHOT"
+    local name="$SNAPSHOT" replace=0
+    while (( $# > 0 )); do
+        case "$1" in
+            --replace) replace=1 ;;
+            -*)        echo "Unknown flag: $1" >&2; exit 1 ;;
+            *)         name="$1" ;;
+        esac
+        shift
+    done
+    if [[ "$(domstate)" != "shut off" ]]; then
+        echo "VM is '$(domstate)'. Shut it down first ('sudo poweroff' inside the VM)." >&2
+        echo "  Auto-shutdown via virsh would hit xfce4-power-manager's confirm dialog." >&2
+        exit 1
+    fi
+    if snapshot_exists "$name"; then
+        if (( replace )); then
+            echo "Deleting existing '$name' snapshot..."
+            virsh snapshot-delete "$NAME" "$name"
         else
-            echo "Snapshot '$SNAPSHOT' already exists. Pass --replace to overwrite." >&2
+            echo "Snapshot '$name' already exists. Pass --replace to overwrite." >&2
             exit 1
         fi
     fi
-    if [[ "$(domstate)" != "shut off" ]]; then
-        echo "Shutting down $NAME ..."
-        virsh shutdown "$NAME" >/dev/null
-        wait_for_shutoff
-    fi
-    virsh snapshot-create-as "$NAME" "$SNAPSHOT" "post-install pristine state"
+    virsh snapshot-create-as "$NAME" "$name" "snapshot $name"
 }
 
 cmd_reset() {
     require_defined
-    snapshot_exists || { echo "Snapshot '$SNAPSHOT' does not exist. Run: $0 setup" >&2; exit 1; }
+    local name="${1:-$SNAPSHOT}"
+    if ! snapshot_exists "$name"; then
+        echo "Snapshot '$name' does not exist. Available:" >&2
+        virsh snapshot-list "$NAME" --name 2>&1 | sed 's/^/  /' >&2
+        exit 1
+    fi
     if [[ "$(domstate)" == "running" ]]; then
         virsh destroy "$NAME" >/dev/null
     fi
-    virsh snapshot-revert "$NAME" "$SNAPSHOT"
+    virsh snapshot-revert "$NAME" "$name"
     virsh start "$NAME"
     open_viewer
 }
@@ -331,8 +350,8 @@ cmd_status() {
 case "${1:-}" in
     setup)             cmd_setup ;;
     start)             cmd_start ;;
-    snapshot)          cmd_snapshot "${2:-}" ;;
-    reset)             cmd_reset ;;
+    snapshot)          cmd_snapshot "${@:2}" ;;
+    reset)             cmd_reset "${2:-}" ;;
     ssh)               cmd_ssh "${@:2}" ;;
     teardown)          cmd_teardown "${2:-}" ;;
     status)            cmd_status ;;
