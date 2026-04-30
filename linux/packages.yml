@@ -15,7 +15,7 @@
     - id: nerdfonts
       descr: Nerdfonts for fancy terminal shit
       category: GUI
-      check: ls ~/.local/share/fonts | grep Nerd
+      check: ls ~/.local/share/fonts 2>/dev/null | grep Nerd
       install: "../linux/packages.sh install-nerdfonts"
     - id: rustup
       descr: Rust toolchain

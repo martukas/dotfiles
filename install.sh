@@ -85,13 +85,10 @@ if [[ $OS == "GNU/Linux" ]]; then
           xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
           echo "Copying various xfce settings"
           cp -r ./linux/config/xfce4 ~/.config/
-          echo "Enforcing guake settings"
           if gsettings list-schemas | grep -qE "^(org\.)?guake$"; then
-            GUAKE_PATH="/org/guake/"
-          else
-            GUAKE_PATH="/apps/guake/"
+            echo "Enforcing guake settings"
+            dconf load /org/guake/ <linux/dconf-guake-dump.txt
           fi
-          dconf load "$GUAKE_PATH" <linux/dconf-guake-dump.txt
           ;;
         *) ;;
       esac

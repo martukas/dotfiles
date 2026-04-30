@@ -153,3 +153,10 @@ Most install-time behavior already routes through `linux/_distro.sh` (`DISTRO_VE
 - Symlinks in `$HOME` *pointing into* the bind mount work fine — different operation.
 - 26.04 cloud images already have `git`, `curl`, `wget`, `ssh`, `snap` installed. `bootstrap.sh`'s apt install is redundant on cloud, still needed on the desktop ISO.
 - `private/` submodule's SSH URL doesn't block VM testing — the host has it initialized, the bind mount surfaces the data without needing network access from the VM.
+
+## Issue backlog
+
+Issues noticed during iteration that aren't yet fixed. Fix when re-encountered or when prioritized — keep this list short by addressing items rather than letting them rot here.
+
+- **`~/.Xkbmap` accumulates `-option altwin:meta_win` lines on each desktop-config run.** `install.sh`'s default-desktop-config branch appends with `>>` and has no idempotency check. Functionally harmless (xkb deduplicates at apply time), cosmetically ugly across reruns. Fix when re-encountered: grep-then-append, or rewrite the file from scratch.
+- **Guake dconf path selection ignores schema variant.** The outer `gsettings list-schemas | grep -qE "^(org\.)?guake$"` gate in `install.sh` matches BOTH `guake` (legacy) and `org.guake` (modern), but the load now always writes to `/org/guake/`. The legacy `/apps/guake/` path was dropped when the gate was added (formerly the dead `else` branch). A system carrying only the legacy `guake` schema would have settings written to the wrong dconf path. Fix when needed: `grep -qx "org.guake"` for modern variant; fall through to `/apps/guake/` for legacy.

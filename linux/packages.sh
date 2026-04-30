@@ -161,7 +161,7 @@ function install_docker() {
 
 function check_bing_wallpaper() {
   cron_entry="* */6 * * * ~/.dotfiles/linux/bin/bing-wallpaper >/dev/null 2>&1"
-  if crontab -lu "$USER" | grep -F "$cron_entry"; then
+  if crontab -lu "$USER" 2>/dev/null | grep -F "$cron_entry"; then
     exit $SUCCESS
   else
     exit $FAILURE
