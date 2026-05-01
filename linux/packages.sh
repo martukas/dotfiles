@@ -98,21 +98,36 @@ function install_platformio() {
 
 function install_insync() {
   # see https://www.insynchq.com/downloads/linux
-  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ACCAF35C
-  # shellcheck disable=SC1091
-  source /etc/lsb-release
-  echo "deb http://apt.insync.io/ubuntu $DISTRIB_CODENAME non-free contrib" | sudo tee /etc/apt/sources.list.d/insync.list
-  sudo apt update
-  sudo apt install insync
+  local version='3.9.8.60034'
+  local url="https://cdn.insynchq.com/builds/linux/${version}/insync_${version}-${DISTRO_CODENAME}_amd64.deb"
+
+  local tmp
+  tmp=$(mktemp -d)
+  trap "rm -rf '$tmp'" RETURN
+
+  wget -O "$tmp/insync.deb" "$url"
+  sudo apt --yes install "$tmp/insync.deb"
 }
 
 function install_keepass_plugins() {
-  pushd /usr/lib/keepass2/Plugins
-  sudo wget https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.dll
-  sudo wget https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.plgx
-  sudo mkdir DarkenKP
-  pushd DarkenKP
-  sudo wget https://github.com/BradyThe/DarkenKP/releases/latest/download/KeeTheme.ini
+  local plugins_dir=/usr/lib/keepass2/Plugins
+  local keetheme_url='https://github.com/xatupal/KeeTheme/releases/latest/download'
+  local darkenkp_url='https://github.com/BradyThe/DarkenKP/releases/latest/download'
+
+  local tmp
+  tmp=$(mktemp -d)
+  trap "rm -rf '$tmp'" RETURN
+
+  echo "Downloading KeeTheme plugin"
+  wget -O "$tmp/KeeTheme.dll" "$keetheme_url/KeeTheme.dll"
+  wget -O "$tmp/KeeTheme.plgx" "$keetheme_url/KeeTheme.plgx"
+  echo "Downloading DarkenKP theme"
+  wget -O "$tmp/KeeTheme.ini" "$darkenkp_url/KeeTheme.ini"
+
+  sudo install -d -m 755 "$plugins_dir/DarkenKP"
+  sudo install -m 644 "$tmp/KeeTheme.dll" "$plugins_dir/"
+  sudo install -m 644 "$tmp/KeeTheme.plgx" "$plugins_dir/"
+  sudo install -m 644 "$tmp/KeeTheme.ini" "$plugins_dir/DarkenKP/"
 }
 
 function install_jetbrains() {
