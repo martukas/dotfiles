@@ -48,23 +48,24 @@ function install_nerdfonts() {
     Meslo
   )
 
-  version='2.1.0'
-  fonts_dir="${HOME}/.local/share/fonts"
+  local version='3.4.0'
+  local fonts_dir="${HOME}/.local/share/fonts"
+  mkdir -p "$fonts_dir"
 
-  if [[ ! -d $fonts_dir ]]; then
-    mkdir -p "$fonts_dir"
-  fi
+  local tmp
+  tmp=$(mktemp -d)
+  trap "rm -rf '$tmp'" RETURN
 
   for font in "${fonts[@]}"; do
-    zip_file="${font}.zip"
-    download_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v${version}/${zip_file}"
+    local zip_file="$tmp/${font}.zip"
+    local extract_dir="$tmp/${font}"
+    local download_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v${version}/${font}.zip"
     echo "Downloading $download_url"
-    wget "$download_url"
-    sudo unzip "$zip_file" -d "$fonts_dir"
-    rm "$zip_file"
+    wget -O "$zip_file" "$download_url"
+    unzip -oq "$zip_file" -d "$extract_dir"
+    find "$extract_dir" -type f \( -iname '*.ttf' -o -iname '*.otf' \) ! -iname '*Windows Compatible*' \
+      -exec cp -f {} "$fonts_dir/" \;
   done
-
-  sudo find "$fonts_dir" -name '*Windows Compatible*' -delete
 
   fc-cache -fv
 }
