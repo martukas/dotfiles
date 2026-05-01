@@ -80,7 +80,7 @@ if [[ $OS == "GNU/Linux" ]]; then
       case ${answer:0:1} in
         y | Y)
           echo "Left win key as toggle"
-          echo -option altwin:meta_win >>~/.Xkbmap
+          grep -qxF -- '-option altwin:meta_win' ~/.Xkbmap 2>/dev/null || echo -option altwin:meta_win >>~/.Xkbmap
           echo "Setting xfce dark theme"
           xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
           echo "Copying various xfce settings"
