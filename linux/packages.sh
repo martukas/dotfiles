@@ -180,8 +180,8 @@ function install_docker() {
 }
 
 function check_bing_wallpaper() {
-  cron_entry="* */6 * * * ~/.dotfiles/linux/bin/bing-wallpaper >/dev/null 2>&1"
-  if crontab -lu "$USER" 2>/dev/null | grep -F "$cron_entry"; then
+  if systemctl --user is-enabled bing-wallpaper.timer >/dev/null 2>&1; then
+    echo "bing-wallpaper.timer enabled"
     exit $SUCCESS
   else
     exit $FAILURE
@@ -189,15 +189,38 @@ function check_bing_wallpaper() {
 }
 
 function install_bing_wallpaper() {
-  # @todo ask user to run crontab -e and save+exit
-  cron_entry="* */6 * * * ~/.dotfiles/linux/bin/bing-wallpaper >/dev/null 2>&1"
-  if ! crontab -lu "$USER" | grep -F "$cron_entry"; then
-    echo "Creating CRON entry: $cron_entry"
-    {
-      crontab -lu "$USER"
-      echo "$cron_entry"
-    } | crontab -u "$USER" -
-  fi
+  local repo_root
+  repo_root=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
+  local user_units="$HOME/.config/systemd/user"
+  mkdir -p "$user_units"
+
+  cat >"$user_units/bing-wallpaper.service" <<EOF
+[Unit]
+Description=Microsoft Bing wallpaper updater
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=$repo_root/linux/bin/bing-wallpaper
+EOF
+
+  cat >"$user_units/bing-wallpaper.timer" <<'EOF'
+[Unit]
+Description=Run Bing wallpaper updater four times a day
+
+[Timer]
+OnCalendar=00,06,12,18:00:00
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target
+EOF
+
+  systemctl --user daemon-reload
+  systemctl --user enable --now bing-wallpaper.timer
+  systemctl --user start bing-wallpaper.service
 }
 
 function install_touchpad_indicator() {
