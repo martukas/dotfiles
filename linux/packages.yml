@@ -59,7 +59,7 @@
       install: "../linux/packages.sh install-nordvpn"
     - id: bing-wallpaper
       category: GUI
-      descr: Microsoft Bing Wallpaper cron job
+      descr: Microsoft Bing Wallpaper updater
       check: "../linux/packages.sh check-bing-wallpaper"
       install: "../linux/packages.sh install-bing-wallpaper"
     - id: touchpad-indicator
