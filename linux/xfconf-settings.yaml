@@ -50,9 +50,6 @@ keyboard-shortcuts:
       <Alt>F12: above_key
       <Alt>F4: close_window_key
       <Alt>F5: maximize_horiz_key
-      <Alt>F6: maximize_vert_key
-      <Alt>F7: maximize_window_key
-      <Alt>F8: stick_window_key
       <Alt>F9: hide_window_key
       <Alt>Insert: add_workspace_key
       <Alt><Shift>Tab: cycle_reverse_windows_key
@@ -118,6 +115,7 @@ panel:
   order:
     - whiskermenu
     - separator
+    - systemload
     - tasklist
     - spring
     - systray
@@ -128,6 +126,7 @@ panel:
     - clock-local
     - xkb
     - clock-vilnius
+    - weather
   plugins:
     whiskermenu:
       favorites:
@@ -139,12 +138,18 @@ panel:
         - zoom-client_zoom-client.desktop
         - xfce4-terminal-emulator.desktop
         - snap-store_snap-store.desktop
-        - multimc.desktop
+        - firefox_firefox.desktop
         - org.xfce.mousepad.desktop
         - org.strawberrymusicplayer.strawberry.desktop
     separator:
       style: 0
       expand: false
+    systemload:
+      uptime-enabled: false
+      cpu-label: P
+      memory-label: M
+      swap-label: S
+      network-label: N
     tasklist:
       show-handle: false
       flat-buttons: true
@@ -177,3 +182,27 @@ panel:
       digital-layout: 3
       digital-time-format: VNO %R
       digital-time-font: Sans 10
+    weather:
+      msl: 18
+      timezone: America/Los_Angeles
+      cache-max-age: 172800
+      power-saving: true
+      round: true
+      single-row: true
+      tooltip-style: 1
+      theme-dir: /usr/share/xfce4/weather/icons/liquid-dark
+      units:
+        temperature: 0
+        pressure: 1
+        windspeed: 4
+        precipitation: 0
+        altitude: 0
+        apparent-temperature: 0
+      forecast:
+        layout: 1
+        days: 5
+      scrollbox:
+        show: true
+        animate: true
+        lines: 1
+        use-color: false
