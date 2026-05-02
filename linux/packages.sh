@@ -28,12 +28,8 @@ function prompt_exit() {
 }
 
 function install_logiops() {
-  sudo apt install build-essential cmake libevdev-dev libudev-dev libconfig++-dev
-  mkdir -p logiops/build
-  pushd logiops/build
-  cmake .. && make && sudo make install
-  popd
-  sudo /usr/bin/cp -fr logid.cfg /etc/logid.cfg
+  sudo apt install -y logiops
+  sudo cp logid.cfg /etc/logid.cfg
 }
 
 function install_powershell() {

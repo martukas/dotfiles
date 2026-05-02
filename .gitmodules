@@ -6,18 +6,10 @@
 	path = common/bash-git-prompt
 	url = https://github.com/magicmonty/bash-git-prompt.git
 	branch = master
-[submodule "dircolors-solarized"]
-	path = common/bash/plugins/dircolors-solarized
-	url = https://github.com/seebi/dircolors-solarized.git
-	branch = master
 [submodule "qt5printers"]
 	path = linux/gdb/qt5printers
 	url = https://github.com/Lekensteyn/qt5printers.git
 	branch = master
-[submodule "logiops"]
-	path = linux/logiops
-	url = https://github.com/PixlOne/logiops.git
-	branch = main
 [submodule "superpack"]
 	path = superpack
 	url = git@github.com:martukas/superpack.git

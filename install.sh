@@ -54,7 +54,6 @@ case ${answer:0:1} in
     git submodule update --init --recursive "${DOTBOT_DIR}"
     git submodule update --init --recursive superpack
     git submodule update --init --recursive private
-    git submodule update --init --recursive common/bash/plugins/dircolors-solarized
     git submodule update --init --recursive common/bash-git-prompt
     ;;
   *) ;;
@@ -95,6 +94,7 @@ if [[ $OS == "GNU/Linux" ]]; then
       grep -qxF -- '-option altwin:meta_win' ~/.Xkbmap 2>/dev/null || echo -option altwin:meta_win >>~/.Xkbmap
       echo "Setting xfce dark theme"
       xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
+      gsettings set org.gnome.desktop.interface color-scheme prefer-dark
       echo "Applying xfce settings"
       "$BASEDIR/linux/xfconf.py" pull
       if gsettings list-schemas | grep -qE "^(org\.)?guake$"; then
