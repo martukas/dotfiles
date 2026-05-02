@@ -141,6 +141,12 @@ def xfconf_list(channel):
     return [l.strip() for l in result.stdout.strip().splitlines() if l.strip()]
 
 
+def xfconf_reset_prefix(channel, prefix):
+    for prop in xfconf_list(channel):
+        if prop.startswith(prefix + "/"):
+            run_xfconf_query("-c", channel, "-p", prop, "-r")
+
+
 def coerce_value(raw, type_str):
     """Convert raw xfconf-query string output to a Python value."""
     if type_str in ("bool",):
@@ -281,6 +287,7 @@ def pull_keyboard_shortcuts(settings):
     ks = settings.get("keyboard-shortcuts", {})
 
     for prop_path, (section, subsection) in _SHORTCUTS_SECTIONS:
+        xfconf_reset_prefix(channel, prop_path)
         custom = ks.get(section, {}).get(subsection, {})
         for key, val in custom.items():
             prop = f"{prop_path}/{key}"

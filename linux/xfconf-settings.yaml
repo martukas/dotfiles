@@ -46,7 +46,6 @@ keyboard-shortcuts:
   xfwm4:
     custom:
       <Alt>Delete: del_workspace_key
-      <Alt>F11: fullscreen_key
       <Alt>F12: above_key
       <Alt>F4: close_window_key
       <Alt>F5: maximize_horiz_key
