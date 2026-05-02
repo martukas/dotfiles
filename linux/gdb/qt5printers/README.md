@@ -1,4 +1,8 @@
 # qt5printers
+
+> Vendored from https://github.com/Lekensteyn/qt5printers (no longer updated as a submodule).
+
+
 The `core.py`, `typeinfo.py` and `__init__.py` files are taken from patchset 2
 at https://codereview.qt-project.org/87052 and provide a GDB pretty printer for
 Qt5. These are authored by Alex Merry from the KDE project.
