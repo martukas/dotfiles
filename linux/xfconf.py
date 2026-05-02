@@ -493,15 +493,37 @@ def cmd_set_location():
         print(f"Error fetching location: {e}", file=sys.stderr)
         sys.exit(1)
 
+    import time
     lat, lon = data["loc"].split(",")
     city = data.get("city", "")
     timezone = data["timezone"]
     print(f"Location: {city}, tz: {timezone}, coords: {lat},{lon}")
 
-    print("Applying XFCE settings...")
-    _set_location_xfce(city, lat, lon, timezone)
     print("Updating redshift config...")
     _set_location_redshift(lat, lon)
+
+    panel_was_running = subprocess.run(["pgrep", "-x", "xfce4-panel"],
+                                       capture_output=True).returncode == 0
+    if panel_was_running:
+        # The weather plugin writes its in-memory state (including stale location) back
+        # to xfconf on graceful exit. SIGKILL prevents that write-back.
+        print("Stopping panel (SIGKILL to skip stale location write-back)...")
+        subprocess.run(["pkill", "-9", "-x", "xfce4-panel"])
+
+    print("Applying XFCE settings...")
+    _set_location_xfce(city, lat, lon, timezone)
+
+    if panel_was_running:
+        print("Restarting panel...")
+        panel_restart_time = time.monotonic()
+        subprocess.Popen(["xfce4-panel"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        # Wait for the panel to settle, then bounce the weather wrapper —
+        # it sometimes misses its first fetch after an abrupt restart.
+        elapsed = time.monotonic() - panel_restart_time
+        time.sleep(max(0.0, 4.0 - elapsed))
+        subprocess.run(["pkill", "-f", "wrapper.*libweather"], capture_output=True)
+        print("Weather plugin bounced.")
+
     print("Done.")
 
 

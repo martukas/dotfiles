@@ -28,7 +28,7 @@ This is a configuration repo — no build/test target.
 
 Two configs run sequentially: `conf_common.yaml` (cross-platform) then `conf_linux.yaml` (Linux). The Linux config has three buckets gated by guards:
 - always-link
-- GUI-gated (`if: '[ -n "$XDG_CURRENT_DESKTOP" ]'`) — `~/.config/autostart/*`, KeePass / flameshot / redshift / mimeapps configs. Headless test VMs intentionally skip these.
+- GUI-gated (`if: '[ -n "$XDG_CURRENT_DESKTOP" ]'`) — `~/.config/autostart/*`, KeePass / flameshot / redshift / mimeapps configs. Skipped on headless/non-GUI sessions.
 - project-dir-gated (`if: "[ -d ~/dev/ess ]"` etc.) — JetBrains `.idea` for specific dev projects. Skipped on machines without those checkouts.
 
 When changing what gets symlinked, edit the relevant `conf_*.yaml`. Don't modify dotbot itself.
@@ -48,9 +48,11 @@ Two-tier test bed for validating `install.sh` changes without touching the works
 
 ## Agent collaboration
 
-### Iterative dev cycle in `gui26`
+### Iterative dev cycle
 
-The cycle for fixing or adding `install.sh` features:
+The cycle for fixing or adding `install.sh` features. When running directly on the target machine, skip the VM steps and iterate in place — edit → `./install.sh` → observe. When targeting a fresh-machine scenario or cross-distro validation, use `gui26`:
+
+#### Via `gui26` VM
 
 1. **Agent**: `gui-vm.sh reset bootstrapped` (host-side wrapper).
 2. **User**: `gui-vm.sh ssh` → `cd ~/dev/dotfiles && git pull && ./install.sh`. **The user always drives `install.sh`**, never the agent.
@@ -77,6 +79,6 @@ The cycle for fixing or adding `install.sh` features:
 - **Match fix scope to bug**. Surgical fixes only — don't bundle in cleanup, refactors, or unrelated changes by default.
 - **"Committed" means `git commit`d**. For unstaged edits, say "saved / applied / wrote / patched."
 - **Verify git state before claiming**. Check `git config`, `remote -v`, `ls` before claiming a workaround is needed (especially around submodules + bind mounts).
-- **Name the test-bed layer**. Don't conflate "install script exits clean in df26" with "feature works." Always say which layer (df26 headless / gui26 GUI / target hardware).
-- **Persistent scripts over ad-hoc**. Nontrivial multi-step work (VM creation, repeatable test loops) goes into a persistent script (gitignored if not committable). When the script hits an edge case, fix the script — don't bolt on a manual workaround.
+- **Name the test-bed layer**. Don't conflate "install script exits clean in df26" with "feature works." Always say which layer (df26 headless / gui26 GUI / target hardware / direct on workstation).
+- **Persistent scripts over ad-hoc**. Nontrivial multi-step work goes into a persistent script (gitignored if not committable). When the script hits an edge case, fix the script — don't bolt on a manual workaround.
 - **Use the canonical wrapper**. `test_infra/gui-vm.sh` has the right state handling, viewer lifecycle, and snapshot naming baked in. Use it instead of calling `virsh` directly when there's an equivalent subcommand.
