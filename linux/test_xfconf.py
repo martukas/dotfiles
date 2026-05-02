@@ -34,6 +34,20 @@ class TestXfconfGet:
         assert val is None
         assert type_str is None
 
+    def test_falls_back_to_xml_type_when_no_prefix(self):
+        with patch("xfconf.subprocess.run", return_value=make_result("true")), \
+             patch("xfconf._xfconf_type_from_xml", return_value="bool"):
+            val, type_str = xfconf.xfconf_get("xfce4-panel", "/plugins/plugin-5/square-icons")
+        assert val == "true"
+        assert type_str == "bool"
+
+    def test_falls_back_to_string_when_xml_returns_none(self):
+        with patch("xfconf.subprocess.run", return_value=make_result("foo")), \
+             patch("xfconf._xfconf_type_from_xml", return_value=None):
+            val, type_str = xfconf.xfconf_get("some-channel", "/some/prop")
+        assert val == "foo"
+        assert type_str == "string"
+
 
 class TestXfconfGetArray:
     def test_parses_array(self):

@@ -6,6 +6,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+from xml.etree import ElementTree as ET
 
 import yaml
 
@@ -64,8 +65,27 @@ _SHORTCUTS_SECTIONS = [
 ]
 
 
+_XFCONF_XML_DIR = Path.home() / ".config/xfce4/xfconf/xfce-perchannel-xml"
+
+
 def run_xfconf_query(*args):
     return subprocess.run(["xfconf-query"] + list(args), capture_output=True, text=True)
+
+
+def _xfconf_type_from_xml(channel, prop):
+    """Look up a property's type from the xfconf XML file."""
+    xml_file = _XFCONF_XML_DIR / f"{channel}.xml"
+    if not xml_file.exists():
+        return None
+    try:
+        node = ET.parse(xml_file).getroot()
+        for part in (p for p in prop.strip("/").split("/") if p):
+            node = next((c for c in node if c.get("name") == part), None)
+            if node is None:
+                return None
+        return node.get("type") or None
+    except Exception:
+        return None
 
 
 def xfconf_get(channel, prop):
@@ -77,7 +97,9 @@ def xfconf_get(channel, prop):
     m = re.match(r"Value is an? (\w+): (.*)", line, re.DOTALL)
     if m:
         return m.group(2).strip(), m.group(1)
-    return line, "string"
+    # Newer xfconf-query --verbose omits the type prefix; fall back to XML for type
+    type_str = _xfconf_type_from_xml(channel, prop) or "string"
+    return line, type_str
 
 
 def xfconf_get_array(channel, prop):
