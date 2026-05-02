@@ -2,26 +2,122 @@
 # Push: xubu-push reads from live xfconf and updates this file
 # Pull: xubu-pull reads this file and applies settings via xfconf-query
 # See docs/superpowers/xfconf-design.md for ownership decisions
-
 keyboard-layout:
-  XkbDisable: false
-  XkbLayout: "us,lt"
-  XkbVariant: ","
+  XkbDisable: "false"
+  XkbLayout: us,lt
   XkbOptions:
-    Group: "grp:lalt_lshift_toggle"
-    Compose: "compose:ralt"
-
+    Compose: compose:ralt
+    Group: grp:lalt_lshift_toggle
+  XkbVariant: ","
 keyboard-shortcuts:
   commands:
-    custom: {}
+    custom:
+      <Alt>F1: xfce4-popup-applicationsmenu
+      <Alt>F2: xfrun4
+      <Alt>F3: xfce4-appfinder
+      <Alt>Pause: xfce4-popup-whiskermenu
+      <Alt><Super>s: orca
+      HomePage: exo-open --launch WebBrowser
+      override: "true"
+      <Primary><Alt>Delete: xfce4-session-logout
+      <Primary><Alt>Escape: xkill
+      <Primary><Alt>f: exo-open --launch FileManager
+      <Primary><Alt>l: xflock4
+      <Primary><Alt>t: exo-open --launch TerminalEmulator
+      <Primary>Escape: xfce4-popup-whiskermenu
+      <Primary><Shift>Escape: xfce4-taskmanager
+      Print: flameshot gui
+      <Super>e: exo-open --launch FileManager
+      <Super>f: exo-open --launch FileManager
+      <Super>F1: xfce4-find-cursor
+      <Super>l: xflock4
+      <Super>m: exo-open --launch MailReader
+      <Super>p: xfce4-display-settings --minimal
+      <Super>r: xfrun4
+      <Super>t: exo-open --launch TerminalEmulator
+      <Super>w: exo-open --launch WebBrowser
+      XF86Calculator: mate-calc
+      XF86Display: xfce4-display-settings --minimal
+      XF86Explorer: exo-open --launch FileManager
+      XF86HomePage: exo-open --launch WebBrowser
+      XF86Mail: exo-open --launch MailReader
+      XF86Music: rhythmbox
+      XF86WWW: exo-open --launch WebBrowser
   xfwm4:
-    custom: {}
-
+    custom:
+      <Alt>Delete: del_workspace_key
+      <Alt>F11: fullscreen_key
+      <Alt>F12: above_key
+      <Alt>F4: close_window_key
+      <Alt>F5: maximize_horiz_key
+      <Alt>F6: maximize_vert_key
+      <Alt>F7: maximize_window_key
+      <Alt>F8: stick_window_key
+      <Alt>F9: hide_window_key
+      <Alt>Insert: add_workspace_key
+      <Alt><Shift>Tab: cycle_reverse_windows_key
+      <Alt>space: popup_menu_key
+      <Alt>Tab: cycle_windows_key
+      Down: down_key
+      Escape: cancel_key
+      Left: left_key
+      override: "true"
+      <Primary><Alt>Down: down_workspace_key
+      <Primary><Alt>End: move_window_next_workspace_key
+      <Primary><Alt>Home: move_window_prev_workspace_key
+      <Primary><Alt>KP_1: move_window_workspace_1_key
+      <Primary><Alt>KP_2: move_window_workspace_2_key
+      <Primary><Alt>KP_3: move_window_workspace_3_key
+      <Primary><Alt>KP_4: move_window_workspace_4_key
+      <Primary><Alt>KP_5: move_window_workspace_5_key
+      <Primary><Alt>KP_6: move_window_workspace_6_key
+      <Primary><Alt>KP_7: move_window_workspace_7_key
+      <Primary><Alt>KP_8: move_window_workspace_8_key
+      <Primary><Alt>KP_9: move_window_workspace_9_key
+      <Primary><Alt>Left: left_workspace_key
+      <Primary><Alt>Right: right_workspace_key
+      <Primary><Alt>Up: up_workspace_key
+      <Primary>F1: workspace_1_key
+      <Primary>F10: workspace_10_key
+      <Primary>F11: workspace_11_key
+      <Primary>F12: workspace_12_key
+      <Primary>F2: workspace_2_key
+      <Primary>F3: workspace_3_key
+      <Primary>F4: workspace_4_key
+      <Primary>F5: workspace_5_key
+      <Primary>F6: workspace_6_key
+      <Primary>F7: workspace_7_key
+      <Primary>F8: workspace_8_key
+      <Primary>F9: workspace_9_key
+      <Primary><Shift><Alt>Left: move_window_left_key
+      <Primary><Shift><Alt>Right: move_window_right_key
+      <Primary><Shift><Alt>Up: move_window_up_key
+      Right: right_key
+      <Shift><Alt>Page_Down: lower_window_key
+      <Shift><Alt>Page_Up: raise_window_key
+      <Super>d: show_desktop_key
+      <Super>Down: tile_down_key
+      <Super>KP_1: tile_down_left_key
+      <Super>KP_3: tile_down_right_key
+      <Super>KP_7: tile_up_left_key
+      <Super>KP_9: tile_up_right_key
+      <Super>KP_Down: tile_down_key
+      <Super>KP_End: tile_down_left_key
+      <Super>KP_Home: tile_up_left_key
+      <Super>KP_Left: tile_left_key
+      <Super>KP_Next: tile_down_right_key
+      <Super>KP_Page_Up: tile_up_right_key
+      <Super>KP_Right: tile_right_key
+      <Super>KP_Up: tile_up_key
+      <Super>Left: tile_left_key
+      <Super>Right: tile_right_key
+      <Super>Tab: switch_window_key
+      <Super>Up: tile_up_key
+      Up: up_key
 panel:
   order:
     - whiskermenu
-    - separator
-    - systemload
+    - spring
     - tasklist
     - spring
     - systray
@@ -32,7 +128,6 @@ panel:
     - clock-local
     - xkb
     - clock-vilnius
-    - weather
   plugins:
     whiskermenu:
       favorites:
@@ -42,73 +137,40 @@ panel:
         - guake.desktop
         - jetbrains-toolbox.desktop
         - zoom-client_zoom-client.desktop
-        - firefox_firefox.desktop
         - xfce4-terminal-emulator.desktop
         - snap-store_snap-store.desktop
+        - multimc.desktop
         - org.xfce.mousepad.desktop
         - org.strawberrymusicplayer.strawberry.desktop
-    separator:
-      style: 0
-      expand: false
-    systemload:
-      uptime-enabled: false
-      cpu-label: "P"
-      memory-label: "M"
-      swap-label: "S"
-      network-label: "N"
-    tasklist:
-      show-handle: false
-      flat-buttons: true
-      sort-order: 4
     spring:
-      style: 0
-      expand: true
+      style: "0"
+      expand: "true"
+    tasklist:
+      show-handle: "false"
+      flat-buttons: "true"
+      sort-order: "4"
     systray:
-      menu-is-primary: true
-      show-frame: false
-      square-icons: true
-      size-max: 22
-      symbolic-icons: true
-      icon-size: 0
+      menu-is-primary: "true"
+      show-frame: "false"
+      square-icons: "true"
+      size-max: "22"
+      symbolic-icons: "true"
+      icon-size: "0"
     notification-plugin: {}
     indicator:
-      square-icons: true
+      square-icons: "true"
     power-manager-plugin: {}
     pulseaudio: {}
     clock-local:
-      digital-format: " %d %b, %H:%M "
-      digital-time-format: " %d %b, %H:%M "
-      digital-layout: 3
+      digital-format: "%d %b, %H:%M"
+      digital-time-format: "%d %b, %H:%M"
+      digital-layout: "3"
       tooltip-format: "%x"
-      digital-time-font: "Sans 10"
+      digital-time-font: Sans 10
     xkb: {}
     clock-vilnius:
-      timezone: "Europe/Vilnius"
+      timezone: Europe/Vilnius
       digital-date-format: "%d %b %Y"
-      digital-layout: 3
-      digital-time-format: "VNO %R"
-      digital-time-font: "Sans 10"
-    weather:
-      msl: 18
-      timezone: "America/Los_Angeles"
-      cache-max-age: 172800
-      power-saving: true
-      round: true
-      single-row: true
-      tooltip-style: 1
-      theme-dir: "/usr/share/xfce4/weather/icons/liquid-dark"
-      units:
-        temperature: 0
-        pressure: 1
-        windspeed: 4
-        precipitation: 0
-        altitude: 0
-        apparent-temperature: 0
-      forecast:
-        layout: 1
-        days: 5
-      scrollbox:
-        show: true
-        animate: true
-        lines: 1
-        use-color: false
+      digital-layout: "3"
+      digital-time-format: VNO %R
+      digital-time-font: Sans 10
