@@ -27,6 +27,11 @@
       category: dev-admin
       check: "../linux/packages.sh check-nvm"
       install: "../linux/packages.sh install-nvm"
+    - id: claude-code
+      descr: Claude Code CLI (Anthropic)
+      category: dev-admin
+      check: "../linux/packages.sh check-claude-code"
+      install: "../linux/packages.sh install-claude-code"
     - id: platformio
       descr: PlatformIO embedded toolchain
       category: dev-admin

@@ -248,6 +248,21 @@ function install_ms_edge() {
   sudo apt update && sudo apt install microsoft-edge-stable
 }
 
+function install_claude_code() {
+  export NVM_DIR="$HOME/.nvm"
+  if [ ! -s "$NVM_DIR/nvm.sh" ]; then
+    echo "nvm not installed; install nvm first via superpack"
+    exit $FAILURE
+  fi
+  # shellcheck disable=SC1091
+  \. "$NVM_DIR/nvm.sh"
+  if ! command -v npm > /dev/null 2>&1; then
+    nvm install --lts
+    nvm use --lts
+  fi
+  npm install -g @anthropic-ai/claude-code
+}
+
 # Script will run in its own path no matter where it's called from.
 pushd "$(dirname "$0")"
 
@@ -277,7 +292,7 @@ elif [ "$1" == "install-nvm" ]; then
   prompt_exit
 
 elif [ "$1" == "check-nvm" ]; then
-  if [[ $(command -v nvm) ]]; then
+  if [ -s "$HOME/.nvm/nvm.sh" ]; then
     echo "nvm present"
     exit $SUCCESS
   else
@@ -347,6 +362,21 @@ elif [ "$1" == "install-fake-webcam" ]; then
 
 elif [ "$1" == "install-ms-edge" ]; then
   install_ms_edge
+  prompt_exit
+
+elif [ "$1" == "check-claude-code" ]; then
+  export NVM_DIR="$HOME/.nvm"
+  # shellcheck disable=SC1091
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  if command -v claude > /dev/null 2>&1; then
+    echo "claude present"
+    exit $SUCCESS
+  else
+    exit $FAILURE
+  fi
+
+elif [ "$1" == "install-claude-code" ]; then
+  install_claude_code
   prompt_exit
 
 else
