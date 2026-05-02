@@ -84,7 +84,7 @@ if [[ $OS == "GNU/Linux" ]]; then
           echo "Setting xfce dark theme"
           xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
           echo "Applying xfce settings"
-          python3 "$BASEDIR/linux/xfconf.py" pull
+          "$BASEDIR/linux/xfconf.py" pull
           if gsettings list-schemas | grep -qE "^(org\.)?guake$"; then
             echo "Enforcing guake settings"
             dconf load /org/guake/ <linux/dconf-guake-dump.txt

@@ -1,14 +1,19 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = ["ruamel.yaml"]
+# ///
 """Push/pull xfconf settings between linux/xfconf-settings.yaml and live xfconf."""
 
 import argparse
 import re
 import subprocess
 import sys
+from io import StringIO
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
-import yaml
+from ruamel.yaml import YAML as _YAML
 
 SETTINGS_FILE = Path(__file__).resolve().parent / "xfconf-settings.yaml"
 
@@ -157,14 +162,22 @@ def yaml_type_to_xfconf(value):
 
 
 def load_settings():
+    ryaml = _YAML(typ="safe")
     with open(SETTINGS_FILE) as f:
-        return yaml.safe_load(f) or {}
+        return ryaml.load(f) or {}
 
 
 def save_settings(settings):
+    ryaml = _YAML()
+    ryaml.indent(mapping=2, sequence=4, offset=2)
+    ryaml.default_flow_style = False
+    buf = StringIO()
+    ryaml.dump(settings, buf)
+    # ruamel.yaml uses single-quote style; prettier expects double-quote
+    yaml_str = re.sub(r"'([^']*)'", r'"\1"', buf.getvalue())
     with open(SETTINGS_FILE, "w") as f:
         f.write(_SETTINGS_HEADER)
-        yaml.dump(settings, f, default_flow_style=False, allow_unicode=True, sort_keys=False)
+        f.write(yaml_str)
 
 
 def main():

@@ -3,7 +3,7 @@
 # Pull: xubu-pull reads this file and applies settings via xfconf-query
 # See docs/superpowers/xfconf-design.md for ownership decisions
 keyboard-layout:
-  XkbDisable: "false"
+  XkbDisable: false
   XkbLayout: us,lt
   XkbOptions:
     Compose: compose:ralt
@@ -18,7 +18,7 @@ keyboard-shortcuts:
       <Alt>Pause: xfce4-popup-whiskermenu
       <Alt><Super>s: orca
       HomePage: exo-open --launch WebBrowser
-      override: "true"
+      override: true
       <Primary><Alt>Delete: xfce4-session-logout
       <Primary><Alt>Escape: xkill
       <Primary><Alt>f: exo-open --launch FileManager
@@ -61,7 +61,7 @@ keyboard-shortcuts:
       Down: down_key
       Escape: cancel_key
       Left: left_key
-      override: "true"
+      override: true
       <Primary><Alt>Down: down_workspace_key
       <Primary><Alt>End: move_window_next_workspace_key
       <Primary><Alt>Home: move_window_prev_workspace_key
@@ -117,7 +117,7 @@ keyboard-shortcuts:
 panel:
   order:
     - whiskermenu
-    - spring
+    - separator
     - tasklist
     - spring
     - systray
@@ -142,35 +142,38 @@ panel:
         - multimc.desktop
         - org.xfce.mousepad.desktop
         - org.strawberrymusicplayer.strawberry.desktop
-    spring:
-      style: "0"
-      expand: "true"
+    separator:
+      style: 0
+      expand: false
     tasklist:
-      show-handle: "false"
-      flat-buttons: "true"
-      sort-order: "4"
+      show-handle: false
+      flat-buttons: true
+      sort-order: 4
+    spring:
+      style: 0
+      expand: true
     systray:
-      menu-is-primary: "true"
-      show-frame: "false"
-      square-icons: "true"
-      size-max: "22"
-      symbolic-icons: "true"
-      icon-size: "0"
+      menu-is-primary: true
+      show-frame: false
+      square-icons: true
+      size-max: 22
+      symbolic-icons: true
+      icon-size: 0
     notification-plugin: {}
     indicator:
-      square-icons: "true"
+      square-icons: true
     power-manager-plugin: {}
     pulseaudio: {}
     clock-local:
       digital-format: "%d %b, %H:%M"
       digital-time-format: "%d %b, %H:%M"
-      digital-layout: "3"
+      digital-layout: 3
       tooltip-format: "%x"
       digital-time-font: Sans 10
     xkb: {}
     clock-vilnius:
       timezone: Europe/Vilnius
       digital-date-format: "%d %b %Y"
-      digital-layout: "3"
+      digital-layout: 3
       digital-time-format: VNO %R
       digital-time-font: Sans 10

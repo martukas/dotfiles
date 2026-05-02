@@ -107,11 +107,11 @@ dfu() {
 
 # xfconf settings push/pull
 xubu-push() {
-  python3 ~/.dotfiles/linux/xfconf.py push
+  ~/.dotfiles/linux/xfconf.py push
 }
 
 xubu-pull() {
-  python3 ~/.dotfiles/linux/xfconf.py pull
+  ~/.dotfiles/linux/xfconf.py pull
 }
 
 # Dotfiles upgrade submodules
