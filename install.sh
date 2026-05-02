@@ -83,8 +83,8 @@ if [[ $OS == "GNU/Linux" ]]; then
           grep -qxF -- '-option altwin:meta_win' ~/.Xkbmap 2>/dev/null || echo -option altwin:meta_win >>~/.Xkbmap
           echo "Setting xfce dark theme"
           xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
-          echo "Copying various xfce settings"
-          cp -r ./linux/config/xfce4 ~/.config/
+          echo "Applying xfce settings"
+          python3 "$BASEDIR/linux/xfconf.py" pull
           if gsettings list-schemas | grep -qE "^(org\.)?guake$"; then
             echo "Enforcing guake settings"
             dconf load /org/guake/ <linux/dconf-guake-dump.txt
@@ -107,9 +107,9 @@ echo "Linking dotfiles for general bash use"
 if [[ $OS == "GNU/Linux" ]]; then
   echo "Linking Linux-specific dotfiles"
   "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_LINUX}" "${@}"
-  if pgrep -x guake > /dev/null 2>&1; then
+  if pgrep -x guake >/dev/null 2>&1; then
     echo "Restarting Guake"
     pkill -x guake
-    nohup guake > /dev/null 2>&1 &
+    nohup guake >/dev/null 2>&1 &
   fi
 fi

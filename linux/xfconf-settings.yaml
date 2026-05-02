@@ -1,0 +1,114 @@
+# xfconf owned settings — managed by linux/xfconf.py
+# Push: xubu-push reads from live xfconf and updates this file
+# Pull: xubu-pull reads this file and applies settings via xfconf-query
+# See docs/superpowers/xfconf-design.md for ownership decisions
+
+keyboard-layout:
+  XkbDisable: false
+  XkbLayout: "us,lt"
+  XkbVariant: ","
+  XkbOptions:
+    Group: "grp:lalt_lshift_toggle"
+    Compose: "compose:ralt"
+
+keyboard-shortcuts:
+  commands:
+    custom: {}
+  xfwm4:
+    custom: {}
+
+panel:
+  order:
+    - whiskermenu
+    - separator
+    - systemload
+    - tasklist
+    - spring
+    - systray
+    - notification-plugin
+    - indicator
+    - power-manager-plugin
+    - pulseaudio
+    - clock-local
+    - xkb
+    - clock-vilnius
+    - weather
+  plugins:
+    whiskermenu:
+      favorites:
+        - xfce4-file-manager.desktop
+        - microsoft-edge.desktop
+        - slack_slack.desktop
+        - guake.desktop
+        - jetbrains-toolbox.desktop
+        - zoom-client_zoom-client.desktop
+        - firefox_firefox.desktop
+        - xfce4-terminal-emulator.desktop
+        - snap-store_snap-store.desktop
+        - org.xfce.mousepad.desktop
+        - org.strawberrymusicplayer.strawberry.desktop
+    separator:
+      style: 0
+      expand: false
+    systemload:
+      uptime-enabled: false
+      cpu-label: "P"
+      memory-label: "M"
+      swap-label: "S"
+      network-label: "N"
+    tasklist:
+      show-handle: false
+      flat-buttons: true
+      sort-order: 4
+    spring:
+      style: 0
+      expand: true
+    systray:
+      menu-is-primary: true
+      show-frame: false
+      square-icons: true
+      size-max: 22
+      symbolic-icons: true
+      icon-size: 0
+    notification-plugin: {}
+    indicator:
+      square-icons: true
+    power-manager-plugin: {}
+    pulseaudio: {}
+    clock-local:
+      digital-format: " %d %b, %H:%M "
+      digital-time-format: " %d %b, %H:%M "
+      digital-layout: 3
+      tooltip-format: "%x"
+      digital-time-font: "Sans 10"
+    xkb: {}
+    clock-vilnius:
+      timezone: "Europe/Vilnius"
+      digital-date-format: "%d %b %Y"
+      digital-layout: 3
+      digital-time-format: "VNO %R"
+      digital-time-font: "Sans 10"
+    weather:
+      msl: 18
+      timezone: "America/Los_Angeles"
+      cache-max-age: 172800
+      power-saving: true
+      round: true
+      single-row: true
+      tooltip-style: 1
+      theme-dir: "/usr/share/xfce4/weather/icons/liquid-dark"
+      units:
+        temperature: 0
+        pressure: 1
+        windspeed: 4
+        precipitation: 0
+        altitude: 0
+        apparent-temperature: 0
+      forecast:
+        layout: 1
+        days: 5
+      scrollbox:
+        show: true
+        animate: true
+        lines: 1
+        use-color: false

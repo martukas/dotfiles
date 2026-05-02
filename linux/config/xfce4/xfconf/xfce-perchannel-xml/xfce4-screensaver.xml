@@ -8,5 +8,21 @@
         <value type="string" value="screensavers-xfce-floaters"/>
       </property>
     </property>
+    <property name="fullscreen-inhibit" type="bool" value="true"/>
+    <property name="idle-activation" type="empty">
+      <property name="delay" type="int" value="10"/>
+      <property name="enabled" type="bool" value="false"/>
+    </property>
+    <property name="enabled" type="bool" value="false"/>
+  </property>
+  <property name="screensavers" type="empty">
+    <property name="xfce-floaters" type="empty">
+      <property name="do-rotations" type="bool" value="true"/>
+      <property name="arguments" type="string" value="-n 9 -r"/>
+      <property name="number-of-images" type="int" value="9"/>
+    </property>
+  </property>
+  <property name="lock" type="empty">
+    <property name="enabled" type="bool" value="false"/>
   </property>
 </channel>
