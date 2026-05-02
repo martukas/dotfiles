@@ -6,9 +6,11 @@
 """Push/pull xfconf settings between linux/xfconf-settings.yaml and live xfconf."""
 
 import argparse
+import json
 import re
 import subprocess
 import sys
+import urllib.request
 from io import StringIO
 from pathlib import Path
 from xml.etree import ElementTree as ET
@@ -57,7 +59,7 @@ PLUGIN_OWNED_PROPS = {
     "clock-local": ["digital-format", "digital-time-format", "digital-layout", "tooltip-format", "digital-time-font"],
     "xkb": [],
     "clock-vilnius": ["timezone", "digital-date-format", "digital-layout", "digital-time-format", "digital-time-font"],
-    "weather": ["msl", "timezone", "cache-max-age", "power-saving", "round", "single-row",
+    "weather": ["msl", "cache-max-age", "power-saving", "round", "single-row",
                 "tooltip-style", "theme-dir"],
 }
 
@@ -185,12 +187,15 @@ def main():
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("push", help="Read owned settings from xfconf and write to YAML")
     sub.add_parser("pull", help="Read YAML and apply owned settings to xfconf")
+    sub.add_parser("set-location", help="Detect location via IP and apply to clock, weather, redshift")
     args = parser.parse_args()
 
     if args.command == "push":
         cmd_push()
-    else:
+    elif args.command == "pull":
         cmd_pull()
+    else:
+        cmd_set_location()
 
 
 def cmd_push():
@@ -470,6 +475,72 @@ def create_plugin(logical_name):
     run_xfconf_query("-c", _PANEL_CHANNEL, "-p", f"/plugins/plugin-{new_id}",
                      "-t", "string", "-s", xfconf_type, "--create")
     return new_id
+
+
+def cmd_set_location():
+    print("Querying location from ipinfo.io...")
+    try:
+        with urllib.request.urlopen("https://ipinfo.io/json", timeout=10) as resp:
+            data = json.loads(resp.read())
+    except Exception as e:
+        print(f"Error fetching location: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    lat, lon = data["loc"].split(",")
+    city = data.get("city", "")
+    timezone = data["timezone"]
+    print(f"Location: {city}, tz: {timezone}, coords: {lat},{lon}")
+
+    print("Applying XFCE settings...")
+    _set_location_xfce(city, lat, lon, timezone)
+    print("Updating redshift config...")
+    _set_location_redshift(lat, lon)
+    print("Done.")
+
+
+def _set_location_xfce(city, lat, lon, timezone):
+    # clock-local: the clock that isn't the Vilnius one
+    for pid in get_plugin_ids():
+        if get_plugin_type(pid) == "clock":
+            tz = run_xfconf_query("-c", _PANEL_CHANNEL, "-p",
+                                  f"/plugins/plugin-{pid}/timezone").stdout.strip()
+            if tz != "Europe/Vilnius":
+                xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/timezone",
+                           timezone, "string", create=True)
+                print(f"  clock-local timezone → {timezone}")
+                break
+    else:
+        print("  WARNING: clock-local plugin not found", file=sys.stderr)
+
+    for pid in get_plugin_ids():
+        if get_plugin_type(pid) == "weather":
+            base = f"/plugins/plugin-{pid}"
+            xfconf_set(_PANEL_CHANNEL, f"{base}/timezone", timezone, "string", create=True)
+            xfconf_set(_PANEL_CHANNEL, f"{base}/location/name", city, "string", create=True)
+            xfconf_set(_PANEL_CHANNEL, f"{base}/location/latitude", lat, "string", create=True)
+            xfconf_set(_PANEL_CHANNEL, f"{base}/location/longitude", lon, "string", create=True)
+            print(f"  weather location → {city} ({lat}, {lon}), timezone → {timezone}")
+            break
+    else:
+        print("  WARNING: weather plugin not found — skipped", file=sys.stderr)
+
+
+def _set_location_redshift(lat, lon):
+    conf = Path.home() / ".config/redshift.conf"
+    if not conf.exists():
+        print("  WARNING: ~/.config/redshift.conf not found — skipped", file=sys.stderr)
+        return
+    # De-symlink so location data stays local and out of the repo
+    if conf.is_symlink():
+        content = conf.read_text()
+        conf.unlink()
+        conf.write_text(content)
+    content = conf.read_text()
+    content = re.sub(r"(?m)^location-provider=.*$", "location-provider=manual", content)
+    content = re.sub(r"(?m)^lat=.*$", f"lat={lat}", content)
+    content = re.sub(r"(?m)^lon=.*$", f"lon={lon}", content)
+    conf.write_text(content)
+    print(f"  redshift location → ({lat}, {lon})")
 
 
 if __name__ == "__main__":

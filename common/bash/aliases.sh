@@ -105,14 +105,10 @@ dfu() {
   popd
 }
 
-# xfconf settings push/pull
-xubu-push() {
-  ~/.dotfiles/linux/xfconf.py push
-}
-
-xubu-pull() {
-  ~/.dotfiles/linux/xfconf.py pull
-}
+# xfconf settings push/pull/location
+xubu-push() { ~/.dotfiles/linux/xfconf.py push; }
+xubu-pull() { ~/.dotfiles/linux/xfconf.py pull; }
+df-set-location() { ~/.dotfiles/linux/xfconf.py set-location; }
 
 # Dotfiles upgrade submodules
 df-upgrade() {

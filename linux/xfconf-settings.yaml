@@ -184,7 +184,6 @@ panel:
       digital-time-font: Sans 10
     weather:
       msl: 18
-      timezone: America/Los_Angeles
       cache-max-age: 172800
       power-saving: true
       round: true
