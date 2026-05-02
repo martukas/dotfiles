@@ -79,3 +79,4 @@ application/pdf=FoxitReader.desktop
 application/ppdf=FoxitReader.desktop
 x-scheme-handler/jetbrains=jetbrainsd.desktop
 x-scheme-handler/tg=userapp-Telegram Desktop-RNE7H1.desktop
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop

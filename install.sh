@@ -107,4 +107,9 @@ echo "Linking dotfiles for general bash use"
 if [[ $OS == "GNU/Linux" ]]; then
   echo "Linking Linux-specific dotfiles"
   "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_LINUX}" "${@}"
+  if pgrep -x guake > /dev/null 2>&1; then
+    echo "Restarting Guake"
+    pkill -x guake
+    nohup guake > /dev/null 2>&1 &
+  fi
 fi
