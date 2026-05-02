@@ -26,6 +26,7 @@ DOTBOT_BIN="bin/dotbot"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 OS="$(uname -o)"
+GUAKE_CONFIG_PENDING=false
 
 # This script should work no matter where you call it from.
 cd "${BASEDIR}"
@@ -86,8 +87,7 @@ if [[ $OS == "GNU/Linux" ]]; then
           echo "Applying xfce settings"
           "$BASEDIR/linux/xfconf.py" pull
           if gsettings list-schemas | grep -qE "^(org\.)?guake$"; then
-            echo "Enforcing guake settings"
-            dconf load /org/guake/ <linux/dconf-guake-dump.txt
+            GUAKE_CONFIG_PENDING=true
           fi
           ;;
         *) ;;
@@ -107,9 +107,13 @@ echo "Linking dotfiles for general bash use"
 if [[ $OS == "GNU/Linux" ]]; then
   echo "Linking Linux-specific dotfiles"
   "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_LINUX}" "${@}"
-  if pgrep -x guake >/dev/null 2>&1; then
+  if pgrep -x guake >/dev/null 2>&1 || [[ $GUAKE_CONFIG_PENDING == true ]]; then
+    if [[ $GUAKE_CONFIG_PENDING == true ]]; then
+      echo "Enforcing guake settings"
+      dconf load /org/guake/ <linux/dconf-guake-dump.txt
+    fi
     echo "Restarting Guake"
-    pkill -x guake
+    pkill -x guake 2>/dev/null || true
     nohup guake >/dev/null 2>&1 &
   fi
 fi
