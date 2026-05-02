@@ -40,12 +40,6 @@
       path: /usr/share/guake/pixmaps/guake-tray.svg
       if: "[ -f /usr/share/guake/pixmaps/guake-tray.svg ]"
 
-- shell:
-    - command: >-
-        [ -f ~/.config/redshift.conf ] ||
-        cp ~/.dotfiles/linux/config/redshift.conf ~/.config/redshift.conf
-      description: Install redshift config template if not present
-
 # code style ESS projects
 - defaults:
     link:

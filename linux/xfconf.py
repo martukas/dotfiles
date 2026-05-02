@@ -533,21 +533,27 @@ def _set_location_xfce(city, lat, lon, timezone):
 
 
 def _set_location_redshift(lat, lon):
-    conf = Path.home() / ".config/redshift.conf"
-    if not conf.exists():
-        print("  WARNING: ~/.config/redshift.conf not found — skipped", file=sys.stderr)
-        return
-    # De-symlink so location data stays local and out of the repo
-    if conf.is_symlink():
-        content = conf.read_text()
-        conf.unlink()
-        conf.write_text(content)
-    content = conf.read_text()
-    content = re.sub(r"(?m)^location-provider=.*$", "location-provider=manual", content)
-    content = re.sub(r"(?m)^lat=.*$", f"lat={lat}", content)
-    content = re.sub(r"(?m)^lon=.*$", f"lon={lon}", content)
-    conf.write_text(content)
-    print(f"  redshift location → ({lat}, {lon})")
+    dest = Path.home() / ".config/redshift.conf"
+
+    current_temp = 4200
+    if dest.exists() and not dest.is_symlink():
+        m = re.search(r"(?m)^temp-night=(\d+)", dest.read_text())
+        if m:
+            current_temp = int(m.group(1))
+
+    answer = input(f"  temp-night [{current_temp}]: ").strip()
+    temp_night = int(answer) if answer else current_temp
+
+    dest.write_text(
+        f"[redshift]\n"
+        f"temp-night={temp_night}\n"
+        f"location-provider=manual\n"
+        f"\n"
+        f"[manual]\n"
+        f"lat={lat}\n"
+        f"lon={lon}\n"
+    )
+    print(f"  redshift: location → ({lat}, {lon}), temp-night → {temp_night}")
 
 
 if __name__ == "__main__":

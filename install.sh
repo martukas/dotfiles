@@ -47,18 +47,21 @@ pipx_ensure() {
 
 export PATH="${HOME}/.local/bin:${PATH}"
 
-git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
-git submodule update --init --recursive "${DOTBOT_DIR}"
-git submodule update --init --recursive superpack
-git submodule update --init --recursive private
-git submodule update --init --recursive common/bash/plugins/dircolors-solarized
-git submodule update --init --recursive common/bash-git-prompt
-
-git submodule update
+read -rp "Sync submodules? " answer
+case ${answer:0:1} in
+  y | Y)
+    git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
+    git submodule update --init --recursive "${DOTBOT_DIR}"
+    git submodule update --init --recursive superpack
+    git submodule update --init --recursive private
+    git submodule update --init --recursive common/bash/plugins/dircolors-solarized
+    git submodule update --init --recursive common/bash-git-prompt
+    ;;
+  *) ;;
+esac
 
 if [[ $OS == "GNU/Linux" ]]; then
-  # @todo do not even try to run these on bootstrap, get the dotfiles symlinked first
-  read -rp "[Linux] Do you want to run one-time installation scripts? " answer
+  read -rp "[Linux] Install base packages (apt + pipx)? " answer
   case ${answer:0:1} in
     y | Y)
       sudo apt --yes install aptitude snapd silversearcher-ag ubuntu-advantage-tools pipx
@@ -70,41 +73,49 @@ if [[ $OS == "GNU/Linux" ]]; then
       pipx_ensure ruff
       pipx_ensure compiledb
       pipx_ensure uv
+      ;;
+    *) ;;
+  esac
 
+  read -rp "[Linux] Run superpack? " answer
+  case ${answer:0:1} in
+    y | Y)
       pushd superpack
       uv sync
       uv run python ./superpack/superpack.py ../linux/packages.yml
       popd
-
-      read -rp "[Linux] Do you want to install default desktop config? " answer
-      case ${answer:0:1} in
-        y | Y)
-          echo "Left win key as toggle"
-          grep -qxF -- '-option altwin:meta_win' ~/.Xkbmap 2>/dev/null || echo -option altwin:meta_win >>~/.Xkbmap
-          echo "Setting xfce dark theme"
-          xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
-          echo "Applying xfce settings"
-          "$BASEDIR/linux/xfconf.py" pull
-          if gsettings list-schemas | grep -qE "^(org\.)?guake$"; then
-            echo "Enforcing guake settings"
-            dconf load /org/guake/ <linux/dconf-guake-dump.txt
-          fi
-          ;;
-        *) ;;
-      esac
-
-      read -n1 -srp $'Press any key to continue with dotbot config...\n' _
       ;;
     *) ;;
   esac
-else
-  echo "No custom scripts to run for platform '$OS'."
+
+  read -rp "[Linux] Apply desktop config (xfce + guake)? " answer
+  case ${answer:0:1} in
+    y | Y)
+      echo "Left win key as toggle"
+      grep -qxF -- '-option altwin:meta_win' ~/.Xkbmap 2>/dev/null || echo -option altwin:meta_win >>~/.Xkbmap
+      echo "Setting xfce dark theme"
+      xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
+      echo "Applying xfce settings"
+      "$BASEDIR/linux/xfconf.py" pull
+      if gsettings list-schemas | grep -qE "^(org\.)?guake$"; then
+        echo "Enforcing guake settings"
+        dconf load /org/guake/ <linux/dconf-guake-dump.txt
+      fi
+      ;;
+    *) ;;
+  esac
 fi
 
-echo "Linking dotfiles for general bash use"
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_COMMON}" "${@}"
+read -rp "Link dotfiles (dotbot)? " answer
+case ${answer:0:1} in
+  y | Y)
+    echo "Linking dotfiles for general bash use"
+    "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_COMMON}" "${@}"
 
-if [[ $OS == "GNU/Linux" ]]; then
-  echo "Linking Linux-specific dotfiles"
-  "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_LINUX}" "${@}"
-fi
+    if [[ $OS == "GNU/Linux" ]]; then
+      echo "Linking Linux-specific dotfiles"
+      "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_LINUX}" "${@}"
+    fi
+    ;;
+  *) ;;
+esac
