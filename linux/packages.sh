@@ -225,15 +225,11 @@ function install_touchpad_indicator() {
   sudo apt install touchpad-indicator
 }
 
-function install_fake_webcam() {
-  sudo apt install v4l-utils v4l2loopback-*
-  v4l2-ctl --list-devices
-  echo "Please identify the highest X where /dev/videoX and select the next lowest number X+1."
-  read -rp "Enter number to use for fake cam device: " video_nr
-  pushd "${HOME}/.dotfiles/linux/Linux-Fake-Background-Webcam"
-  ./v4l2loopback-install.sh "$video_nr"
-  poetry install
-  popd
+function install_zoom() {
+  sudo apt install -y flatpak
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  flatpak install -y flathub us.zoom.Zoom
+  flatpak override --user us.zoom.Zoom --filesystem="$HOME/Pictures:ro"
 }
 
 function install_ms_edge() {
@@ -311,10 +307,9 @@ elif [ "$1" == "check-insync" ]; then
     exit $FAILURE
   fi
 
-elif [ "$1" == "install-fake-webcam" ]; then
-  OPT_FILE="/etc/modprobe.d/linux-fake-background.conf"
-  if [[ -f ${OPT_FILE} ]]; then
-    echo "fake webcam present"
+elif [ "$1" == "check-zoom" ]; then
+  if flatpak info us.zoom.Zoom >/dev/null 2>&1; then
+    echo "zoom present"
     exit $SUCCESS
   else
     exit $FAILURE
@@ -352,8 +347,8 @@ elif [ "$1" == "install-touchpad-indicator" ]; then
   install_touchpad_indicator
   prompt_exit
 
-elif [ "$1" == "install-fake-webcam" ]; then
-  install_fake_webcam
+elif [ "$1" == "install-zoom" ]; then
+  install_zoom
   prompt_exit
 
 elif [ "$1" == "install-ms-edge" ]; then

@@ -72,11 +72,6 @@
       descr: Touchpad indicator
       check: "command -v touchpad-indicator"
       install: "../linux/packages.sh install-touchpad-indicator"
-    - id: fake-webcam
-      category: graphics
-      descr: Fake webcam
-      check: "../linux/packages.sh check-fake-webcam"
-      install: "../linux/packages.sh install-fake-webcam"
     - id: edge-browser
       category: web
       descr: Microsoft Edge browser
@@ -165,8 +160,11 @@
   packages:
     - id: whatsapp-for-linux
       descr: Whatsapp desktop client
-    - id: zoom-client
-      descr: Zoom client
+    - id: zoom
+      descr: Zoom client (flatpak)
+      type: posix
+      check: "../linux/packages.sh check-zoom"
+      install: "../linux/packages.sh install-zoom"
     - id: telegram-desktop
       descr: Telegram desktop client
     - id: firefox
