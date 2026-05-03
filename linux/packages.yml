@@ -109,8 +109,10 @@
       descr: Meld comparison tool
     - id: glogg
       descr: Glogg log explorer
-    - id: docker.io
-      descr: Docker container framework
+    - id: docker
+      descr: Docker container framework (docker-ce)
+      type: posix
+      check: "command -v docker"
       install: "../linux/packages.sh install-docker"
     - id: dotnet-sdk-7.0
       descr: Microsoft .NET SDK
