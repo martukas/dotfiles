@@ -91,6 +91,7 @@ if [[ $OS == "GNU/Linux" ]]; then
       echo "Setting xfce dark theme"
       xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
       gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+      gsettings set org.xfce.mousepad.preferences.view color-scheme 'xubuntu_dark'
       echo "Applying xfce settings"
       "$BASEDIR/linux/xfconf.py" pull
       if gsettings list-schemas | grep -qE "^(org\.)?guake$"; then
