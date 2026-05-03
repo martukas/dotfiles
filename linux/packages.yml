@@ -147,6 +147,11 @@
     category: multimedia
     type: apt
   packages:
+    - id: strawberry
+      descr: Strawberry music player
+      type: posix
+      check: "../linux/packages.sh check-strawberry"
+      install: "../linux/packages.sh install-strawberry"
     - id: clementine
       descr: Clementine music player
     - id: vlc
@@ -158,8 +163,11 @@
     category: web
     type: snap
   packages:
-    - id: whatsapp-for-linux
-      descr: Whatsapp desktop client
+    - id: zapzap
+      descr: WhatsApp desktop client (flatpak)
+      type: posix
+      check: "../linux/packages.sh check-zapzap"
+      install: "../linux/packages.sh install-zapzap"
     - id: zoom
       descr: Zoom client (flatpak)
       type: posix
@@ -175,6 +183,11 @@
       descr: Signal messenger
     - id: discord
       descr: Discord chat
+    - id: chrome
+      descr: Google Chrome browser
+      type: posix
+      check: "command -v google-chrome-stable"
+      install: "../linux/packages.sh install-chrome"
     - id: chromium-browser
       descr: Chromium browser
       type: apt

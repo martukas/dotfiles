@@ -106,11 +106,11 @@ read -rp "Link dotfiles (dotbot)? " answer
 case ${answer:0:1} in
   y | Y)
     echo "Linking dotfiles for general bash use"
-    "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_COMMON}" "${@}"
+    "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_COMMON}" -v
 
     if [[ $OS == "GNU/Linux" ]]; then
       echo "Linking Linux-specific dotfiles"
-      "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_LINUX}" "${@}"
+      "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_LINUX}" -v
     fi
     ;;
   *) ;;

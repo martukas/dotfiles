@@ -232,12 +232,37 @@ function install_zoom() {
   flatpak override --user us.zoom.Zoom --filesystem="$HOME/Pictures:ro"
 }
 
+function install_zapzap() {
+  sudo apt install -y flatpak
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  flatpak install -y flathub com.rtosta.zapzap
+  flatpak override --user --filesystem=home com.rtosta.zapzap
+  flatpak override --user --env=QTWEBENGINE_CHROMIUM_FLAGS="--disable-gpu" com.rtosta.zapzap
+}
+
+function install_chrome() {
+  local tmp
+  tmp=$(mktemp -d)
+  trap "rm -rf '$tmp'" RETURN
+
+  wget -O "$tmp/chrome.deb" 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
+  sudo apt --yes install "$tmp/chrome.deb"
+}
+
+function install_strawberry() {
+  sudo apt install -y flatpak
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  flatpak install -y flathub org.strawberrymusicplayer.strawberry
+}
+
 function install_ms_edge() {
-  curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >microsoft.gpg
-  sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-  rm microsoft.gpg
-  sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
-  sudo apt update && sudo apt install microsoft-edge-stable
+  sudo mkdir -p /etc/apt/keyrings
+  curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
+    | gpg --dearmor \
+    | sudo tee /etc/apt/keyrings/microsoft-edge.gpg >/dev/null
+  echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/microsoft-edge.gpg] https://packages.microsoft.com/repos/edge stable main" \
+    | sudo tee /etc/apt/sources.list.d/microsoft-edge.list >/dev/null
+  sudo apt update && sudo apt --yes install microsoft-edge-stable
 }
 
 function install_claude_code() {
@@ -349,6 +374,34 @@ elif [ "$1" == "install-touchpad-indicator" ]; then
 
 elif [ "$1" == "install-zoom" ]; then
   install_zoom
+  prompt_exit
+
+elif [ "$1" == "check-zapzap" ]; then
+  if flatpak info com.rtosta.zapzap >/dev/null 2>&1; then
+    echo "zapzap present"
+    exit $SUCCESS
+  else
+    exit $FAILURE
+  fi
+
+elif [ "$1" == "install-zapzap" ]; then
+  install_zapzap
+  prompt_exit
+
+elif [ "$1" == "install-chrome" ]; then
+  install_chrome
+  prompt_exit
+
+elif [ "$1" == "check-strawberry" ]; then
+  if flatpak info org.strawberrymusicplayer.strawberry >/dev/null 2>&1; then
+    echo "strawberry present"
+    exit $SUCCESS
+  else
+    exit $FAILURE
+  fi
+
+elif [ "$1" == "install-strawberry" ]; then
+  install_strawberry
   prompt_exit
 
 elif [ "$1" == "install-ms-edge" ]; then
