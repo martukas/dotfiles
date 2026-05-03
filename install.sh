@@ -50,11 +50,7 @@ export PATH="${HOME}/.local/bin:${PATH}"
 read -rp "Sync submodules? " answer
 case ${answer:0:1} in
   y | Y)
-    git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
-    git submodule update --init --recursive "${DOTBOT_DIR}"
-    git submodule update --init --recursive superpack
-    git submodule update --init --recursive private
-    git submodule update --init --recursive common/bash-git-prompt
+    git submodule update --init --recursive
     ;;
   *) ;;
 esac
