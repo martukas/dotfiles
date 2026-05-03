@@ -6,7 +6,7 @@
 
 # Define suggested defaults based on OS
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    SUGGESTED_MC_DIR="${HOME}/.local/share/PrismLauncher/instances/SevTech- Ages/.minecraft"
+    SUGGESTED_MC_DIR="${HOME}/.var/app/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/SevTechAges/.minecraft"
     SUGGESTED_SHARED_DIR="${HOME}/Insync/shared_config"
 elif [[ "$OSTYPE" == "msys" ]]; then
     # Check for Administrator privileges on Windows

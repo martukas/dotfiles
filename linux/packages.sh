@@ -270,6 +270,13 @@ function install_strawberry() {
   flatpak install -y flathub org.strawberrymusicplayer.strawberry
 }
 
+function install_prism_launcher() {
+  sudo apt install -y flatpak
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  flatpak install -y flathub org.prismlauncher.PrismLauncher
+  flatpak override --user --filesystem="$HOME/Insync/martukas@gmail.com/Google Drive/fun/MC/shared_config:rw" org.prismlauncher.PrismLauncher
+}
+
 function install_ms_edge() {
   sudo mkdir -p /etc/apt/keyrings
   curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
@@ -417,6 +424,18 @@ elif [ "$1" == "check-strawberry" ]; then
 
 elif [ "$1" == "install-strawberry" ]; then
   install_strawberry
+  prompt_exit
+
+elif [ "$1" == "check-prism-launcher" ]; then
+  if flatpak info org.prismlauncher.PrismLauncher >/dev/null 2>&1; then
+    echo "prism-launcher present"
+    exit $SUCCESS
+  else
+    exit $FAILURE
+  fi
+
+elif [ "$1" == "install-prism-launcher" ]; then
+  install_prism_launcher
   prompt_exit
 
 elif [ "$1" == "install-ms-edge" ]; then

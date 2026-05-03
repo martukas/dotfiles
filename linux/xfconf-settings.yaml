@@ -139,6 +139,7 @@ panel:
         - org.xfce.mousepad.desktop
         - xfce4-terminal-emulator.desktop
         - guake.desktop
+        - org.prismlauncher.PrismLauncher.desktop
     separator:
       style: 0
       expand: false
@@ -152,7 +153,6 @@ panel:
       show-handle: false
       flat-buttons: true
       sort-order: 4
-      max-button-length: 120
     spring:
       style: 0
       expand: true
@@ -182,7 +182,7 @@ panel:
       digital-time-format: VNO %R
       digital-time-font: Sans 10
     weather:
-      msl: 18
+      msl: 100
       cache-max-age: 172800
       power-saving: true
       round: true

@@ -15,3 +15,6 @@
 	url = git@github.com:martukas/dotfiles-private.git
 	branch = main
 	ignore = dirty
+[submodule "linux/logiops"]
+	path = linux/logiops
+	url = https://github.com/PixlOne/logiops.git

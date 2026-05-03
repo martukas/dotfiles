@@ -77,6 +77,11 @@
       descr: Microsoft Edge browser
       check: "command -v microsoft-edge-stable"
       install: "../linux/packages.sh install-ms-edge"
+    - id: prism-launcher
+      descr: Prism Launcher (Minecraft)
+      category: gaming
+      check: "../linux/packages.sh check-prism-launcher"
+      install: "../linux/packages.sh install-prism-launcher"
 
 - defaults:
     type: apt
