@@ -241,15 +241,11 @@ function install_touchpad_indicator() {
 }
 
 function install_zoom() {
-  sudo apt install -y flatpak
-  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
   flatpak install -y flathub us.zoom.Zoom
   flatpak override --user us.zoom.Zoom --filesystem="$HOME/Pictures:ro"
 }
 
 function install_zapzap() {
-  sudo apt install -y flatpak
-  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
   flatpak install -y flathub com.rtosta.zapzap
   flatpak override --user --filesystem=home com.rtosta.zapzap
   flatpak override --user --env=QTWEBENGINE_CHROMIUM_FLAGS="--disable-gpu" com.rtosta.zapzap
@@ -265,14 +261,10 @@ function install_chrome() {
 }
 
 function install_strawberry() {
-  sudo apt install -y flatpak
-  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
   flatpak install -y flathub org.strawberrymusicplayer.strawberry
 }
 
 function install_prism_launcher() {
-  sudo apt install -y flatpak
-  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
   flatpak install -y flathub org.prismlauncher.PrismLauncher
   local insync_account
   insync_account=$(find "$HOME/Insync" -maxdepth 1 -type d -name "*@*" 2>/dev/null | head -1)

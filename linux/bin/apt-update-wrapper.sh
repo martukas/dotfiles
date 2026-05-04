@@ -28,7 +28,7 @@ print_help() {
 Update system
 
 The following options are available:
-  a           Automatically update with apt and snap, autoremove and clean cache after
+  a           Automatically update with apt, snap, and flatpak; autoremove and clean cache after
   g           Update any firmware
   f           Force install of held back packages
   ff          Fast-forward, i.e. update the distribution
@@ -75,6 +75,11 @@ elif [ "$1" == "a" ]; then
     | while read snapname revision; do
       sudo snap remove "$snapname" --revision="$revision"
     done
+
+  if command -v flatpak >/dev/null 2>&1; then
+    flatpak update -y
+    flatpak uninstall --unused -y
+  fi
 
   if [ -d /home/linuxbrew ]; then
     brew update

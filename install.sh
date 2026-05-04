@@ -59,9 +59,10 @@ if [[ $OS == "GNU/Linux" ]]; then
   read -rp "[Linux] Install base packages (apt + pipx)? " answer
   case ${answer:0:1} in
     y | Y)
-      sudo apt --yes install aptitude snapd silversearcher-ag ubuntu-advantage-tools pipx
+      sudo apt --yes install aptitude snapd silversearcher-ag ubuntu-advantage-tools pipx flatpak
       # @todo run:   sudo pro attach
       sudo apt -y purge parole
+      flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
       pipx_ensure poetry
       pipx_ensure pre-commit
