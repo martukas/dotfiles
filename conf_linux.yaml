@@ -32,8 +32,6 @@
       path: linux/config/autostart/**
       glob: true
       force: false
-    ~/.config/flameshot/flameshot.ini:
-      path: linux/config/flameshot/flameshot.ini
     ~/.config/mimeapps.list:
       path: linux/config/mimeapps.list
     ~/.local/bin/redshift-launch: linux/bin/redshift-launch

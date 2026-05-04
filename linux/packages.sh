@@ -274,7 +274,12 @@ function install_prism_launcher() {
   sudo apt install -y flatpak
   flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
   flatpak install -y flathub org.prismlauncher.PrismLauncher
-  flatpak override --user --filesystem="$HOME/Insync/martukas@gmail.com/Google Drive/fun/MC/shared_config:rw" org.prismlauncher.PrismLauncher
+  local insync_account
+  insync_account=$(find "$HOME/Insync" -maxdepth 1 -type d -name "*@*" 2>/dev/null | head -1)
+  local mc_config="$insync_account/Google Drive/fun/MC/shared_config"
+  if [ -d "$mc_config" ]; then
+    flatpak override --user --filesystem="$mc_config:rw" org.prismlauncher.PrismLauncher
+  fi
 }
 
 function install_ms_edge() {
