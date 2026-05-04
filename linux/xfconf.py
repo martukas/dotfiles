@@ -74,6 +74,23 @@ _SHORTCUTS_SECTIONS = [
 
 _XFCONF_XML_DIR = Path.home() / ".config/xfce4/xfconf/xfce-perchannel-xml"
 
+STATE_FILE = Path.home() / ".local/state/df-power-profile"
+
+
+def read_active_profile():
+    """Return active profile name ('docked' or 'mobile'), prompting if state file is absent."""
+    if STATE_FILE.exists():
+        profile = STATE_FILE.read_text().strip()
+        if profile in ("docked", "mobile"):
+            return profile
+        print(f"Warning: {STATE_FILE} contains unrecognised value '{profile}', prompting.")
+    while True:
+        answer = input("Power profile not set. Choose [docked/mobile]: ").strip().lower()
+        if answer in ("docked", "mobile"):
+            STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+            STATE_FILE.write_text(answer)
+            return answer
+
 
 def run_xfconf_query(*args):
     return subprocess.run(["xfconf-query"] + list(args), capture_output=True, text=True)
@@ -212,6 +229,8 @@ def cmd_push():
     push_keyboard_shortcuts(settings)
     print("Pushing panel...")
     push_panel(settings)
+    print("Pushing power-profile...")
+    push_power_profile(settings)
     save_settings(settings)
     print(f"Saved to {SETTINGS_FILE}")
 
@@ -224,6 +243,8 @@ def cmd_pull():
     pull_keyboard_shortcuts(settings)
     print("Pulling panel...")
     pull_panel(settings)
+    print("Pulling power-profile...")
+    pull_power_profile(settings)
     print("Done.")
 
 
@@ -351,6 +372,51 @@ def push_panel(settings):
     panel["order"] = order
     panel["plugins"] = plugins
     settings["panel"] = panel
+
+
+def push_power_profile(settings):
+    profile_name = read_active_profile()
+    print(f"  active profile: {profile_name}")
+    profiles = settings.get("power-profiles", {})
+    active = profiles.get(profile_name, {})
+
+    for channel, keys in active.items():
+        prop_prefix = f"/{channel}/" if channel == "xfce4-power-manager" else "/"
+        for key, current_val in keys.items():
+            prop = f"{prop_prefix}{key.lstrip('/')}"
+            if isinstance(current_val, list):
+                val = xfconf_get_array(channel, prop)
+                if val:
+                    active[channel][key] = val
+                else:
+                    print(f"  WARNING: {channel} {prop} not found in xfconf, keeping YAML value")
+            else:
+                val, type_str = xfconf_get(channel, prop)
+                if val is not None:
+                    active[channel][key] = coerce_value(val, type_str)
+                else:
+                    print(f"  WARNING: {channel} {prop} not found in xfconf, keeping YAML value")
+
+    profiles[profile_name] = active
+    settings["power-profiles"] = profiles
+
+
+def pull_power_profile(settings):
+    profile_name = read_active_profile()
+    print(f"  active profile: {profile_name}")
+    profiles = settings.get("power-profiles", {})
+    active = profiles.get(profile_name, {})
+
+    for channel, keys in active.items():
+        prop_prefix = f"/{channel}/" if channel == "xfce4-power-manager" else "/"
+        for key, value in keys.items():
+            prop = f"{prop_prefix}{key.lstrip('/')}"
+            if isinstance(value, list):
+                xfconf_set_array(channel, prop, "string", value, create=True)
+            else:
+                xml_type = _xfconf_type_from_xml(channel, prop)
+                type_str = xml_type if xml_type and xml_type != "empty" else yaml_type_to_xfconf(value)
+                xfconf_set(channel, prop, value, type_str, create=True)
 
 
 def pull_panel(settings):

@@ -205,3 +205,47 @@ panel:
         lines: 1
         show: true
         use-color: false
+power-profiles:
+  docked:
+    xfce4-power-manager:
+      blank-on-ac: 0
+      dpms-on-ac-sleep: 0
+      dpms-on-ac-off: 0
+    xfce4-screensaver:
+      saver/enabled: false
+      saver/idle-activation/enabled: false
+      saver/idle-activation/delay: 10
+      saver/mode: 2
+      saver/themes/list:
+        - screensavers-xfce-floaters
+      saver/fullscreen-inhibit: true
+      lock/enabled: false
+      screensavers/xfce-floaters/do-rotations: true
+      screensavers/xfce-floaters/arguments: "-n 9 -r"
+      screensavers/xfce-floaters/number-of-images: 9
+  mobile:
+    xfce4-power-manager:
+      blank-on-ac: 15
+      blank-on-battery: 5
+      dpms-on-ac-sleep: 30
+      dpms-on-ac-off: 60
+      dpms-on-battery-sleep: 10
+      dpms-on-battery-off: 20
+      inactivity-on-battery: 30
+      lid-action-on-battery: 3
+      brightness-on-battery: 60
+      critical-power-level: 3
+      critical-power-action: 4
+      lock-screen-suspend-hibernate: true
+    xfce4-screensaver:
+      saver/enabled: true
+      saver/idle-activation/enabled: true
+      saver/idle-activation/delay: 10
+      saver/mode: 2
+      saver/themes/list:
+        - screensavers-xfce-floaters
+      saver/fullscreen-inhibit: true
+      lock/enabled: true
+      screensavers/xfce-floaters/do-rotations: true
+      screensavers/xfce-floaters/arguments: "-n 9 -r"
+      screensavers/xfce-floaters/number-of-images: 9

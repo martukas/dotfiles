@@ -109,6 +109,8 @@ dfu() {
 xubu-push() { ~/.dotfiles/linux/xfconf.py push; }
 xubu-pull() { ~/.dotfiles/linux/xfconf.py pull; }
 df-set-location() { ~/.dotfiles/linux/xfconf.py set-location; }
+df-power-docked() { df-power docked; }
+df-power-mobile() { df-power mobile; }
 
 # Dotfiles upgrade submodules
 df-upgrade() {
