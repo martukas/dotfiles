@@ -393,7 +393,8 @@ def push_power_profile(settings):
             else:
                 val, type_str = xfconf_get(channel, prop)
                 if val is not None:
-                    active[channel][key] = coerce_value(val, type_str)
+                    effective_type = type_str if type_str and type_str != "empty" else yaml_type_to_xfconf(current_val)
+                    active[channel][key] = coerce_value(val, effective_type)
                 else:
                     print(f"  WARNING: {channel} {prop} not found in xfconf, keeping YAML value")
 

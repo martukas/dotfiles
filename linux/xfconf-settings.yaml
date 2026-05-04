@@ -221,7 +221,7 @@ power-profiles:
       saver/fullscreen-inhibit: true
       lock/enabled: false
       screensavers/xfce-floaters/do-rotations: true
-      screensavers/xfce-floaters/arguments: "-n 9 -r"
+      screensavers/xfce-floaters/arguments: -n 9 -r
       screensavers/xfce-floaters/number-of-images: 9
   mobile:
     xfce4-power-manager:
@@ -247,5 +247,5 @@ power-profiles:
       saver/fullscreen-inhibit: true
       lock/enabled: true
       screensavers/xfce-floaters/do-rotations: true
-      screensavers/xfce-floaters/arguments: "-n 9 -r"
+      screensavers/xfce-floaters/arguments: -n 9 -r
       screensavers/xfce-floaters/number-of-images: 9
