@@ -191,8 +191,14 @@
       install: "../linux/packages.sh install-slack"
     - id: signal-desktop
       descr: Signal messenger
+      type: posix
+      check: "command -v signal-desktop"
+      install: "../linux/packages.sh install-signal"
     - id: discord
       descr: Discord chat
+      type: posix
+      check: "command -v discord"
+      install: "../linux/packages.sh install-discord"
     - id: chrome
       descr: Google Chrome browser
       type: posix

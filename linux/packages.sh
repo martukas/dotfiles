@@ -273,6 +273,25 @@ function install_slack() {
   sudo apt update && sudo apt --yes install slack-desktop
 }
 
+function install_signal() {
+  sudo mkdir -p /etc/apt/keyrings
+  curl -fsSL https://updates.signal.org/desktop/apt/keys.asc \
+    | gpg --dearmor \
+    | sudo tee /etc/apt/keyrings/signal-desktop-keyring.gpg >/dev/null
+  echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main" \
+    | sudo tee /etc/apt/sources.list.d/signal-xenial.list >/dev/null
+  sudo apt update && sudo apt --yes install signal-desktop
+}
+
+function install_discord() {
+  local tmp
+  tmp=$(mktemp -d)
+  trap "rm -rf '$tmp'" RETURN
+
+  wget -O "$tmp/discord.deb" 'https://discord.com/api/download?platform=linux&format=deb'
+  sudo apt --yes install "$tmp/discord.deb"
+}
+
 function install_strawberry() {
   flatpak install -y flathub org.strawberrymusicplayer.strawberry
 }
@@ -426,6 +445,14 @@ elif [ "$1" == "install-chrome" ]; then
 
 elif [ "$1" == "install-slack" ]; then
   install_slack
+  prompt_exit
+
+elif [ "$1" == "install-signal" ]; then
+  install_signal
+  prompt_exit
+
+elif [ "$1" == "install-discord" ]; then
+  install_discord
   prompt_exit
 
 elif [ "$1" == "check-strawberry" ]; then
