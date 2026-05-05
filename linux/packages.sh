@@ -150,7 +150,10 @@ function install_jetbrains() {
   local expected actual
   expected=$(curl -sSfL "${url}.sha256" | awk '{print $1}')
   actual=$(sha256sum "$tarball" | awk '{print $1}')
-  [ "$expected" = "$actual" ] || { echo "Checksum mismatch: expected $expected, got $actual"; return 1; }
+  [ "$expected" = "$actual" ] || {
+    echo "Checksum mismatch: expected $expected, got $actual"
+    return 1
+  }
 
   local dir="$tmp/toolbox"
   echo -e "\e[94mExtracting to $dir\e[39m"
@@ -260,6 +263,16 @@ function install_chrome() {
   sudo apt --yes install "$tmp/chrome.deb"
 }
 
+function install_slack() {
+  sudo mkdir -p /etc/apt/keyrings
+  curl -fsSL https://packagecloud.io/slacktechnologies/slack/gpgkey \
+    | gpg --dearmor \
+    | sudo tee /etc/apt/keyrings/slack.gpg >/dev/null
+  echo "deb [signed-by=/etc/apt/keyrings/slack.gpg] https://packagecloud.io/slacktechnologies/slack/debian/ jessie main" \
+    | sudo tee /etc/apt/sources.list.d/slack.list >/dev/null
+  sudo apt update && sudo apt --yes install slack-desktop
+}
+
 function install_strawberry() {
   flatpak install -y flathub org.strawberrymusicplayer.strawberry
 }
@@ -292,7 +305,7 @@ function install_claude_code() {
   fi
   # shellcheck disable=SC1091
   \. "$NVM_DIR/nvm.sh"
-  if ! command -v npm > /dev/null 2>&1; then
+  if ! command -v npm >/dev/null 2>&1; then
     nvm install --lts
     nvm use --lts
   fi
@@ -411,6 +424,10 @@ elif [ "$1" == "install-chrome" ]; then
   install_chrome
   prompt_exit
 
+elif [ "$1" == "install-slack" ]; then
+  install_slack
+  prompt_exit
+
 elif [ "$1" == "check-strawberry" ]; then
   if flatpak info org.strawberrymusicplayer.strawberry >/dev/null 2>&1; then
     echo "strawberry present"
@@ -443,7 +460,7 @@ elif [ "$1" == "check-claude-code" ]; then
   export NVM_DIR="$HOME/.nvm"
   # shellcheck disable=SC1091
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  if command -v claude > /dev/null 2>&1; then
+  if command -v claude >/dev/null 2>&1; then
     echo "claude present"
     exit $SUCCESS
   else

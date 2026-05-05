@@ -186,6 +186,9 @@
       descr: Firefox browser
     - id: slack
       descr: Slack
+      type: posix
+      check: "command -v slack"
+      install: "../linux/packages.sh install-slack"
     - id: signal-desktop
       descr: Signal messenger
     - id: discord

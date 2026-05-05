@@ -130,7 +130,7 @@ panel:
     whiskermenu:
       favorites:
         - xfce4-file-manager.desktop
-        - slack_slack.desktop
+        - slack.desktop
         - com.rtosta.zapzap.desktop
         - jetbrains-toolbox.desktop
         - firefox_firefox.desktop
