@@ -14,26 +14,26 @@
       install: "../linux/packages.sh install-nerdfonts"
     - id: rustup
       descr: Rust toolchain
-      category: dev-admin
+      category: dev
       check: command -v rustup
       install: "../linux/packages.sh install-rust"
     - id: nvm
       descr: Node.js toolchain (nvm)
-      category: dev-admin
+      category: dev
       check: "../linux/packages.sh check-nvm"
       install: "../linux/packages.sh install-nvm"
     - id: claude-code
       descr: Claude Code CLI (Anthropic)
-      category: dev-admin
+      category: dev
       check: "../linux/packages.sh check-claude-code"
       install: "../linux/packages.sh install-claude-code"
     - id: platformio
       descr: PlatformIO embedded toolchain
-      category: dev-admin
+      category: dev
       check: "command -v platformio"
       install: "../linux/packages.sh install-platformio"
     - id: powershell
-      category: dev-admin
+      category: sysadmin
       descr: Microsoft PowerShell
       check: "snap list | grep powershell"
       install: "../linux/packages.sh install-powershell"
@@ -48,17 +48,17 @@
       check: "test -f ~/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox && echo exists"
       install: "../linux/packages.sh install-jetbrains"
     - id: brew
-      category: dev-admin
+      category: sysadmin
       descr: Homebrew package manager
       check: "command -v brew"
       install: "../linux/packages.sh install-brew"
     - id: nordvpn
-      category: dev-admin
+      category: sysadmin
       descr: NordVPN
       check: "command -v nordvpn"
       install: "../linux/packages.sh install-nordvpn"
     - id: ubuntu-pro
-      category: dev-admin
+      category: sysadmin
       descr: Ubuntu Pro subscription
       check: "../linux/packages.sh check-ubuntu-pro"
       install: "../linux/packages.sh install-ubuntu-pro"
@@ -100,13 +100,10 @@
       install: "../linux/packages.sh install-keepass-plugins"
     - id: viewnior
       descr: Viewnior minimal image viewer
-    - id: synaptic
-      descr: Synaptic package manager GUI
-    - id: baobab
-      descr: Baobab disk usage analyser
+
 - defaults:
     type: apt
-    category: dev-admin
+    category: dev
   packages:
     - id: build-essential
       descr: build-essential for compiling C/C++
@@ -125,17 +122,10 @@
       install: "../linux/packages.sh install-docker"
     - id: dotnet-sdk-7.0
       descr: Microsoft .NET SDK
-    - id: remmina
-      descr: Remmina remote desktop client
-    - id: teamviewer
-      descr: TeamViewer remote desktop client
-    - id: wireshark
-      descr: Wireshark network sniffer
-    - id: virtualbox
-      descr: VirtualBox
+
 - defaults:
     type: snap
-    category: dev-admin
+    category: dev
   packages:
     - id: root-framework
       descr: ROOT physics framework
@@ -143,6 +133,24 @@
       descr: Postman web protocol sniffer
     - id: robo3t
       descr: Robo3T Mongo database browser
+
+- defaults:
+    type: apt
+    category: sysadmin
+  packages:
+    - id: synaptic
+      descr: Synaptic package manager GUI
+    - id: baobab
+      descr: Baobab disk usage analyser
+    - id: wireshark
+      descr: Wireshark network sniffer
+    - id: remmina
+      descr: Remmina remote desktop client
+    - id: teamviewer
+      descr: TeamViewer remote desktop client
+    - id: virtualbox
+      descr: VirtualBox
+
 - defaults:
     category: graphics
     type: apt
@@ -154,6 +162,7 @@
     - id: simple-scan
       descr: Simple scan for scanning docs
       type: snap
+
 - defaults:
     category: multimedia
     type: apt
@@ -170,6 +179,7 @@
     - id: spotify
       descr: Spotify desktop client
       type: snap
+
 - defaults:
     category: web
     type: snap
