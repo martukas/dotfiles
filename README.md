@@ -1,7 +1,6 @@
 # One ring to rule them all
 
-[![Xubuntu](https://img.shields.io/badge/Xubuntu-22.04-0044aa?logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTUwMS4zMTIgLTQ5NC4wMzIpIj48Y2lyY2xlIGN4PSI1MzMuMzEyIiBjeT0iNTI2LjAzMiIgcj0iMzIiIHN0eWxlPSJmaWxsOiMwNGE7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmUiLz48cGF0aCBkPSJNNTI0LjAxMyA1MTEuNzU0Yy0uNDYyIDIuMjk2LjIwMiA0LjkyMyAxLjEzMSA4LjEuMDU3LjE5Mi0uMDUyLjQzNy0uMTUuNDY2LS40MjIuMTIzLTEuMTQ1LS4wMDgtMS4yODUtLjI5Ni0uNzI0LTEuNDg2LTEuMDY5LTMuMDA2LTEuOTE0LTQuNDctLjU4NS0xLjAxMi0xLjE5LTEuOTc4LTEuOTExLTIuNjMxLS44NzYtLjc5My0xLjU2Mi0uOTUtMi40OTktLjU1OC0xLjE4Mi40OTQtMS44OTYgMS42NzgtMi4xNCAyLjc0LS4yNDkgMS4wNzYtLjE0NSAyLjMyLjA1IDMuNC4yMjggMS4yNy41MiAyLjI3Mi44OTQgMy40Ni0uMjg2Ljg0NC0yLjAwNCA1LjQ3Ny0yLjQyIDguNjktLjUzMyA0LjEyMi0yLjAzMyAxNi41OTggMTEuNzE0IDE1LjIxIDUuMDctLjUxIDkuMjAyLTIuMjg4IDEzLjExMS00LjExIDEuNzkyLS44MzYgNC4wNC0xLjkxNCA2LjItMy4xIDIuMTYyLTEuMTg4IDQuMTY4LTIuNDU0IDUuNy0zLjggMS41MzYtMS4zNSAyLjY1NC0yLjgyOCAyLjQ1LTQuMy0uMzI4LTIuMzc0LTEuOTAyLTQuMTM4LTQtNS41LTIuMTA1LTEuMzY4LTUuNzAxLTIuNjQtOC4zLTMuMzk5LTMuNDEtLjk5Ni02LjA1LTEuMzgzLTkuMjUtMS41NTctLjE3OS0zLjI0Mi4yNTMtNy41MS0xLjgtOS45OTUtLjQ3NS0uNTc1LTEuMTY4LS45NDEtMi0xLTEuMzM2LjA1NC0zLjE1MS41Mi0zLjU4IDIuNjV6IiBzdHlsZT0ib3BhY2l0eToxO2ZpbGw6I2ZmZjtmaWxsLW9wYWNpdHk6MTtzdHJva2U6bm9uZSIvPjxwYXRoIGQ9Ik01NDAuMTU4IDUxNy41NTFjLS4wMzQuNzk5LjEzMyAyLjUyMSAxLjE4IDIuNjU0IDEuMjQ3LjE0NyAxLjY0Ny0uODggMS43ODMtMS42ODMuNDMzLTIuNTU1LjU1My0zLjMxOS43Ny01LjYzNC4yNTQtMi43MjguOTI1LTcuMzMxLS4yNDctNi45MDItMS4xODcuNDM1LTIuMTMgNC4xMTEtMi40MzggNS42NTItLjI0IDEuMi0uOTg5IDQuNTQyLTEuMDQ4IDUuOTEzek01NDUuNjIzIDUxOC4xM2MtLjY4MyAxLjU5Ni0xLjAwNyAyLjk3NC0uMDYyIDMuNDQyIDEuMTI1LjU1NyAyLjA5OC0uNTIzIDIuNDE1LTEuMjczLjk1NC0yLjI2MiAxLjQ4My0zLjYzMiAyLjIyLTUuMzQzIDEuMDgzLTIuNTE3IDMuNzg3LTcuMzUyIDIuMDAzLTcuMDk2LTEuMjUyLjE4LTIuOTM0IDMuMzU4LTMuNzQyIDQuNzA2LTEuMDQgMS43MzItMS44NSAzLjI2Ny0yLjgzNCA1LjU2NXoiIHN0eWxlPSJvcGFjaXR5OjE7ZmlsbDojZmZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lIi8+PC9nPjwvc3ZnPg==)](https://xubuntu.org/)
-[![Windows10](https://img.shields.io/badge/Windows-10-0078D6?logo=windows)](https://www.microsoft.com/en-us/software-download/windows10%20)
+[![Xubuntu](https://img.shields.io/badge/Xubuntu-26.04-0044aa?logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTUwMS4zMTIgLTQ5NC4wMzIpIj48Y2lyY2xlIGN4PSI1MzMuMzEyIiBjeT0iNTI2LjAzMiIgcj0iMzIiIHN0eWxlPSJmaWxsOiMwNGE7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmUiLz48cGF0aCBkPSJNNTI0LjAxMyA1MTEuNzU0Yy0uNDYyIDIuMjk2LjIwMiA0LjkyMyAxLjEzMSA4LjEuMDU3LjE5Mi0uMDUyLjQzNy0uMTUuNDY2LS40MjIuMTIzLTEuMTQ1LS4wMDgtMS4yODUtLjI5Ni0uNzI0LTEuNDg2LTEuMDY5LTMuMDA2LTEuOTE0LTQuNDctLjU4NS0xLjAxMi0xLjE5LTEuOTc4LTEuOTExLTIuNjMxLS44NzYtLjc5My0xLjU2Mi0uOTUtMi40OTktLjU1OC0xLjE4Mi40OTQtMS44OTYgMS42NzgtMi4xNCAyLjc0LS4yNDkgMS4wNzYtLjE0NSAyLjMyLjA1IDMuNC4yMjggMS4yNy41MiAyLjI3Mi44OTQgMy40Ni0uMjg2Ljg0NC0yLjAwNCA1LjQ3Ny0yLjQyIDguNjktLjUzMyA0LjEyMi0yLjAzMyAxNi41OTggMTEuNzE0IDE1LjIxIDUuMDctLjUxIDkuMjAyLTIuMjg4IDEzLjExMS00LjExIDEuNzkyLS44MzYgNC4wNC0xLjkxNCA2LjItMy4xIDIuMTYyLTEuMTg4IDQuMTY4LTIuNDU0IDUuNy0zLjggMS41MzYtMS4zNSAyLjY1NC0yLjgyOCAyLjQ1LTQuMy0uMzI4LTIuMzc0LTEuOTAyLTQuMTM4LTQtNS41LTIuMTA1LTEuMzY4LTUuNzAxLTIuNjQtOC4zLTMuMzk5LTMuNDEtLjk5Ni02LjA1LTEuMzgzLTkuMjUtMS41NTctLjE3OS0zLjI0Mi4yNTMtNy41MS0xLjgtOS45OTUtLjQ3NS0uNTc1LTEuMTY4LS45NDEtMi0xLTEuMzM2LjA1NC0zLjE1MS41Mi0zLjU4IDIuNjV6IiBzdHlsZT0ib3BhY2l0eToxO2ZpbGw6I2ZmZjtmaWxsLW9wYWNpdHk6MTtzdHJva2U6bm9uZSIvPjxwYXRoIGQ9Ik01NDAuMTU4IDUxNy41NTFjLS4wMzQuNzk5LjEzMyAyLjUyMSAxLjE4IDIuNjU0IDEuMjQ3LjE0NyAxLjY0Ny0uODggMS43ODMtMS42ODMuNDMzLTIuNTU1LjU1My0zLjMxOS43Ny01LjYzNC4yNTQtMi43MjguOTI1LTcuMzMxLS4yNDctNi45MDItMS4xODcuNDM1LTIuMTMgNC4xMTEtMi40MzggNS42NTItLjI0IDEuMi0uOTg5IDQuNTQyLTEuMDQ4IDUuOTEzek01NDUuNjIzIDUxOC4xM2MtLjY4MyAxLjU5Ni0xLjAwNyAyLjk3NC0uMDYyIDMuNDQyIDEuMTI1LjU1NyAyLjA5OC0uNTIzIDIuNDE1LTEuMjczLjk1NC0yLjI2MiAxLjQ4My0zLjYzMiAyLjIyLTUuMzQzIDEuMDgzLTIuNTE3IDMuNzg3LTcuMzUyIDIuMDAzLTcuMDk2LTEuMjUyLjE4LTIuOTM0IDMuMzU4LTMuNzQyIDQuNzA2LTEuMDQgMS43MzItMS44NSAzLjI2Ny0yLjgzNCA1LjU2NXoiIHN0eWxlPSJvcGFjaXR5OjE7ZmlsbDojZmZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lIi8+PC9nPjwvc3ZnPg==)](https://xubuntu.org/)
 [![Windows11](https://img.shields.io/badge/Windows-11-0078D6?logo=windows)](https://www.microsoft.com/en-us/windows/windows-11)
 [![bash](https://img.shields.io/badge/GNU-Bash-4eaa25?logo=gnubash)](https://www.gnu.org/software/bash/)
 [![PowerShell](https://img.shields.io/badge/PowerShell-7-26405f?logo=powershell)](https://github.com/PowerShell/PowerShell)
@@ -63,8 +62,8 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 | dfu                         | **dotfiles update:** pulls this repo and runs appropriate install script |
 | df-upgrade                  | **dotfiles upgrade:** upgrades git sub-modules in this repo              |
 | dnb `new_branch_name`       | **git new branch:** creates and pushes new branch                        |
-| commmit-push "message"      | add everything, commit with "message", push                              |
-| commmit-push-bypass-hooks   | same as above, but skips pre-commit hooks                                |
+| commit-push "message"      | add everything, commit with "message", push                              |
+| commit-push-bypass-hooks   | same as above, but skips pre-commit hooks                                |
 | git-rm-submodule            | actually removes a git sub-module                                        |
 | upd                         | update all (`apt` and `snap`) or `winget` packages, cleanup              |
 | missue `123_something`      | creates and pushes branch `issue_123_something`                          |
@@ -102,8 +101,7 @@ The following cannot be automated:
 - panel items layout
 - movable window manager tabs
 - mugshot avatar
-- whisker favorites
-- Enable [Ubuntu pro](https://ubuntu.com/pro/dashboard?) and run `sudo pro enable esm-apps`
+- Enable Ubuntu Pro via superpack (`dev-admin` category) — requires Ubuntu account login to retrieve token
 
 </details>
 
@@ -135,13 +133,12 @@ The following cannot be automated:
   - Clone with pre-commit enabled
   - Window tiling manager
   - change terminal name via ssh
-  - NPM
   - synaptic
   - baobab
   - circleci
 - Windows:
   - add whkrdc config to repo
-  - WLS
+  - WSL
   - dotnet
   - jdk
   - optional sshd and remote-desktop config
