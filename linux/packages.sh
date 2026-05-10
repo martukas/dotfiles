@@ -509,7 +509,7 @@ elif [ "$1" == "install-claude-code" ]; then
   prompt_exit
 
 elif [ "$1" == "check-ubuntu-pro" ]; then
-  if pro status 2>/dev/null | grep -q attached; then
+  if pro status --format json 2>/dev/null | grep -q '"attached": true'; then
     echo "ubuntu pro attached"
     exit $SUCCESS
   else

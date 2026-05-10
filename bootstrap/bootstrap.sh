@@ -44,7 +44,8 @@ if [ -n "$DISPLAY" ]; then
   browser_call="python -m webbrowser"
 fi
 
-wget 'https://github.com/martukas/dotfiles/raw/ubuntu26/bootstrap/config_ssh.sh'
+# For branch work: replace 'master' with the branch name in the URL below
+wget 'https://github.com/martukas/dotfiles/raw/master/bootstrap/config_ssh.sh'
 chmod +x ./config_ssh.sh
 ./config_ssh.sh "$browser_call"
 rm ./config_ssh.sh
