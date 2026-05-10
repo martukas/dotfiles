@@ -137,7 +137,6 @@ The following cannot be automated:
   - change terminal name via ssh
   - synaptic
   - baobab
-  - circleci
 - Windows:
   - add whkrdc config to repo
   - WSL
