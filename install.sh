@@ -56,11 +56,10 @@ case ${answer:0:1} in
 esac
 
 if [[ $OS == "GNU/Linux" ]]; then
-  read -rp "[Linux] Install base packages (apt + pipx)? " answer
+  read -rp "[Linux] Install base packages (apt + flatpak + pipx)? " answer
   case ${answer:0:1} in
     y | Y)
-      sudo apt --yes install aptitude snapd silversearcher-ag ubuntu-advantage-tools pipx flatpak
-      # @todo run:   sudo pro attach
+      sudo apt --yes install aptitude snapd pipx flatpak keychain
       sudo apt -y purge parole
       flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 

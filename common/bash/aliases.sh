@@ -26,7 +26,6 @@ alias dmake='cmake -DCMAKE_BUILD_TYPE=Debug'
 alias rmake='cmake -DCMAKE_BUILD_TYPE=Release'
 
 # git related aliases
-alias gag='git exec ag'
 
 # git new branch = gnb, but Drum'n'bass sounds better
 function dnb() {

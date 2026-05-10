@@ -317,6 +317,13 @@ function install_ms_edge() {
   sudo apt update && sudo apt --yes install microsoft-edge-stable
 }
 
+function install_ubuntu_pro() {
+  sudo apt install -y ubuntu-advantage-tools
+  xdg-open "https://ubuntu.com/login" 2>/dev/null &
+  read -rp "Paste your Ubuntu Pro token: " token </dev/tty
+  sudo pro attach "$token"
+}
+
 function install_claude_code() {
   export NVM_DIR="$HOME/.nvm"
   if [ ! -s "$NVM_DIR/nvm.sh" ]; then
@@ -497,6 +504,18 @@ elif [ "$1" == "check-claude-code" ]; then
 
 elif [ "$1" == "install-claude-code" ]; then
   install_claude_code
+  prompt_exit
+
+elif [ "$1" == "check-ubuntu-pro" ]; then
+  if pro status 2>/dev/null | grep -q attached; then
+    echo "ubuntu pro attached"
+    exit $SUCCESS
+  else
+    exit $FAILURE
+  fi
+
+elif [ "$1" == "install-ubuntu-pro" ]; then
+  install_ubuntu_pro
   prompt_exit
 
 else

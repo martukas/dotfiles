@@ -77,9 +77,6 @@ GIT_PROMPT_ONLY_IN_REPO=1
 export GIT_PROMPT_ONLY_IN_REPO
 source ~/.bash-git-prompt/gitprompt.sh
 
-# Ensure ssh agent
-source ~/.bash/load_ssh_agent.bash
-
 # Allow local customizations in the ~/.bashrc_local_after file
 if [ -f ~/.bashrc_local_after ]; then
   source ~/.bashrc_local_after
@@ -88,8 +85,19 @@ fi
 # OS-specific after - for interactive only
 case "$OSTYPE" in
   darwin*) echo "Running OSX: no custom dotfile scripts for this OS" ;;
-  linux*) source ~/.dotfiles/linux/profile2.sh ;;
-  msys*) source ~/.dotfiles/windows/profile2.sh ;;
-  cygwin*) source ~/.dotfiles/windows/profile2.sh ;;
+  linux*)
+    source ~/.dotfiles/linux/profile2.sh
+    if command -v keychain &>/dev/null && [ -f ~/.ssh/id_ed25519 ]; then
+      eval "$(keychain --eval --quiet ~/.ssh/id_ed25519)"
+    fi
+    ;;
+  msys*)
+    source ~/.dotfiles/windows/profile2.sh
+    source ~/.bash/load_ssh_agent.bash
+    ;;
+  cygwin*)
+    source ~/.dotfiles/windows/profile2.sh
+    source ~/.bash/load_ssh_agent.bash
+    ;;
   *) echo "Unknown OS: $OSTYPE" ;;
 esac

@@ -57,6 +57,11 @@
       descr: NordVPN
       check: "command -v nordvpn"
       install: "../linux/packages.sh install-nordvpn"
+    - id: ubuntu-pro
+      category: dev-admin
+      descr: Ubuntu Pro subscription
+      check: "../linux/packages.sh check-ubuntu-pro"
+      install: "../linux/packages.sh install-ubuntu-pro"
     - id: bing-wallpaper
       category: GUI
       descr: Microsoft Bing Wallpaper updater
