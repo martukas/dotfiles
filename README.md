@@ -6,7 +6,6 @@
 [![PowerShell](https://img.shields.io/badge/PowerShell-7-26405f?logo=powershell)](https://github.com/PowerShell/PowerShell)
 <br>
 [![pre-commit checks](https://github.com/martukas/dotfiles/actions/workflows/pre-commit.yml/badge.svg?branch=master)](https://github.com/martukas/dotfiles/actions/workflows/pre-commit.yml)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e85734ffda084555a2a4ffd960e4074c)](https://app.codacy.com/gh/martukas/dotfiles/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 These are my dotfiles and bootstrap scripts for Linux and Windows systems.<br> The git/bash/ssh parts should work for
