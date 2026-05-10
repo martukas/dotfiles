@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Convert TabExporter markdown export -> Simple Tab Groups (STG) backup JSON.
+"""Convert TabExporter markdown export -> Simple Tab Groups (STG) backup JSON.
 
   Input : markdown produced by the TabExporter Edge/Chrome extension
           (https://github.com/johngibbs/TabExporter)
@@ -40,8 +39,7 @@ TAB_RE = re.compile(r"^\s*-\s+\[(.*)\]\((.+?)\)\s*$")
 
 
 def parse_markdown(text):
-    """
-    Yield {color, title, tabs} dicts in encounter order.
+    """Yield {color, title, tabs} dicts in encounter order.
 
     Ungrouped sections become a synthetic group with title 'Ungrouped' and
     color 'grey'; multiple `Ungrouped #N` sections are folded together into
@@ -75,8 +73,7 @@ def parse_markdown(text):
 
 
 def to_stg_backup(groups, version):
-    """
-    Build a minimal STG backup.
+    """Build a minimal STG backup.
 
     Targets STG v5.3.x (the AMO-published stable). Two version-specific things:
 
