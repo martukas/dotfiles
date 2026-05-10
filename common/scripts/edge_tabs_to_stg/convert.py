@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Convert TabExporter markdown export -> Simple Tab Groups (STG) backup JSON.  # noqa: D213
+"""
+Convert TabExporter markdown export -> Simple Tab Groups (STG) backup JSON.
 
   Input : markdown produced by the TabExporter Edge/Chrome extension
           (https://github.com/johngibbs/TabExporter)
