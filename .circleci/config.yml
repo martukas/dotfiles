@@ -25,6 +25,8 @@ jobs:
       - run:
           name: Run pre-commit checks
           shell: powershell.exe
+          environment:
+            SKIP: shellcheck,shfmt,save-guake-settings
           command: |
             $ErrorActionPreference = "Stop"
             pre-commit run --show-diff-on-failure --all-files
