@@ -106,6 +106,7 @@ read -n 1 -srp "Press any key to clone the dotfiles repository and continue setu
 mkdir -p "${HOME}/dev"
 cd "${HOME}/dev"
 git config --global pull.ff only
+# For branch work: add --branch <name> to the clone command below
 git clone --recurse-submodules git@github.com:martukas/dotfiles.git
 cd dotfiles
 

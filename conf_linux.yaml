@@ -21,7 +21,7 @@
 # GUI stuff
 - defaults:
     link:
-      if: '[ -n "$XDG_CURRENT_DESKTOP" ]'
+      if: '[ -n "$(ls /usr/share/xsessions/*.desktop /usr/share/wayland-sessions/*.desktop 2>/dev/null)" ]'
       create: true
       relink: true
       force: true
@@ -32,12 +32,12 @@
       path: linux/config/autostart/**
       glob: true
       force: false
-    ~/.config/flameshot/flameshot.ini:
-      path: linux/config/flameshot/flameshot.ini
-    ~/.config/redshift.conf:
-      path: linux/config/redshift.conf
     ~/.config/mimeapps.list:
       path: linux/config/mimeapps.list
+    ~/.local/bin/redshift-launch: linux/bin/redshift-launch
+    ~/.local/share/icons/hicolor/scalable/apps/guake-tray.svg:
+      path: /usr/share/guake/pixmaps/guake-tray.svg
+      if: "[ -f /usr/share/guake/pixmaps/guake-tray.svg ]"
 
 # code style ESS projects
 - defaults:

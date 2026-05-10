@@ -2,11 +2,6 @@
 - defaults:
     type: posix
   packages:
-    - id: dummy
-      descr: Dummy test package
-      category: xtras
-      check: which nonexistentscript
-      install: "../linux/packages.sh test"
     - id: logiops
       descr: Logiops mouse buttons hack
       category: GUI
@@ -15,25 +10,30 @@
     - id: nerdfonts
       descr: Nerdfonts for fancy terminal shit
       category: GUI
-      check: ls ~/.local/share/fonts | grep Nerd
+      check: ls ~/.local/share/fonts 2>/dev/null | grep Nerd
       install: "../linux/packages.sh install-nerdfonts"
     - id: rustup
       descr: Rust toolchain
-      category: dev-admin
+      category: dev
       check: command -v rustup
       install: "../linux/packages.sh install-rust"
     - id: nvm
       descr: Node.js toolchain (nvm)
-      category: dev-admin
+      category: dev
       check: "../linux/packages.sh check-nvm"
       install: "../linux/packages.sh install-nvm"
+    - id: claude-code
+      descr: Claude Code CLI (Anthropic)
+      category: dev
+      check: "../linux/packages.sh check-claude-code"
+      install: "../linux/packages.sh install-claude-code"
     - id: platformio
       descr: PlatformIO embedded toolchain
-      category: dev-admin
+      category: dev
       check: "command -v platformio"
       install: "../linux/packages.sh install-platformio"
     - id: powershell
-      category: dev-admin
+      category: sysadmin
       descr: Microsoft PowerShell
       check: "snap list | grep powershell"
       install: "../linux/packages.sh install-powershell"
@@ -48,18 +48,23 @@
       check: "test -f ~/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox && echo exists"
       install: "../linux/packages.sh install-jetbrains"
     - id: brew
-      category: dev-admin
+      category: sysadmin
       descr: Homebrew package manager
       check: "command -v brew"
       install: "../linux/packages.sh install-brew"
     - id: nordvpn
-      category: dev-admin
+      category: sysadmin
       descr: NordVPN
       check: "command -v nordvpn"
       install: "../linux/packages.sh install-nordvpn"
+    - id: ubuntu-pro
+      category: sysadmin
+      descr: Ubuntu Pro subscription
+      check: "../linux/packages.sh check-ubuntu-pro"
+      install: "../linux/packages.sh install-ubuntu-pro"
     - id: bing-wallpaper
       category: GUI
-      descr: Microsoft Bing Wallpaper cron job
+      descr: Microsoft Bing Wallpaper updater
       check: "../linux/packages.sh check-bing-wallpaper"
       install: "../linux/packages.sh install-bing-wallpaper"
     - id: touchpad-indicator
@@ -67,16 +72,16 @@
       descr: Touchpad indicator
       check: "command -v touchpad-indicator"
       install: "../linux/packages.sh install-touchpad-indicator"
-    - id: fake-webcam
-      category: graphics
-      descr: Fake webcam
-      check: "../linux/packages.sh check-fake-webcam"
-      install: "../linux/packages.sh install-fake-webcam"
     - id: edge-browser
       category: web
       descr: Microsoft Edge browser
       check: "command -v microsoft-edge-stable"
       install: "../linux/packages.sh install-ms-edge"
+    - id: prism-launcher
+      descr: Prism Launcher (Minecraft)
+      category: multimedia
+      check: "../linux/packages.sh check-prism-launcher"
+      install: "../linux/packages.sh install-prism-launcher"
 
 - defaults:
     type: apt
@@ -95,9 +100,10 @@
       install: "../linux/packages.sh install-keepass-plugins"
     - id: viewnior
       descr: Viewnior minimal image viewer
+
 - defaults:
     type: apt
-    category: dev-admin
+    category: dev
   packages:
     - id: build-essential
       descr: build-essential for compiling C/C++
@@ -109,22 +115,17 @@
       descr: Meld comparison tool
     - id: glogg
       descr: Glogg log explorer
-    - id: docker.io
-      descr: Docker container framework
+    - id: docker
+      descr: Docker container framework (docker-ce)
+      type: posix
+      check: "command -v docker"
       install: "../linux/packages.sh install-docker"
     - id: dotnet-sdk-7.0
       descr: Microsoft .NET SDK
-    - id: remmina
-      descr: Remmina remote desktop client
-    - id: teamviewer
-      descr: TeamViewer remote desktop client
-    - id: wireshark
-      descr: Wireshark network sniffer
-    - id: virtualbox
-      descr: VirtualBox
+
 - defaults:
     type: snap
-    category: dev-admin
+    category: dev
   packages:
     - id: root-framework
       descr: ROOT physics framework
@@ -132,6 +133,24 @@
       descr: Postman web protocol sniffer
     - id: robo3t
       descr: Robo3T Mongo database browser
+
+- defaults:
+    type: apt
+    category: sysadmin
+  packages:
+    - id: synaptic
+      descr: Synaptic package manager GUI
+    - id: baobab
+      descr: Baobab disk usage analyser
+    - id: wireshark
+      descr: Wireshark network sniffer
+    - id: remmina
+      descr: Remmina remote desktop client
+    - id: teamviewer
+      descr: TeamViewer remote desktop client
+    - id: virtualbox
+      descr: VirtualBox
+
 - defaults:
     category: graphics
     type: apt
@@ -143,10 +162,16 @@
     - id: simple-scan
       descr: Simple scan for scanning docs
       type: snap
+
 - defaults:
     category: multimedia
     type: apt
   packages:
+    - id: strawberry
+      descr: Strawberry music player
+      type: posix
+      check: "../linux/packages.sh check-strawberry"
+      install: "../linux/packages.sh install-strawberry"
     - id: clementine
       descr: Clementine music player
     - id: vlc
@@ -154,24 +179,45 @@
     - id: spotify
       descr: Spotify desktop client
       type: snap
+
 - defaults:
     category: web
     type: snap
   packages:
-    - id: whatsapp-for-linux
-      descr: Whatsapp desktop client
-    - id: zoom-client
-      descr: Zoom client
+    - id: zapzap
+      descr: WhatsApp desktop client (flatpak)
+      type: posix
+      check: "../linux/packages.sh check-zapzap"
+      install: "../linux/packages.sh install-zapzap"
+    - id: zoom
+      descr: Zoom client (flatpak)
+      type: posix
+      check: "../linux/packages.sh check-zoom"
+      install: "../linux/packages.sh install-zoom"
     - id: telegram-desktop
       descr: Telegram desktop client
     - id: firefox
       descr: Firefox browser
     - id: slack
       descr: Slack
+      type: posix
+      check: "command -v slack"
+      install: "../linux/packages.sh install-slack"
     - id: signal-desktop
       descr: Signal messenger
+      type: posix
+      check: "command -v signal-desktop"
+      install: "../linux/packages.sh install-signal"
     - id: discord
       descr: Discord chat
+      type: posix
+      check: "command -v discord"
+      install: "../linux/packages.sh install-discord"
+    - id: chrome
+      descr: Google Chrome browser
+      type: posix
+      check: "command -v google-chrome-stable"
+      install: "../linux/packages.sh install-chrome"
     - id: chromium-browser
       descr: Chromium browser
       type: apt

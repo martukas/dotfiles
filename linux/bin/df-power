@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -e
+
+profile="$1"
+if [[ $profile != "docked" && $profile != "mobile" ]]; then
+  echo "Usage: df-power docked|mobile" >&2
+  exit 1
+fi
+
+mkdir -p "${HOME}/.local/state"
+echo "$profile" >"${HOME}/.local/state/df-power-profile"
+
+xfconf_py="$(dirname "$(readlink -f "$0")")/../xfconf.py"
+"$xfconf_py" pull

@@ -30,62 +30,90 @@ OS="$(uname -o)"
 # This script should work no matter where you call it from.
 cd "${BASEDIR}"
 
-git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
-git submodule update --init --recursive "${DOTBOT_DIR}"
-git submodule update --init --recursive superpack
-git submodule update --init --recursive private
-git submodule update --init --recursive common/bash/plugins/dircolors-solarized
-git submodule update --init --recursive common/bash-git-prompt
+if [[ $OS == "GNU/Linux" ]]; then
+  # shellcheck disable=SC1091
+  . "${BASEDIR}/linux/_distro.sh"
+  echo "Detected: ${DISTRO_ID} ${DISTRO_VERSION} (${DISTRO_CODENAME})"
+fi
 
-git submodule update
+pipx_ensure() {
+  local pkg="$1"
+  if pipx list --short 2>/dev/null | awk '{print $1}' | grep -qx "$pkg"; then
+    pipx upgrade "$pkg"
+  else
+    pipx install "$pkg"
+  fi
+}
+
+export PATH="${HOME}/.local/bin:${PATH}"
+
+read -rp "Sync submodules? " answer
+case ${answer:0:1} in
+  y | Y)
+    git submodule update --init --recursive
+    ;;
+  *) ;;
+esac
 
 if [[ $OS == "GNU/Linux" ]]; then
-  # @todo do not even try to run these on bootstrap, get the dotfiles symlinked first
-  read -rp "[Linux] Do you want to run one-time installation scripts? " answer
+  read -rp "[Linux] Install base packages (apt + flatpak + pipx)? " answer
   case ${answer:0:1} in
     y | Y)
-      sudo apt --yes install aptitude snapd silversearcher-ag ubuntu-advantage-tools pipx
-      # @todo run:   sudo pro attach
+      sudo apt --yes install aptitude snapd pipx flatpak keychain
       sudo apt -y purge parole
+      flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
-      pipx install --force poetry
-      pipx install --force pre-commit
-      pipx install --force ruff
-      pipx install --force compiledb
-      pipx install --force pipenv
-
-      pushd superpack
-      pipenv install
-      pipenv run python ./superpack/superpack.py ../linux/packages.yml
-      popd
-
-      read -rp "[Linux] Do you want to install default desktop config? " answer
-      case ${answer:0:1} in
-        y | Y)
-          echo "Left win key as toggle"
-          echo -option altwin:meta_win >>~/.Xkbmap
-          echo "Setting xfce dark theme"
-          xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
-          echo "Copying various xfce settings"
-          cp -ir ./linux/config/xfce4 ~/.config/xfce4
-          echo "Enforcing guake settings"
-          dconf load /apps/guake/ <linux/dconf-guake-dump.txt
-          ;;
-        *) ;;
-      esac
-
-      read -n1 -srp $'Press any key to continue with dotbot config...\n' _
+      pipx_ensure poetry
+      pipx_ensure pre-commit
+      pipx_ensure ruff
+      pipx_ensure compiledb
+      pipx_ensure uv
+      pre-commit install
       ;;
     *) ;;
   esac
-else
-  echo "No custom scripts to run for platform '$OS'."
+
+  read -rp "[Linux] Run superpack? " answer
+  case ${answer:0:1} in
+    y | Y)
+      pushd superpack
+      uv sync
+      uv run python ./superpack/superpack.py ../linux/packages.yml
+      popd
+      ;;
+    *) ;;
+  esac
+
+  read -rp "[Linux] Apply desktop config (xfce + guake)? " answer
+  case ${answer:0:1} in
+    y | Y)
+      echo "Left win key as toggle"
+      grep -qxF -- '-option altwin:meta_win' ~/.Xkbmap 2>/dev/null || echo -option altwin:meta_win >>~/.Xkbmap
+      echo "Setting xfce dark theme"
+      xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
+      gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+      gsettings set org.xfce.mousepad.preferences.view color-scheme 'xubuntu_dark'
+      echo "Applying xfce settings"
+      "$BASEDIR/linux/xfconf.py" pull
+      if gsettings list-schemas | grep -qE "^(org\.)?guake$"; then
+        echo "Enforcing guake settings"
+        dconf load /org/guake/ <linux/dconf-guake-dump.txt
+      fi
+      ;;
+    *) ;;
+  esac
 fi
 
-echo "Linking dotfiles for general bash use"
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_COMMON}" "${@}"
+read -rp "Link dotfiles (dotbot)? " answer
+case ${answer:0:1} in
+  y | Y)
+    echo "Linking dotfiles for general bash use"
+    "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_COMMON}" -v
 
-if [[ $OS == "GNU/Linux" ]]; then
-  echo "Linking Linux-specific dotfiles"
-  "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_LINUX}" "${@}"
-fi
+    if [[ $OS == "GNU/Linux" ]]; then
+      echo "Linking Linux-specific dotfiles"
+      "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_LINUX}" -v
+    fi
+    ;;
+  *) ;;
+esac

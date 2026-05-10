@@ -87,7 +87,7 @@
       descr: Spotify desktop client
     - id: Valve.Steam
       descr: Steam games
-    - id:  PeterPawlowski.foobar2000
+    - id: PeterPawlowski.foobar2000
       descr: Foobar2000 media player
 - defaults:
     type: winget

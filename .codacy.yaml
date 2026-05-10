@@ -1,0 +1,12 @@
+---
+version: "2"
+
+exclude_paths:
+  - "private/**"
+  - "superpack/**"
+  - "dotbot/**"
+  - "common/bash/plugins/**"
+  - "common/bash-git-prompt/**"
+  - "linux/gdb/qt5printers/**"
+  - "linux/logiops/**"
+  - "linux/test_xfconf.py"

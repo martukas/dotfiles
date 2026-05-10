@@ -26,7 +26,6 @@ alias dmake='cmake -DCMAKE_BUILD_TYPE=Debug'
 alias rmake='cmake -DCMAKE_BUILD_TYPE=Release'
 
 # git related aliases
-alias gag='git exec ag'
 
 # git new branch = gnb, but Drum'n'bass sounds better
 function dnb() {
@@ -105,6 +104,13 @@ dfu() {
   popd
 }
 
+# xfconf settings push/pull/location
+xubu-push() { ~/.dotfiles/linux/xfconf.py push; }
+xubu-pull() { ~/.dotfiles/linux/xfconf.py pull; }
+df-set-location() { ~/.dotfiles/linux/xfconf.py set-location; }
+df-power-docked() { df-power docked; }
+df-power-mobile() { df-power mobile; }
+
 # Dotfiles upgrade submodules
 df-upgrade() {
   pushd ~/.dotfiles || {
@@ -115,9 +121,6 @@ df-upgrade() {
   git submodule update --remote dotbot
   git submodule update --remote superpack
   git submodule update --remote common/bash-git-prompt
-  git submodule update --remote common/bash/plugins/dircolors-solarized
-  git submodule update --remote linux/logiops
-  git submodule update --remote linux/gdb/qt5printers
   # shellcheck disable=SC2164
   popd
 }

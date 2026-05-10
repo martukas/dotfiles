@@ -1,6 +1,9 @@
 #!/bin/bash
 # shellcheck disable=SC2317
 
+# shellcheck disable=SC1091
+. "$(dirname "${BASH_SOURCE[0]}")/_distro.sh"
+
 FAILURE=1
 SUCCESS=0
 
@@ -14,6 +17,7 @@ pushd() {
 }
 
 #silent popd
+# shellcheck disable=SC2329
 popd() {
   command popd >/dev/null
 }
@@ -25,18 +29,15 @@ function prompt_exit() {
 }
 
 function install_logiops() {
-  sudo apt install build-essential cmake libevdev-dev libudev-dev libconfig++-dev
-  mkdir -p logiops/build
-  pushd logiops/build
-  cmake .. && make && sudo make install
-  popd
-  sudo /usr/bin/cp -fr logid.cfg /etc/logid.cfg
+  sudo apt install -y logiops
+  sudo ln -sf "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/logid.cfg" /etc/logid.cfg
+  sudo systemctl restart logid
 }
 
 function install_powershell() {
   snap install powershell --classic
-  brew install jandedobbeleer/oh-my-posh/oh-my-posh
-  ../windows/packages.ps1 default-modules
+  curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
+  pwsh -NoProfile ../windows/packages.ps1 default-modules
 }
 
 function install_nerdfonts() {
@@ -45,23 +46,24 @@ function install_nerdfonts() {
     Meslo
   )
 
-  version='2.1.0'
-  fonts_dir="${HOME}/.local/share/fonts"
+  local version='3.4.0'
+  local fonts_dir="${HOME}/.local/share/fonts"
+  mkdir -p "$fonts_dir"
 
-  if [[ ! -d $fonts_dir ]]; then
-    mkdir -p "$fonts_dir"
-  fi
+  local tmp
+  tmp=$(mktemp -d)
+  trap 'rm -rf "$tmp"' RETURN
 
   for font in "${fonts[@]}"; do
-    zip_file="${font}.zip"
-    download_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v${version}/${zip_file}"
+    local zip_file="$tmp/${font}.zip"
+    local extract_dir="$tmp/${font}"
+    local download_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v${version}/${font}.zip"
     echo "Downloading $download_url"
-    wget "$download_url"
-    sudo unzip "$zip_file" -d "$fonts_dir"
-    rm "$zip_file"
+    wget -O "$zip_file" "$download_url"
+    unzip -oq "$zip_file" -d "$extract_dir"
+    find "$extract_dir" -type f \( -iname '*.ttf' -o -iname '*.otf' \) ! -iname '*Windows Compatible*' \
+      -exec cp -f {} "$fonts_dir/" \;
   done
-
-  sudo find "$fonts_dir" -name '*Windows Compatible*' -delete
 
   fc-cache -fv
 }
@@ -94,21 +96,36 @@ function install_platformio() {
 
 function install_insync() {
   # see https://www.insynchq.com/downloads/linux
-  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ACCAF35C
-  # shellcheck disable=SC1091
-  source /etc/lsb-release
-  echo "deb http://apt.insync.io/ubuntu $DISTRIB_CODENAME non-free contrib" | sudo tee /etc/apt/sources.list.d/insync.list
-  sudo apt update
-  sudo apt install insync
+  local version='3.9.8.60034'
+  local url="https://cdn.insynchq.com/builds/linux/${version}/insync_${version}-${DISTRO_CODENAME}_amd64.deb"
+
+  local tmp
+  tmp=$(mktemp -d)
+  trap 'rm -rf "$tmp"' RETURN
+
+  wget -O "$tmp/insync.deb" "$url"
+  sudo apt --yes install "$tmp/insync.deb"
 }
 
 function install_keepass_plugins() {
-  pushd /usr/lib/keepass2/Plugins
-  sudo wget https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.dll
-  sudo wget https://github.com/xatupal/KeeTheme/releases/latest/download/KeeTheme.plgx
-  sudo mkdir DarkenKP
-  pushd DarkenKP
-  sudo wget https://github.com/BradyThe/DarkenKP/releases/latest/download/KeeTheme.ini
+  local plugins_dir=/usr/lib/keepass2/Plugins
+  local keetheme_url='https://github.com/xatupal/KeeTheme/releases/latest/download'
+  local darkenkp_url='https://github.com/BradyThe/DarkenKP/releases/latest/download'
+
+  local tmp
+  tmp=$(mktemp -d)
+  trap 'rm -rf "$tmp"' RETURN
+
+  echo "Downloading KeeTheme plugin"
+  wget -O "$tmp/KeeTheme.dll" "$keetheme_url/KeeTheme.dll"
+  wget -O "$tmp/KeeTheme.plgx" "$keetheme_url/KeeTheme.plgx"
+  echo "Downloading DarkenKP theme"
+  wget -O "$tmp/KeeTheme.ini" "$darkenkp_url/KeeTheme.ini"
+
+  sudo install -d -m 755 "$plugins_dir/DarkenKP"
+  sudo install -m 644 "$tmp/KeeTheme.dll" "$plugins_dir/"
+  sudo install -m 644 "$tmp/KeeTheme.plgx" "$plugins_dir/"
+  sudo install -m 644 "$tmp/KeeTheme.ini" "$plugins_dir/DarkenKP/"
 }
 
 function install_jetbrains() {
@@ -118,28 +135,36 @@ function install_jetbrains() {
 
   sudo apt --yes install libfuse2
 
-  USER_AGENT=('User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36')
+  local tmp
+  tmp=$(mktemp -d)
+  trap 'rm -rf "$tmp"' RETURN
 
-  URL=$(curl 'https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release' -H 'Origin: https://www.jetbrains.com' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.8' -H "${USER_AGENT[@]}" -H 'Accept: application/json, text/javascript, */*; q=0.01' -H 'Referer: https://www.jetbrains.com/toolbox/download/' -H 'Connection: keep-alive' -H 'DNT: 1' --compressed | grep -Po '"linux":.*?[^\\]",' | awk -F ':' '{print $3,":"$4}' | sed 's/[", ]//g')
-  echo "JetBrains download URL: $URL"
+  local url
+  url=$(curl -sSfILw "%{url_effective}" -o /dev/null \
+    "https://data.services.jetbrains.com/products/download?code=TBA&platform=linux")
+  echo "JetBrains Toolbox URL: $url"
 
-  FILE=$(basename "${URL}")
-  DEST=$PWD/$FILE
+  local tarball
+  tarball="$tmp/$(basename "$url")"
+  echo -e "\e[94mDownloading\e[39m"
+  wget -O "$tarball" "$url"
 
-  echo -e "\e[94mDownloading Toolbox files \e[39m"
-  wget -cO "${DEST}" "${URL}" --read-timeout=5 --tries=0
-  echo -e "\e[32mDownload complete!\e[39m"
-  DIR="$PWD/jetbrains-toolbox"
-  echo -e "\e[94mInstalling to $DIR\e[39m"
-  mkdir "${DIR}"
-  tar -xzf "${DEST}" -C "${DIR}" --strip-components=1
+  echo -e "\e[94mVerifying SHA-256\e[39m"
+  local expected actual
+  expected=$(curl -sSfL "${url}.sha256" | awk '{print $1}')
+  actual=$(sha256sum "$tarball" | awk '{print $1}')
+  [ "$expected" = "$actual" ] || {
+    echo "Checksum mismatch: expected $expected, got $actual"
+    return 1
+  }
 
-  chmod -R +rwx "${DIR}"
-  "${DIR}"/jetbrains-toolbox --install
-  rm -fr "${DIR}"
+  local dir="$tmp/toolbox"
+  echo -e "\e[94mExtracting to $dir\e[39m"
+  mkdir -p "$dir"
+  tar -xzf "$tarball" -C "$dir" --strip-components=1
 
-  rm "${DEST}"
-  echo -e "\e[32mDone.\e[39m"
+  chmod -R +rwx "$dir"
+  "$dir"/bin/jetbrains-toolbox --install
 }
 
 function install_brew() {
@@ -153,12 +178,27 @@ function install_nordvpn() {
 }
 
 function install_docker() {
+  sudo apt-get install -y ca-certificates curl
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+  sudo chmod a+r /etc/apt/keyrings/docker.asc
+  echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+    | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+  sudo apt-get update
+  if [ "$(getent group docker)" ]; then
+    echo "docker group already exists, skipping GID assignment"
+  else
+    sudo groupadd -g 1001 docker
+  fi
   sudo usermod -aG docker "${USER}"
+  sudo apt-get install -y docker-ce
 }
 
 function check_bing_wallpaper() {
-  cron_entry="* */6 * * * ~/.dotfiles/linux/bin/bing-wallpaper >/dev/null 2>&1"
-  if crontab -lu "$USER" | grep -F "$cron_entry"; then
+  if systemctl --user is-enabled bing-wallpaper.timer >/dev/null 2>&1; then
+    echo "bing-wallpaper.timer enabled"
     exit $SUCCESS
   else
     exit $FAILURE
@@ -166,15 +206,38 @@ function check_bing_wallpaper() {
 }
 
 function install_bing_wallpaper() {
-  # @todo ask user to run crontab -e and save+exit
-  cron_entry="* */6 * * * ~/.dotfiles/linux/bin/bing-wallpaper >/dev/null 2>&1"
-  if ! crontab -lu "$USER" | grep -F "$cron_entry"; then
-    echo "Creating CRON entry: $cron_entry"
-    {
-      crontab -lu "$USER"
-      echo "$cron_entry"
-    } | crontab -u "$USER" -
-  fi
+  local repo_root
+  repo_root=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
+  local user_units="$HOME/.config/systemd/user"
+  mkdir -p "$user_units"
+
+  cat >"$user_units/bing-wallpaper.service" <<EOF
+[Unit]
+Description=Microsoft Bing wallpaper updater
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=$repo_root/linux/bin/bing-wallpaper
+EOF
+
+  cat >"$user_units/bing-wallpaper.timer" <<'EOF'
+[Unit]
+Description=Run Bing wallpaper updater four times a day
+
+[Timer]
+OnCalendar=00,06,12,18:00:00
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target
+EOF
+
+  systemctl --user daemon-reload
+  systemctl --user enable --now bing-wallpaper.timer
+  systemctl --user start bing-wallpaper.service
 }
 
 function install_touchpad_indicator() {
@@ -183,23 +246,99 @@ function install_touchpad_indicator() {
   sudo apt install touchpad-indicator
 }
 
-function install_fake_webcam() {
-  sudo apt install v4l-utils v4l2loopback-*
-  v4l2-ctl --list-devices
-  echo "Please identify the highest X where /dev/videoX and select the next lowest number X+1."
-  read -rp "Enter number to use for fake cam device: " video_nr
-  pushd "${HOME}/.dotfiles/linux/Linux-Fake-Background-Webcam"
-  ./v4l2loopback-install.sh "$video_nr"
-  poetry install
-  popd
+function install_zoom() {
+  flatpak install -y flathub us.zoom.Zoom
+  flatpak override --user us.zoom.Zoom --filesystem="$HOME/Pictures:ro"
+}
+
+function install_zapzap() {
+  flatpak install -y flathub com.rtosta.zapzap
+  flatpak override --user --filesystem=home com.rtosta.zapzap
+  flatpak override --user --env=QTWEBENGINE_CHROMIUM_FLAGS="--disable-gpu" com.rtosta.zapzap
+}
+
+function install_chrome() {
+  local tmp
+  tmp=$(mktemp -d)
+  trap 'rm -rf "$tmp"' RETURN
+
+  wget -O "$tmp/chrome.deb" 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
+  sudo apt --yes install "$tmp/chrome.deb"
+}
+
+function install_slack() {
+  sudo mkdir -p /etc/apt/keyrings
+  curl -fsSL https://packagecloud.io/slacktechnologies/slack/gpgkey \
+    | gpg --dearmor \
+    | sudo tee /etc/apt/keyrings/slack.gpg >/dev/null
+  echo "deb [signed-by=/etc/apt/keyrings/slack.gpg] https://packagecloud.io/slacktechnologies/slack/debian/ jessie main" \
+    | sudo tee /etc/apt/sources.list.d/slack.list >/dev/null
+  sudo apt update && sudo apt --yes install slack-desktop
+}
+
+function install_signal() {
+  sudo mkdir -p /etc/apt/keyrings
+  curl -fsSL https://updates.signal.org/desktop/apt/keys.asc \
+    | gpg --dearmor \
+    | sudo tee /etc/apt/keyrings/signal-desktop-keyring.gpg >/dev/null
+  echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main" \
+    | sudo tee /etc/apt/sources.list.d/signal-xenial.list >/dev/null
+  sudo apt update && sudo apt --yes install signal-desktop
+}
+
+function install_discord() {
+  local tmp
+  tmp=$(mktemp -d)
+  trap 'rm -rf "$tmp"' RETURN
+
+  wget -O "$tmp/discord.deb" 'https://discord.com/api/download?platform=linux&format=deb'
+  sudo apt --yes install "$tmp/discord.deb"
+}
+
+function install_strawberry() {
+  flatpak install -y flathub org.strawberrymusicplayer.strawberry
+}
+
+function install_prism_launcher() {
+  flatpak install -y flathub org.prismlauncher.PrismLauncher
+  local insync_account
+  insync_account=$(find "$HOME/Insync" -maxdepth 1 -type d -name "*@*" 2>/dev/null | head -1)
+  local mc_config="$insync_account/Google Drive/fun/MC/shared_config"
+  if [ -d "$mc_config" ]; then
+    flatpak override --user --filesystem="$mc_config:rw" org.prismlauncher.PrismLauncher
+  fi
 }
 
 function install_ms_edge() {
-  curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >microsoft.gpg
-  sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-  rm microsoft.gpg
-  sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
-  sudo apt update && sudo apt install microsoft-edge-stable
+  sudo mkdir -p /etc/apt/keyrings
+  curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
+    | gpg --dearmor \
+    | sudo tee /etc/apt/keyrings/microsoft-edge.gpg >/dev/null
+  echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/microsoft-edge.gpg] https://packages.microsoft.com/repos/edge stable main" \
+    | sudo tee /etc/apt/sources.list.d/microsoft-edge.list >/dev/null
+  sudo apt update && sudo apt --yes install microsoft-edge-stable
+}
+
+function install_ubuntu_pro() {
+  sudo apt install -y ubuntu-advantage-tools
+  xdg-open "https://ubuntu.com/login" 2>/dev/null &
+  read -rp "Paste your Ubuntu Pro token: " token </dev/tty
+  sudo pro attach "$token"
+}
+
+function install_claude_code() {
+  export NVM_DIR="$HOME/.nvm"
+  if [ ! -s "$NVM_DIR/nvm.sh" ]; then
+    echo "nvm not installed; install nvm first via superpack"
+    exit $FAILURE
+  fi
+  # shellcheck disable=SC1091
+  \. "$NVM_DIR/nvm.sh"
+  if ! command -v npm >/dev/null 2>&1; then
+    nvm install --lts
+    nvm use --lts
+  fi
+  npm install -g @anthropic-ai/claude-code
 }
 
 # Script will run in its own path no matter where it's called from.
@@ -231,7 +370,7 @@ elif [ "$1" == "install-nvm" ]; then
   prompt_exit
 
 elif [ "$1" == "check-nvm" ]; then
-  if [[ $(command -v nvm) ]]; then
+  if [ -s "$HOME/.nvm/nvm.sh" ]; then
     echo "nvm present"
     exit $SUCCESS
   else
@@ -254,10 +393,9 @@ elif [ "$1" == "check-insync" ]; then
     exit $FAILURE
   fi
 
-elif [ "$1" == "install-fake-webcam" ]; then
-  OPT_FILE="/etc/modprobe.d/linux-fake-background.conf"
-  if [[ -f ${OPT_FILE} ]]; then
-    echo "fake webcam present"
+elif [ "$1" == "check-zoom" ]; then
+  if flatpak info us.zoom.Zoom >/dev/null 2>&1; then
+    echo "zoom present"
     exit $SUCCESS
   else
     exit $FAILURE
@@ -295,12 +433,91 @@ elif [ "$1" == "install-touchpad-indicator" ]; then
   install_touchpad_indicator
   prompt_exit
 
-elif [ "$1" == "install-fake-webcam" ]; then
-  install_fake_webcam
+elif [ "$1" == "install-zoom" ]; then
+  install_zoom
+  prompt_exit
+
+elif [ "$1" == "check-zapzap" ]; then
+  if flatpak info com.rtosta.zapzap >/dev/null 2>&1; then
+    echo "zapzap present"
+    exit $SUCCESS
+  else
+    exit $FAILURE
+  fi
+
+elif [ "$1" == "install-zapzap" ]; then
+  install_zapzap
+  prompt_exit
+
+elif [ "$1" == "install-chrome" ]; then
+  install_chrome
+  prompt_exit
+
+elif [ "$1" == "install-slack" ]; then
+  install_slack
+  prompt_exit
+
+elif [ "$1" == "install-signal" ]; then
+  install_signal
+  prompt_exit
+
+elif [ "$1" == "install-discord" ]; then
+  install_discord
+  prompt_exit
+
+elif [ "$1" == "check-strawberry" ]; then
+  if flatpak info org.strawberrymusicplayer.strawberry >/dev/null 2>&1; then
+    echo "strawberry present"
+    exit $SUCCESS
+  else
+    exit $FAILURE
+  fi
+
+elif [ "$1" == "install-strawberry" ]; then
+  install_strawberry
+  prompt_exit
+
+elif [ "$1" == "check-prism-launcher" ]; then
+  if flatpak info org.prismlauncher.PrismLauncher >/dev/null 2>&1; then
+    echo "prism-launcher present"
+    exit $SUCCESS
+  else
+    exit $FAILURE
+  fi
+
+elif [ "$1" == "install-prism-launcher" ]; then
+  install_prism_launcher
   prompt_exit
 
 elif [ "$1" == "install-ms-edge" ]; then
   install_ms_edge
+  prompt_exit
+
+elif [ "$1" == "check-claude-code" ]; then
+  export NVM_DIR="$HOME/.nvm"
+  # shellcheck disable=SC1091
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  if command -v claude >/dev/null 2>&1; then
+    echo "claude present"
+    exit $SUCCESS
+  else
+    exit $FAILURE
+  fi
+
+elif [ "$1" == "install-claude-code" ]; then
+  install_claude_code
+  prompt_exit
+
+elif [ "$1" == "check-ubuntu-pro" ]; then
+  if pro status --format json 2>/dev/null | grep -q '"attached": true'; then
+    echo "ubuntu pro attached"
+    exit $SUCCESS
+  else
+    exit $FAILURE
+  fi
+
+elif [ "$1" == "install-ubuntu-pro" ]; then
+  install_ubuntu_pro
   prompt_exit
 
 else

@@ -99,8 +99,33 @@ if [ ! -s "$path$imgName" ]; then
 fi
 
 PID=$(pgrep xfce4-session)
-DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS "/proc/$PID/environ" | cut -d= -f2-)
-export DBUS_SESSION_BUS_ADDRESS
+while IFS= read -r -d '' entry; do
+  case "$entry" in
+    DBUS_SESSION_BUS_ADDRESS=*)
+      DBUS_SESSION_BUS_ADDRESS="${entry#*=}"
+      export DBUS_SESSION_BUS_ADDRESS
+      ;;
+    DISPLAY=*)
+      DISPLAY="${entry#*=}"
+      export DISPLAY
+      ;;
+    XAUTHORITY=*)
+      XAUTHORITY="${entry#*=}"
+      export XAUTHORITY
+      ;;
+  esac
+done </proc/"$PID"/environ
+
+# On a fresh login xfdesktop may not have populated any last-image properties — bootstrap one
+# for the active monitor, otherwise the loop below silently runs zero times.
+if ! xfconf-query --channel xfce4-desktop --list | grep -q last-image; then
+  monitor=$(xrandr 2>/dev/null | awk '/ connected/ {print $1; exit}')
+  if [ -n "$monitor" ]; then
+    xfconf-query --channel xfce4-desktop \
+      --property "/backdrop/screen0/monitor${monitor}/workspace0/last-image" \
+      --type string --set "" --create
+  fi
+fi
 
 xfconf-query --channel xfce4-desktop --list | grep last-image | while read -r line; do
   xfconf-query --channel xfce4-desktop --property "$line" --set "$path$imgName"

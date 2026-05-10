@@ -2,3 +2,10 @@ workspace.xml
 .idea*
 *.bak
 node_modules
+
+# Claude Code local state
+.claude/
+
+# Superpowers plugin artifacts
+.superpowers/
+docs/superpowers/
