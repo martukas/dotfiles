@@ -62,8 +62,8 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 | dfu                         | **dotfiles update:** pulls this repo and runs appropriate install script |
 | df-upgrade                  | **dotfiles upgrade:** upgrades git sub-modules in this repo              |
 | dnb `new_branch_name`       | **git new branch:** creates and pushes new branch                        |
-| commit-push "message"      | add everything, commit with "message", push                              |
-| commit-push-bypass-hooks   | same as above, but skips pre-commit hooks                                |
+| commit-push "message"       | add everything, commit with "message", push                              |
+| commit-push-bypass-hooks    | same as above, but skips pre-commit hooks                                |
 | git-rm-submodule            | actually removes a git sub-module                                        |
 | upd                         | update all (`apt` and `snap`) or `winget` packages, cleanup              |
 | missue `123_something`      | creates and pushes branch `issue_123_something`                          |

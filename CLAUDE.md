@@ -27,6 +27,7 @@ This is a configuration repo — no build/test target.
 ### dotbot symlinks
 
 Two configs run sequentially: `conf_common.yaml` (cross-platform) then `conf_linux.yaml` (Linux). The Linux config has three buckets gated by guards:
+
 - always-link
 - GUI-gated (`if: '[ -n "$XDG_CURRENT_DESKTOP" ]'`) — `~/.config/autostart/*`, KeePass / flameshot / redshift / mimeapps configs. Skipped on headless/non-GUI sessions.
 - project-dir-gated (`if: "[ -d ~/dev/ess ]"` etc.) — JetBrains `.idea` for specific dev projects. Skipped on machines without those checkouts.
@@ -68,7 +69,7 @@ The cycle for fixing or adding `install.sh` features. When running directly on t
 
 ### Communication discipline
 
-- **State what you're about to run and what should happen** *before* running it.
+- **State what you're about to run and what should happen** _before_ running it.
 - **Check in at every user-action boundary**. When the next step is something the user does (in the VM, in the viewer, in another shell), stop and wait for explicit confirmation that they actually did it. Don't accept side-channel signals ("VM is off") as proof a multi-step procedure completed ("bootstrap ran successfully") — those are different claims.
 - **Don't assume execution**. Treat every suggested command as not-yet-run until the user confirms. Same for steps the user is supposed to drive — verify, don't infer.
 - **One decision per message** during measured-mode work: specific decision + your lean + brief rationale + a direct ask. Avoid 2- or 3-option enumerations that push synthesis onto the user.

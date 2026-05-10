@@ -7,10 +7,10 @@ This project is a cross-platform (Windows & Linux) dotfiles management system. I
 - **Symlink Management**: Uses [dotbot](https://github.com/anishathalye/dotbot) via submodules. Configuration is split into `conf_common.yaml`, `conf_linux.yaml`, and `conf_windows.yaml`.
 - **Package Management**: Uses [SuperPack](https://github.com/martukas/superpack) (a custom package installer) to handle OS-specific dependencies defined in `linux/packages.yml` and `windows/packages.yml`.
 - **Submodules**:
-    - `dotbot`: The linking engine.
-    - `superpack`: The package manager.
-    - `private`: A private submodule for sensitive/personal configurations (SSH keys, private gitconfig, etc.).
-    - Various shell plugins (e.g., `bash-git-prompt`, `dircolors-solarized`).
+  - `dotbot`: The linking engine.
+  - `superpack`: The package manager.
+  - `private`: A private submodule for sensitive/personal configurations (SSH keys, private gitconfig, etc.).
+  - Various shell plugins (e.g., `bash-git-prompt`, `dircolors-solarized`).
 
 ## Core Components
 
@@ -23,19 +23,21 @@ This project is a cross-platform (Windows & Linux) dotfiles management system. I
 ## Installation & Updates
 
 ### Windows
+
 1. Run `bootstrap\bootstrap.ps1` (as Administrator).
 2. Run `.\install.ps1`. This will:
-    - Sync submodules.
-    - Optionally run one-time installation scripts (via `windows\packages.ps1`).
-    - Use `dotbot` to link common and Windows-specific files.
+   - Sync submodules.
+   - Optionally run one-time installation scripts (via `windows\packages.ps1`).
+   - Use `dotbot` to link common and Windows-specific files.
 
 ### Linux
+
 1. Run `bootstrap/bootstrap.sh`.
 2. Run `./install.sh`. This will:
-    - Sync submodules.
-    - Optionally install system packages (via `apt`, `snap`, `pipx`).
-    - Optionally apply XFCE/Desktop settings.
-    - Use `dotbot` to link common and Linux-specific files.
+   - Sync submodules.
+   - Optionally install system packages (via `apt`, `snap`, `pipx`).
+   - Optionally apply XFCE/Desktop settings.
+   - Use `dotbot` to link common and Linux-specific files.
 
 ## Development Guidelines
 

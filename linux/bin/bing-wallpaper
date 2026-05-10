@@ -101,9 +101,18 @@ fi
 PID=$(pgrep xfce4-session)
 while IFS= read -r -d '' entry; do
   case "$entry" in
-    DBUS_SESSION_BUS_ADDRESS=*) DBUS_SESSION_BUS_ADDRESS="${entry#*=}"; export DBUS_SESSION_BUS_ADDRESS ;;
-    DISPLAY=*) DISPLAY="${entry#*=}"; export DISPLAY ;;
-    XAUTHORITY=*) XAUTHORITY="${entry#*=}"; export XAUTHORITY ;;
+    DBUS_SESSION_BUS_ADDRESS=*)
+      DBUS_SESSION_BUS_ADDRESS="${entry#*=}"
+      export DBUS_SESSION_BUS_ADDRESS
+      ;;
+    DISPLAY=*)
+      DISPLAY="${entry#*=}"
+      export DISPLAY
+      ;;
+    XAUTHORITY=*)
+      XAUTHORITY="${entry#*=}"
+      export XAUTHORITY
+      ;;
   esac
 done </proc/"$PID"/environ
 

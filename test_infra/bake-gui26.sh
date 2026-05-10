@@ -32,7 +32,7 @@ wget -qO ~/.ssh/authorized_keys "${HTTP_BASE}/authorized_key"
 chmod 600 ~/.ssh/authorized_keys
 
 echo "[bake] adding github.com to known_hosts"
-ssh-keyscan -t ed25519,rsa,ecdsa github.com 2>/dev/null >> ~/.ssh/known_hosts
+ssh-keyscan -t ed25519,rsa,ecdsa github.com 2>/dev/null >>~/.ssh/known_hosts
 chmod 600 ~/.ssh/known_hosts
 
 echo "[bake] done. powering off so host can snapshot."
