@@ -1,2 +1,2 @@
 [pydocstyle]
-convention = google
+add_ignore = D213

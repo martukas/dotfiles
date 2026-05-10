@@ -467,7 +467,7 @@ class TestPullPanel:
 
         with (
             patch("xfconf.get_plugin_ids", return_value=[1]),
-            patch("xfconf.get_plugin_type", side_effect=lambda pid: existing_types.get(pid)),
+            patch("xfconf.get_plugin_type", side_effect=existing_types.get),
             patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: logical_names.get((pid, t), t)),
             patch("xfconf.create_plugin", side_effect=lambda name: 99),
             patch("xfconf.xfconf_set", side_effect=lambda *a, **kw: set_calls.append(a)),
@@ -502,7 +502,7 @@ class TestPullPanel:
 
         with (
             patch("xfconf.get_plugin_ids", return_value=[1]),
-            patch("xfconf.get_plugin_type", side_effect=lambda pid: existing_types.get(pid)),
+            patch("xfconf.get_plugin_type", side_effect=existing_types.get),
             patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: logical_names.get((pid, t), t)),
             patch("xfconf.create_plugin", side_effect=lambda name: 99),
             patch("xfconf.xfconf_set", side_effect=lambda *a, **kw: set_calls.append(a)),
@@ -525,7 +525,7 @@ class TestPullPanel:
 
         with (
             patch("xfconf.get_plugin_ids", return_value=[1]),
-            patch("xfconf.get_plugin_type", side_effect=lambda pid: existing_types.get(pid)),
+            patch("xfconf.get_plugin_type", side_effect=existing_types.get),
             patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: logical_names.get((pid, t), t)),
             patch("xfconf.create_plugin", side_effect=lambda name: created.append(name) or 99),
             patch("xfconf.xfconf_set_array"),
