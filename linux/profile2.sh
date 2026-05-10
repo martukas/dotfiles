@@ -1,9 +1,5 @@
 #!/bin/bash
 
-if [[ $(command -v thefuck) ]]; then
-  eval "$(thefuck --alias)"
-fi
-
 if grep -qi Microsoft /proc/version; then
   echo "Starting bash in WSL"
   eval "$(ssh-agent -s)" >/dev/null

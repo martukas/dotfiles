@@ -8,9 +8,6 @@ param()
 
 $env:PYTHONIOENCODING="utf-8"
 
-# \todo reenable this when package resolves python3.12 problem
-#Invoke-Expression "$(thefuck --alias)"
-
 Import-Module posh-git
 
 $theme="blue-owl"
