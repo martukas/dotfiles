@@ -35,8 +35,8 @@ function install_logiops() {
 
 function install_powershell() {
   snap install powershell --classic
-  brew install jandedobbeleer/oh-my-posh/oh-my-posh
-  ../windows/packages.ps1 default-modules
+  curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
+  pwsh -NoProfile ../windows/packages.ps1 default-modules
 }
 
 function install_nerdfonts() {
@@ -51,7 +51,7 @@ function install_nerdfonts() {
 
   local tmp
   tmp=$(mktemp -d)
-  trap "rm -rf '$tmp'" RETURN
+  trap 'rm -rf "$tmp"' RETURN
 
   for font in "${fonts[@]}"; do
     local zip_file="$tmp/${font}.zip"
@@ -100,7 +100,7 @@ function install_insync() {
 
   local tmp
   tmp=$(mktemp -d)
-  trap "rm -rf '$tmp'" RETURN
+  trap 'rm -rf "$tmp"' RETURN
 
   wget -O "$tmp/insync.deb" "$url"
   sudo apt --yes install "$tmp/insync.deb"
@@ -113,7 +113,7 @@ function install_keepass_plugins() {
 
   local tmp
   tmp=$(mktemp -d)
-  trap "rm -rf '$tmp'" RETURN
+  trap 'rm -rf "$tmp"' RETURN
 
   echo "Downloading KeeTheme plugin"
   wget -O "$tmp/KeeTheme.dll" "$keetheme_url/KeeTheme.dll"
@@ -136,14 +136,15 @@ function install_jetbrains() {
 
   local tmp
   tmp=$(mktemp -d)
-  trap "rm -rf '$tmp'" RETURN
+  trap 'rm -rf "$tmp"' RETURN
 
   local url
   url=$(curl -sSfILw "%{url_effective}" -o /dev/null \
     "https://data.services.jetbrains.com/products/download?code=TBA&platform=linux")
   echo "JetBrains Toolbox URL: $url"
 
-  local tarball="$tmp/$(basename "$url")"
+  local tarball
+  tarball="$tmp/$(basename "$url")"
   echo -e "\e[94mDownloading\e[39m"
   wget -O "$tarball" "$url"
 
@@ -258,7 +259,7 @@ function install_zapzap() {
 function install_chrome() {
   local tmp
   tmp=$(mktemp -d)
-  trap "rm -rf '$tmp'" RETURN
+  trap 'rm -rf "$tmp"' RETURN
 
   wget -O "$tmp/chrome.deb" 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
   sudo apt --yes install "$tmp/chrome.deb"
@@ -287,7 +288,7 @@ function install_signal() {
 function install_discord() {
   local tmp
   tmp=$(mktemp -d)
-  trap "rm -rf '$tmp'" RETURN
+  trap 'rm -rf "$tmp"' RETURN
 
   wget -O "$tmp/discord.deb" 'https://discord.com/api/download?platform=linux&format=deb'
   sudo apt --yes install "$tmp/discord.deb"

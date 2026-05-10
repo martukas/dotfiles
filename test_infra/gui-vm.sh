@@ -59,17 +59,20 @@ SSH_USER=martu
 SSH_OPTS=(-A -p "$SSH_PORT" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR)
 HOST_PUBKEY="$HOME/.ssh/id_ed25519.pub"
 HTTP_PORT=8000
-SETUP_TIMEOUT=3600  # seconds — covers Xubuntu install + bake
+SETUP_TIMEOUT=3600 # seconds — covers Xubuntu install + bake
 
 usage() {
-    sed -n '/^# Usage:/,/^# Host prereqs/p' "$0" | sed 's/^# \?//' >&2
-    exit 1
+  sed -n '/^# Usage:/,/^# Host prereqs/p' "$0" | sed 's/^# \?//' >&2
+  exit 1
 }
 
 is_defined() { virsh dominfo "$NAME" >/dev/null 2>&1; }
 
 require_defined() {
-    is_defined || { echo "VM '$NAME' is not defined. Run: $0 setup" >&2; exit 1; }
+  is_defined || {
+    echo "VM '$NAME' is not defined. Run: $0 setup" >&2
+    exit 1
+  }
 }
 
 domstate() { virsh domstate "$NAME" 2>/dev/null || echo "undefined"; }
@@ -77,37 +80,37 @@ domstate() { virsh domstate "$NAME" 2>/dev/null || echo "undefined"; }
 snapshot_exists() { virsh snapshot-info "$NAME" "${1:-$SNAPSHOT}" >/dev/null 2>&1; }
 
 wait_for_shutoff() {
-    local timeout=${1:-90} i=0
-    while (( i < timeout )); do
-        [[ "$(domstate)" == "shut off" ]] && return 0
-        sleep 1
-        i=$((i+1))
-    done
-    echo "Timed out waiting for $NAME to shut off after ${timeout}s." >&2
-    return 1
+  local timeout=${1:-90} i=0
+  while ((i < timeout)); do
+    [[ "$(domstate)" == "shut off" ]] && return 0
+    sleep 1
+    i=$((i + 1))
+  done
+  echo "Timed out waiting for $NAME to shut off after ${timeout}s." >&2
+  return 1
 }
 
 wait_for_ssh() {
-    local timeout=${1:-60} i=0
-    while (( i < timeout )); do
-        ssh "${SSH_OPTS[@]}" -o ConnectTimeout=2 -o BatchMode=yes \
-            "$SSH_USER@localhost" true 2>/dev/null && return 0
-        sleep 1
-        i=$((i+1))
-    done
-    echo "Timed out waiting for sshd on $SSH_PORT after ${timeout}s." >&2
-    return 1
+  local timeout=${1:-60} i=0
+  while ((i < timeout)); do
+    ssh "${SSH_OPTS[@]}" -o ConnectTimeout=2 -o BatchMode=yes \
+      "$SSH_USER@localhost" true 2>/dev/null && return 0
+    sleep 1
+    i=$((i + 1))
+  done
+  echo "Timed out waiting for sshd on $SSH_PORT after ${timeout}s." >&2
+  return 1
 }
 
 open_viewer() {
-    virt-viewer "$NAME" >/dev/null 2>&1 &
-    disown
+  virt-viewer "$NAME" >/dev/null 2>&1 &
+  disown
 }
 
 # Used by cmd_setup. Builds a fresh domain XML in $1 with hostfwd via qemu:commandline.
 write_domain_xml() {
-    local out=$1
-    cat > "$out" <<EOF
+  local out=$1
+  cat >"$out" <<EOF
 <domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
   <name>$NAME</name>
   <memory unit='KiB'>$((RAM_MB * 1024))</memory>
@@ -176,53 +179,71 @@ EOF
 }
 
 cmd_start() {
-    require_defined
-    [[ "$(domstate)" == "running" ]] || virsh start "$NAME"
-    open_viewer
-    echo "VM '$NAME' is running; viewer opened."
+  require_defined
+  [[ "$(domstate)" == "running" ]] || virsh start "$NAME"
+  open_viewer
+  echo "VM '$NAME' is running; viewer opened."
 }
 
 cmd_setup() {
-    [[ -f "$ISO" ]]              || { echo "ISO not found: $ISO" >&2; exit 1; }
-    [[ -f "$HOST_PUBKEY" ]]      || { echo "Host pubkey not found: $HOST_PUBKEY" >&2; exit 1; }
-    [[ -x "$BAKE_SCRIPT" ]]      || { echo "Bake script not found/executable: $BAKE_SCRIPT" >&2; exit 1; }
-    command -v qemu-img >/dev/null || { echo "qemu-img not installed (apt: qemu-utils)" >&2; exit 1; }
-    command -v python3  >/dev/null || { echo "python3 not installed" >&2; exit 1; }
-    if is_defined; then
-        echo "VM '$NAME' already defined. Use 'reset' or 'teardown --yes'." >&2
-        exit 1
-    fi
-    if ss -tln 2>/dev/null | grep -qE "127\.0\.0\.1:$HTTP_PORT\b"; then
-        echo "Host port $HTTP_PORT is already in use. Free it or change HTTP_PORT in $0." >&2
-        exit 1
-    fi
-    [[ -e "$DISK_PATH" ]] && { echo "Disk already exists: $DISK_PATH" >&2; exit 1; }
+  [[ -f $ISO ]] || {
+    echo "ISO not found: $ISO" >&2
+    exit 1
+  }
+  [[ -f $HOST_PUBKEY ]] || {
+    echo "Host pubkey not found: $HOST_PUBKEY" >&2
+    exit 1
+  }
+  [[ -x $BAKE_SCRIPT ]] || {
+    echo "Bake script not found/executable: $BAKE_SCRIPT" >&2
+    exit 1
+  }
+  command -v qemu-img >/dev/null || {
+    echo "qemu-img not installed (apt: qemu-utils)" >&2
+    exit 1
+  }
+  command -v python3 >/dev/null || {
+    echo "python3 not installed" >&2
+    exit 1
+  }
+  if is_defined; then
+    echo "VM '$NAME' already defined. Use 'reset' or 'teardown --yes'." >&2
+    exit 1
+  fi
+  if ss -tln 2>/dev/null | grep -qE "127\.0\.0\.1:$HTTP_PORT\b"; then
+    echo "Host port $HTTP_PORT is already in use. Free it or change HTTP_PORT in $0." >&2
+    exit 1
+  fi
+  [[ -e $DISK_PATH ]] && {
+    echo "Disk already exists: $DISK_PATH" >&2
+    exit 1
+  }
 
-    mkdir -p "$(dirname "$DISK_PATH")"
-    qemu-img create -f qcow2 "$DISK_PATH" "${DISK_GB}G" >/dev/null
+  mkdir -p "$(dirname "$DISK_PATH")"
+  qemu-img create -f qcow2 "$DISK_PATH" "${DISK_GB}G" >/dev/null
 
-    # Hoisted out of `local` so the EXIT trap can still see them after a fail.
-    SETUP_STAGE=$(mktemp -d /tmp/gui-vm-bake.XXXXXX)
-    cp "$BAKE_SCRIPT" "$SETUP_STAGE/bake"
-    cp "$HOST_PUBKEY" "$SETUP_STAGE/authorized_key"
+  # Hoisted out of `local` so the EXIT trap can still see them after a fail.
+  SETUP_STAGE=$(mktemp -d /tmp/gui-vm-bake.XXXXXX)
+  cp "$BAKE_SCRIPT" "$SETUP_STAGE/bake"
+  cp "$HOST_PUBKEY" "$SETUP_STAGE/authorized_key"
 
-    # Background HTTP server. Bound to loopback; reachable from VM via slirp gateway 10.0.2.2.
-    (cd "$SETUP_STAGE" && exec python3 -m http.server "$HTTP_PORT" --bind 127.0.0.1) \
-        >"$SETUP_STAGE/http.log" 2>&1 &
-    SETUP_HTTP_PID=$!
+  # Background HTTP server. Bound to loopback; reachable from VM via slirp gateway 10.0.2.2.
+  (cd "$SETUP_STAGE" && exec python3 -m http.server "$HTTP_PORT" --bind 127.0.0.1) \
+    >"$SETUP_STAGE/http.log" 2>&1 &
+  SETUP_HTTP_PID=$!
 
-    cleanup() {
-        [[ -n "${SETUP_HTTP_PID:-}" ]] && kill "$SETUP_HTTP_PID" 2>/dev/null || true
-        [[ -n "${SETUP_STAGE:-}" ]] && rm -rf "$SETUP_STAGE"
-    }
-    trap cleanup EXIT
+  cleanup() {
+    if [[ -n ${SETUP_HTTP_PID:-} ]]; then kill "$SETUP_HTTP_PID" 2>/dev/null || true; fi
+    [[ -n ${SETUP_STAGE:-} ]] && rm -rf "$SETUP_STAGE"
+  }
+  trap cleanup EXIT
 
-    write_domain_xml "$SETUP_STAGE/domain.xml"
-    virsh define "$SETUP_STAGE/domain.xml" >/dev/null
-    virsh start  "$NAME" >/dev/null
-    open_viewer
+  write_domain_xml "$SETUP_STAGE/domain.xml"
+  virsh define "$SETUP_STAGE/domain.xml" >/dev/null
+  virsh start "$NAME" >/dev/null
+  open_viewer
 
-    cat <<EOF
+  cat <<EOF
 ============================================================================
 gui26 setup in progress. Spice viewer is opening.
 
@@ -242,147 +263,163 @@ Waiting up to $((SETUP_TIMEOUT / 60)) min for the VM to shut off...
 ============================================================================
 EOF
 
-    local i=0
-    while (( i < SETUP_TIMEOUT )); do
-        [[ "$(domstate)" == "shut off" ]] && break
-        sleep 5
-        i=$((i+5))
-    done
+  local i=0
+  while ((i < SETUP_TIMEOUT)); do
+    [[ "$(domstate)" == "shut off" ]] && break
+    sleep 5
+    i=$((i + 5))
+  done
 
-    if [[ "$(domstate)" != "shut off" ]]; then
-        echo "Timed out (state='$(domstate)') after $((SETUP_TIMEOUT / 60)) min." >&2
-        echo "If the VM is mid-install, run '$0 setup' again later, or run" >&2
-        echo "  '$0 snapshot' once the VM is shut off." >&2
-        exit 1
-    fi
+  if [[ "$(domstate)" != "shut off" ]]; then
+    echo "Timed out (state='$(domstate)') after $((SETUP_TIMEOUT / 60)) min." >&2
+    echo "If the VM is mid-install, run '$0 setup' again later, or run" >&2
+    echo "  '$0 snapshot' once the VM is shut off." >&2
+    exit 1
+  fi
 
-    echo "VM is shut off. Creating '$SNAPSHOT' snapshot..."
-    virsh snapshot-create-as "$NAME" "$SNAPSHOT" "post-install pristine state" >/dev/null
-    echo "Done. Smoke test:  $0 reset && $0 ssh hostname"
+  echo "VM is shut off. Creating '$SNAPSHOT' snapshot..."
+  virsh snapshot-create-as "$NAME" "$SNAPSHOT" "post-install pristine state" >/dev/null
+  echo "Done. Smoke test:  $0 reset && $0 ssh hostname"
 }
 
 cmd_snapshot() {
-    require_defined
-    local name="$SNAPSHOT" replace=0
-    while (( $# > 0 )); do
-        case "$1" in
-            --replace) replace=1 ;;
-            -*)        echo "Unknown flag: $1" >&2; exit 1 ;;
-            *)         name="$1" ;;
-        esac
-        shift
-    done
-    if [[ "$(domstate)" != "shut off" ]]; then
-        echo "VM is '$(domstate)'. Shut it down first ('sudo poweroff' inside the VM)." >&2
-        echo "  Auto-shutdown via virsh would hit xfce4-power-manager's confirm dialog." >&2
+  require_defined
+  local name="$SNAPSHOT" replace=0
+  while (($# > 0)); do
+    case "$1" in
+      --replace) replace=1 ;;
+      -*)
+        echo "Unknown flag: $1" >&2
         exit 1
+        ;;
+      *) name="$1" ;;
+    esac
+    shift
+  done
+  if [[ "$(domstate)" != "shut off" ]]; then
+    echo "VM is '$(domstate)'. Shut it down first ('sudo poweroff' inside the VM)." >&2
+    echo "  Auto-shutdown via virsh would hit xfce4-power-manager's confirm dialog." >&2
+    exit 1
+  fi
+  if snapshot_exists "$name"; then
+    if ((replace)); then
+      echo "Deleting existing '$name' snapshot..."
+      virsh snapshot-delete "$NAME" "$name"
+    else
+      echo "Snapshot '$name' already exists. Pass --replace to overwrite." >&2
+      exit 1
     fi
-    if snapshot_exists "$name"; then
-        if (( replace )); then
-            echo "Deleting existing '$name' snapshot..."
-            virsh snapshot-delete "$NAME" "$name"
-        else
-            echo "Snapshot '$name' already exists. Pass --replace to overwrite." >&2
-            exit 1
-        fi
-    fi
-    virsh snapshot-create-as "$NAME" "$name" "snapshot $name"
+  fi
+  virsh snapshot-create-as "$NAME" "$name" "snapshot $name"
 }
 
 cmd_reset() {
-    require_defined
-    local name="${1:-$SNAPSHOT}"
-    if ! snapshot_exists "$name"; then
-        echo "Snapshot '$name' does not exist. Available:" >&2
-        virsh snapshot-list "$NAME" --name 2>&1 | sed 's/^/  /' >&2
-        exit 1
-    fi
-    if [[ "$(domstate)" == "running" ]]; then
-        virsh destroy "$NAME" >/dev/null
-    fi
-    virsh snapshot-revert "$NAME" "$name"
-    virsh start "$NAME"
-    open_viewer
+  require_defined
+  local name="${1:-$SNAPSHOT}"
+  if ! snapshot_exists "$name"; then
+    echo "Snapshot '$name' does not exist. Available:" >&2
+    virsh snapshot-list "$NAME" --name 2>&1 | sed 's/^/  /' >&2
+    exit 1
+  fi
+  if [[ "$(domstate)" == "running" ]]; then
+    virsh destroy "$NAME" >/dev/null
+  fi
+  virsh snapshot-revert "$NAME" "$name"
+  virsh start "$NAME"
+  open_viewer
 }
 
 cmd_ssh() {
-    require_defined
-    [[ "$(domstate)" == "running" ]] || { echo "VM is not running. Use: $0 start or reset" >&2; exit 1; }
-    wait_for_ssh || exit 1
-    ssh "${SSH_OPTS[@]}" "$SSH_USER@localhost" "$@"
+  require_defined
+  [[ "$(domstate)" == "running" ]] || {
+    echo "VM is not running. Use: $0 start or reset" >&2
+    exit 1
+  }
+  wait_for_ssh 60 || exit 1
+  # shellcheck disable=SC2029
+  ssh "${SSH_OPTS[@]}" "$SSH_USER@localhost" "$@"
 }
 
 cmd_sync() {
-    require_defined
-    [[ "$(domstate)" == "running" ]] || { echo "VM is not running. Use: $0 start or reset" >&2; exit 1; }
-    command -v rsync >/dev/null || { echo "rsync not installed on host" >&2; exit 1; }
-    wait_for_ssh || exit 1
-    local src
-    src="$(cd "$SCRIPT_DIR/.." && pwd)"
-    rsync -a --delete \
-        --exclude='.git/' \
-        --exclude='.venv/' \
-        --exclude='__pycache__/' \
-        --exclude='*.pyc' \
-        --exclude='node_modules/' \
-        --exclude='*.bak' \
-        --exclude='workspace.xml' \
-        --exclude='.idea*' \
-        --exclude='.claude/' \
-        --exclude='.superpowers/' \
-        --exclude='docs/superpowers/' \
-        -e "ssh ${SSH_OPTS[*]}" \
-        "$src/" "$SSH_USER@localhost:dev/dotfiles/"
-    echo "Synced $src/ → $NAME:~/dev/dotfiles/"
+  require_defined
+  [[ "$(domstate)" == "running" ]] || {
+    echo "VM is not running. Use: $0 start or reset" >&2
+    exit 1
+  }
+  command -v rsync >/dev/null || {
+    echo "rsync not installed on host" >&2
+    exit 1
+  }
+  wait_for_ssh 60 || exit 1
+  local src
+  src="$(cd "$SCRIPT_DIR/.." && pwd)"
+  rsync -a --delete \
+    --exclude='.git/' \
+    --exclude='.venv/' \
+    --exclude='__pycache__/' \
+    --exclude='*.pyc' \
+    --exclude='node_modules/' \
+    --exclude='*.bak' \
+    --exclude='workspace.xml' \
+    --exclude='.idea*' \
+    --exclude='.claude/' \
+    --exclude='.superpowers/' \
+    --exclude='docs/superpowers/' \
+    -e "ssh ${SSH_OPTS[*]}" \
+    "$src/" "$SSH_USER@localhost:dev/dotfiles/"
+  echo "Synced $src/ → $NAME:~/dev/dotfiles/"
 }
 
 cmd_teardown() {
-    if [[ "${1:-}" != "--yes" ]]; then
-        echo "Refusing destructive teardown without --yes." >&2
-        echo "Removes the VM, its qcow2 disk, and all snapshots. Leaves the ISO alone." >&2
-        echo "Run: $0 teardown --yes" >&2
-        exit 1
+  if [[ ${1:-} != "--yes" ]]; then
+    echo "Refusing destructive teardown without --yes." >&2
+    echo "Removes the VM, its qcow2 disk, and all snapshots. Leaves the ISO alone." >&2
+    echo "Run: $0 teardown --yes" >&2
+    exit 1
+  fi
+  # Safety: only delete a path under the user's libvirt images dir.
+  local safe_prefix="$HOME/.local/share/libvirt/images/"
+  if [[ -n ${DISK_PATH:-} && $DISK_PATH != "$safe_prefix"* ]]; then
+    echo "Refusing to delete DISK_PATH outside $safe_prefix: $DISK_PATH" >&2
+    exit 1
+  fi
+  if is_defined; then
+    if [[ "$(domstate)" == "running" ]]; then
+      virsh destroy "$NAME" >/dev/null
     fi
-    # Safety: only delete a path under the user's libvirt images dir.
-    local safe_prefix="$HOME/.local/share/libvirt/images/"
-    if [[ -n "${DISK_PATH:-}" && "$DISK_PATH" != "$safe_prefix"* ]]; then
-        echo "Refusing to delete DISK_PATH outside $safe_prefix: $DISK_PATH" >&2
-        exit 1
-    fi
-    if is_defined; then
-        if [[ "$(domstate)" == "running" ]]; then
-            virsh destroy "$NAME" >/dev/null
-        fi
-        # NOT --remove-all-storage: that nukes EVERY attached volume, including
-        # the CDROM ISO. We only want to remove the qcow2 disk we created.
-        virsh undefine "$NAME" --snapshots-metadata
-    fi
-    [[ -e "$DISK_PATH" ]] && rm -f "$DISK_PATH"
+    # NOT --remove-all-storage: that nukes EVERY attached volume, including
+    # the CDROM ISO. We only want to remove the qcow2 disk we created.
+    virsh undefine "$NAME" --snapshots-metadata
+  fi
+  [[ -e $DISK_PATH ]] && rm -f "$DISK_PATH"
 }
 
 cmd_status() {
-    if ! is_defined; then
-        echo "VM '$NAME' is not defined."
-        return 0
-    fi
-    virsh dominfo "$NAME"
-    echo
-    echo "--- Snapshots ---"
-    virsh snapshot-list "$NAME"
-    echo
-    echo "--- Disks ---"
-    virsh domblklist "$NAME"
+  if ! is_defined; then
+    echo "VM '$NAME' is not defined."
+    return 0
+  fi
+  virsh dominfo "$NAME"
+  echo
+  echo "--- Snapshots ---"
+  virsh snapshot-list "$NAME"
+  echo
+  echo "--- Disks ---"
+  virsh domblklist "$NAME"
 }
 
 case "${1:-}" in
-    setup)             cmd_setup ;;
-    start)             cmd_start ;;
-    snapshot)          cmd_snapshot "${@:2}" ;;
-    reset)             cmd_reset "${2:-}" ;;
-    ssh)               cmd_ssh "${@:2}" ;;
-    sync)              cmd_sync ;;
-    teardown)          cmd_teardown "${2:-}" ;;
-    status)            cmd_status ;;
-    -h|--help|help|"") usage ;;
-    *)                 echo "Unknown subcommand: $1" >&2; usage ;;
+  setup) cmd_setup ;;
+  start) cmd_start ;;
+  snapshot) cmd_snapshot "${@:2}" ;;
+  reset) cmd_reset "${2:-}" ;;
+  ssh) cmd_ssh "${@:2}" ;;
+  sync) cmd_sync ;;
+  teardown) cmd_teardown "${2:-}" ;;
+  status) cmd_status ;;
+  -h | --help | help | "") usage ;;
+  *)
+    echo "Unknown subcommand: $1" >&2
+    usage
+    ;;
 esac
