@@ -353,7 +353,7 @@ class TestPushPanel:
             patch("xfconf.get_plugin_ids", return_value=plugin_ids),
             patch("xfconf.get_plugin_type", side_effect=lambda pid: plugin_types[pid]),
             patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: plugin_logical[(pid, t)]),
-            patch("xfconf.get_plugin_prop", side_effect=lambda pid, p: mock_get_prop(pid, p)),
+            patch("xfconf.get_plugin_prop", side_effect=mock_get_prop),
         ):
             xfconf.push_panel(settings)
 
@@ -432,7 +432,7 @@ class TestPullPanel:
 
         with (
             patch("xfconf.get_plugin_ids", return_value=[1]),
-            patch("xfconf.get_plugin_type", side_effect=lambda pid: existing_types.get(pid)),
+            patch("xfconf.get_plugin_type", side_effect=existing_types.get),
             patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: logical_names.get((pid, t), t)),
             patch("xfconf.create_plugin", side_effect=lambda name: created.append(name) or 2),
             patch("xfconf.xfconf_set", side_effect=lambda *a, **kw: set_calls.append(a)),

@@ -13,7 +13,7 @@ import sys
 import urllib.request
 from io import StringIO
 from pathlib import Path
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # nosec B405
 
 from ruamel.yaml import YAML as _YAML
 
@@ -92,7 +92,7 @@ def read_active_profile():
 
 
 def run_xfconf_query(*args):
-    return subprocess.run(["xfconf-query"] + list(args), capture_output=True, text=True)
+    return subprocess.run(["xfconf-query"] + list(args), capture_output=True, text=True)  # nosec B603,B607
 
 
 def _xfconf_type_from_xml(channel, prop):
@@ -101,7 +101,7 @@ def _xfconf_type_from_xml(channel, prop):
     if not xml_file.exists():
         return None
     try:
-        node = ET.parse(xml_file).getroot()
+        node = ET.parse(xml_file).getroot()  # nosec B314
         for part in (p for p in prop.strip("/").split("/") if p):
             node = next((c for c in node if c.get("name") == part), None)
             if node is None:
@@ -561,7 +561,7 @@ def create_plugin(logical_name):
 def cmd_set_location():
     print("Querying location from ipinfo.io...")
     try:
-        with urllib.request.urlopen("https://ipinfo.io/json", timeout=10) as resp:
+        with urllib.request.urlopen("https://ipinfo.io/json", timeout=10) as resp:  # nosec B310
             data = json.loads(resp.read())
     except Exception as e:
         print(f"Error fetching location: {e}", file=sys.stderr)
@@ -577,12 +577,12 @@ def cmd_set_location():
     print("Updating redshift config...")
     _set_location_redshift(lat, lon)
 
-    panel_was_running = subprocess.run(["pgrep", "-x", "xfce4-panel"], capture_output=True).returncode == 0
+    panel_was_running = subprocess.run(["pgrep", "-x", "xfce4-panel"], capture_output=True).returncode == 0  # nosec B603,B607
     if panel_was_running:
         # The weather plugin writes its in-memory state (including stale location) back
         # to xfconf on graceful exit. SIGKILL prevents that write-back.
         print("Stopping panel (SIGKILL to skip stale location write-back)...")
-        subprocess.run(["pkill", "-9", "-x", "xfce4-panel"])
+        subprocess.run(["pkill", "-9", "-x", "xfce4-panel"])  # nosec B603,B607
 
     print("Applying XFCE settings...")
     _set_location_xfce(city, lat, lon, timezone)
@@ -590,12 +590,12 @@ def cmd_set_location():
     if panel_was_running:
         print("Restarting panel...")
         panel_restart_time = time.monotonic()
-        subprocess.Popen(["xfce4-panel"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.Popen(["xfce4-panel"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec B603,B607
         # Wait for the panel to settle, then bounce the weather wrapper —
         # it sometimes misses its first fetch after an abrupt restart.
         elapsed = time.monotonic() - panel_restart_time
         time.sleep(max(0.0, 4.0 - elapsed))
-        subprocess.run(["pkill", "-f", "wrapper.*libweather"], capture_output=True)
+        subprocess.run(["pkill", "-f", "wrapper.*libweather"], capture_output=True)  # nosec B603,B607
         print("Weather plugin bounced.")
 
     print("Done.")

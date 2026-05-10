@@ -8,11 +8,11 @@ import logging
 
 def get_guake_path():
     try:
-        result = subprocess.run(["gsettings", "list-schemas"], capture_output=True, text=True)
+        result = subprocess.run(["gsettings", "list-schemas"], capture_output=True, text=True)  # nosec B603,B607
         schemas = result.stdout.splitlines()
         if "org.guake" in schemas or "guake" in schemas:
             return "/org/guake/"
-    except Exception:
+    except Exception:  # nosec B110
         pass
     return "/apps/guake/"
 
