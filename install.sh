@@ -68,6 +68,7 @@ if [[ $OS == "GNU/Linux" ]]; then
       pipx_ensure ruff
       pipx_ensure compiledb
       pipx_ensure uv
+      pre-commit install
       ;;
     *) ;;
   esac

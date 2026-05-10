@@ -133,7 +133,6 @@ The following cannot be automated:
 - Linux:
   - Numlock on startup
   - Clone with pre-commit enabled
-  - Window tiling manager
   - change terminal name via ssh
   - synaptic
   - baobab
