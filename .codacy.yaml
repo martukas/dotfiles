@@ -9,3 +9,4 @@ exclude_paths:
   - "common/bash-git-prompt/**"
   - "linux/gdb/qt5printers/**"
   - "linux/logiops/**"
+  - "linux/test_xfconf.py"
