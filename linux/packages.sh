@@ -29,7 +29,8 @@ function prompt_exit() {
 
 function install_logiops() {
   sudo apt install -y logiops
-  sudo cp logid.cfg /etc/logid.cfg
+  sudo ln -sf "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/logid.cfg" /etc/logid.cfg
+  sudo systemctl restart logid
 }
 
 function install_powershell() {
