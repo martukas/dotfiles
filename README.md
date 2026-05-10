@@ -132,10 +132,7 @@ The following cannot be automated:
 - clementine remote config & script
 - Linux:
   - Numlock on startup
-  - Clone with pre-commit enabled
   - change terminal name via ssh
-  - synaptic
-  - baobab
 - Windows:
   - add whkrdc config to repo
   - WSL
@@ -145,7 +142,6 @@ The following cannot be automated:
 - Configure rustup shell completion ([rustup docs](https://rust-lang.github.io/rustup/installation/index.html))
 - Try out [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
 - Set up conditional GPG things in `.gitconfig_local` or some such
-- Adopt <https://github.com/pop-os/shell> ?
 - Migrate to <https://www.chezmoi.io/> ?
 - Adopt <https://github.com/mehedirm6244/My_XFCE_dotties/tree/Everblush> ?
 
