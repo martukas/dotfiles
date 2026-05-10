@@ -5,15 +5,17 @@ import subprocess
 import traceback
 import logging
 
+
 def get_guake_path():
     try:
-        result = subprocess.run(['gsettings', 'list-schemas'], capture_output=True, text=True)
+        result = subprocess.run(["gsettings", "list-schemas"], capture_output=True, text=True)
         schemas = result.stdout.splitlines()
-        if 'org.guake' in schemas or 'guake' in schemas:
+        if "org.guake" in schemas or "guake" in schemas:
             return "/org/guake/"
     except Exception:
         pass
     return "/apps/guake/"
+
 
 if __name__ == "__main__":
     if os.name == "posix" and os.getenv("XDG_CURRENT_DESKTOP", None) is not None:

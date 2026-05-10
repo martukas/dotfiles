@@ -17,6 +17,7 @@ pushd() {
 }
 
 #silent popd
+# shellcheck disable=SC2329
 popd() {
   command popd >/dev/null
 }

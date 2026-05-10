@@ -2,7 +2,6 @@ import sys
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import xfconf
@@ -35,15 +34,19 @@ class TestXfconfGet:
         assert type_str is None
 
     def test_falls_back_to_xml_type_when_no_prefix(self):
-        with patch("xfconf.subprocess.run", return_value=make_result("true")), \
-             patch("xfconf._xfconf_type_from_xml", return_value="bool"):
+        with (
+            patch("xfconf.subprocess.run", return_value=make_result("true")),
+            patch("xfconf._xfconf_type_from_xml", return_value="bool"),
+        ):
             val, type_str = xfconf.xfconf_get("xfce4-panel", "/plugins/plugin-5/square-icons")
         assert val == "true"
         assert type_str == "bool"
 
     def test_falls_back_to_string_when_xml_returns_none(self):
-        with patch("xfconf.subprocess.run", return_value=make_result("foo")), \
-             patch("xfconf._xfconf_type_from_xml", return_value=None):
+        with (
+            patch("xfconf.subprocess.run", return_value=make_result("foo")),
+            patch("xfconf._xfconf_type_from_xml", return_value=None),
+        ):
             val, type_str = xfconf.xfconf_get("some-channel", "/some/prop")
         assert val == "foo"
         assert type_str == "string"
@@ -110,8 +113,10 @@ class TestPushKeyboardLayout:
             "/Default/XkbVariant": (",", "string"),
         }
 
-        with patch("xfconf.xfconf_list", return_value=props), \
-             patch("xfconf.xfconf_get", side_effect=lambda c, p: get_returns[p]):
+        with (
+            patch("xfconf.xfconf_list", return_value=props),
+            patch("xfconf.xfconf_get", side_effect=lambda c, p: get_returns[p]),
+        ):
             settings = {}
             xfconf.push_keyboard_layout(settings)
 
@@ -178,8 +183,7 @@ class TestPushKeyboardShortcuts:
             }
             return mapping.get(prop, (None, None))
 
-        with patch("xfconf.xfconf_list", side_effect=mock_list), \
-             patch("xfconf.xfconf_get", side_effect=mock_get):
+        with patch("xfconf.xfconf_list", side_effect=mock_list), patch("xfconf.xfconf_get", side_effect=mock_get):
             settings = {}
             xfconf.push_keyboard_shortcuts(settings)
 
@@ -286,9 +290,13 @@ class TestPushPanel:
         }
         whiskermenu_favorites = ["xfce4-file-manager.desktop", "slack_slack.desktop"]
         separator_props = {"style": 0, "expand": False}
-        clock_props = {"timezone": "Europe/Vilnius", "digital-time-format": "VNO %R",
-                       "digital-layout": 3, "digital-time-font": "Sans 10",
-                       "digital-date-format": "%d %b %Y"}
+        clock_props = {
+            "timezone": "Europe/Vilnius",
+            "digital-time-format": "VNO %R",
+            "digital-layout": 3,
+            "digital-time-font": "Sans 10",
+            "digital-date-format": "%d %b %Y",
+        }
 
         def mock_get_props(plugin_id):
             if plugin_id == 1:
@@ -305,15 +313,17 @@ class TestPushPanel:
                     "whiskermenu": {"favorites": whiskermenu_favorites},
                     "separator": {"style": 0, "expand": False},
                     "clock-vilnius": {},
-                }
+                },
             }
         }
 
-        with patch("xfconf.get_plugin_ids", return_value=plugin_ids), \
-             patch("xfconf.get_plugin_type", side_effect=lambda pid: plugin_types[pid]), \
-             patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: plugin_logical[(pid, t)]), \
-             patch("xfconf.get_plugin_props", side_effect=mock_get_props), \
-             patch("xfconf.xfconf_get_array", return_value=["xfce4-file-manager.desktop", "slack_slack.desktop"]):
+        with (
+            patch("xfconf.get_plugin_ids", return_value=plugin_ids),
+            patch("xfconf.get_plugin_type", side_effect=lambda pid: plugin_types[pid]),
+            patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: plugin_logical[(pid, t)]),
+            patch("xfconf.get_plugin_props", side_effect=mock_get_props),
+            patch("xfconf.xfconf_get_array", return_value=["xfce4-file-manager.desktop", "slack_slack.desktop"]),
+        ):
             xfconf.push_panel(settings)
 
         plugins = settings["panel"]["plugins"]
@@ -339,10 +349,12 @@ class TestPushPanel:
 
         settings = {"panel": {"order": [], "plugins": {}}}
 
-        with patch("xfconf.get_plugin_ids", return_value=plugin_ids), \
-             patch("xfconf.get_plugin_type", side_effect=lambda pid: plugin_types[pid]), \
-             patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: plugin_logical[(pid, t)]), \
-             patch("xfconf.get_plugin_prop", side_effect=lambda pid, p: mock_get_prop(pid, p)):
+        with (
+            patch("xfconf.get_plugin_ids", return_value=plugin_ids),
+            patch("xfconf.get_plugin_type", side_effect=lambda pid: plugin_types[pid]),
+            patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: plugin_logical[(pid, t)]),
+            patch("xfconf.get_plugin_prop", side_effect=lambda pid, p: mock_get_prop(pid, p)),
+        ):
             xfconf.push_panel(settings)
 
         plugins = settings["panel"]["plugins"]
@@ -381,12 +393,14 @@ class TestPushPanel:
 
         settings = {"panel": {"order": [], "plugins": {}}}
 
-        with patch("xfconf.get_plugin_ids", return_value=plugin_ids), \
-             patch("xfconf.get_plugin_type", side_effect=lambda pid: plugin_types[pid]), \
-             patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: plugin_logical[(pid, t)]), \
-             patch("xfconf.get_plugin_props", return_value=weather_scalar_props), \
-             patch("xfconf.xfconf_list", return_value=all_panel_props_list), \
-             patch("xfconf.xfconf_get", side_effect=mock_xfconf_get):
+        with (
+            patch("xfconf.get_plugin_ids", return_value=plugin_ids),
+            patch("xfconf.get_plugin_type", side_effect=lambda pid: plugin_types[pid]),
+            patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: plugin_logical[(pid, t)]),
+            patch("xfconf.get_plugin_props", return_value=weather_scalar_props),
+            patch("xfconf.xfconf_list", return_value=all_panel_props_list),
+            patch("xfconf.xfconf_get", side_effect=mock_xfconf_get),
+        ):
             xfconf.push_panel(settings)
 
         plugins = settings["panel"]["plugins"]
@@ -405,7 +419,7 @@ class TestPullPanel:
                 "plugins": {
                     "whiskermenu": {"favorites": ["xfce4-file-manager.desktop"]},
                     "separator": {"style": 0, "expand": False},
-                }
+                },
             }
         }
         # Only whiskermenu exists; separator must be created
@@ -416,12 +430,14 @@ class TestPullPanel:
         set_calls = []
         set_array_calls = []
 
-        with patch("xfconf.get_plugin_ids", return_value=[1]), \
-             patch("xfconf.get_plugin_type", side_effect=lambda pid: existing_types.get(pid)), \
-             patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: logical_names.get((pid, t), t)), \
-             patch("xfconf.create_plugin", side_effect=lambda name: created.append(name) or 2), \
-             patch("xfconf.xfconf_set", side_effect=lambda *a, **kw: set_calls.append(a)), \
-             patch("xfconf.xfconf_set_array", side_effect=lambda *a, **kw: set_array_calls.append(a)):
+        with (
+            patch("xfconf.get_plugin_ids", return_value=[1]),
+            patch("xfconf.get_plugin_type", side_effect=lambda pid: existing_types.get(pid)),
+            patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: logical_names.get((pid, t), t)),
+            patch("xfconf.create_plugin", side_effect=lambda name: created.append(name) or 2),
+            patch("xfconf.xfconf_set", side_effect=lambda *a, **kw: set_calls.append(a)),
+            patch("xfconf.xfconf_set_array", side_effect=lambda *a, **kw: set_array_calls.append(a)),
+        ):
             xfconf.pull_panel(settings)
 
         assert "separator" in created
@@ -441,7 +457,7 @@ class TestPullPanel:
                         "swap-label": "S",
                         "network-label": "N",
                     },
-                }
+                },
             }
         }
         existing_types = {1: "systemload"}
@@ -449,12 +465,14 @@ class TestPullPanel:
         set_calls = []
         set_array_calls = []
 
-        with patch("xfconf.get_plugin_ids", return_value=[1]), \
-             patch("xfconf.get_plugin_type", side_effect=lambda pid: existing_types.get(pid)), \
-             patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: logical_names.get((pid, t), t)), \
-             patch("xfconf.create_plugin", side_effect=lambda name: 99), \
-             patch("xfconf.xfconf_set", side_effect=lambda *a, **kw: set_calls.append(a)), \
-             patch("xfconf.xfconf_set_array", side_effect=lambda *a, **kw: set_array_calls.append(a)):
+        with (
+            patch("xfconf.get_plugin_ids", return_value=[1]),
+            patch("xfconf.get_plugin_type", side_effect=lambda pid: existing_types.get(pid)),
+            patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: logical_names.get((pid, t), t)),
+            patch("xfconf.create_plugin", side_effect=lambda name: 99),
+            patch("xfconf.xfconf_set", side_effect=lambda *a, **kw: set_calls.append(a)),
+            patch("xfconf.xfconf_set_array", side_effect=lambda *a, **kw: set_array_calls.append(a)),
+        ):
             xfconf.pull_panel(settings)
 
         written = {c[1]: c[2] for c in set_calls}
@@ -474,7 +492,7 @@ class TestPullPanel:
                         "units": {"temperature": 0, "windspeed": 4},
                         "forecast": {"days": 5},
                     }
-                }
+                },
             }
         }
         existing_types = {1: "weather"}
@@ -482,12 +500,14 @@ class TestPullPanel:
         set_calls = []
         set_array_calls = []
 
-        with patch("xfconf.get_plugin_ids", return_value=[1]), \
-             patch("xfconf.get_plugin_type", side_effect=lambda pid: existing_types.get(pid)), \
-             patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: logical_names.get((pid, t), t)), \
-             patch("xfconf.create_plugin", side_effect=lambda name: 99), \
-             patch("xfconf.xfconf_set", side_effect=lambda *a, **kw: set_calls.append(a)), \
-             patch("xfconf.xfconf_set_array", side_effect=lambda *a, **kw: set_array_calls.append(a)):
+        with (
+            patch("xfconf.get_plugin_ids", return_value=[1]),
+            patch("xfconf.get_plugin_type", side_effect=lambda pid: existing_types.get(pid)),
+            patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: logical_names.get((pid, t), t)),
+            patch("xfconf.create_plugin", side_effect=lambda name: 99),
+            patch("xfconf.xfconf_set", side_effect=lambda *a, **kw: set_calls.append(a)),
+            patch("xfconf.xfconf_set_array", side_effect=lambda *a, **kw: set_array_calls.append(a)),
+        ):
             xfconf.pull_panel(settings)
 
         written = {c[1]: c[2] for c in set_calls}
@@ -498,21 +518,18 @@ class TestPullPanel:
         assert written["/plugins/plugin-1/forecast/days"] == 5
 
     def test_no_creation_when_all_plugins_exist(self):
-        settings = {
-            "panel": {
-                "order": ["whiskermenu"],
-                "plugins": {"whiskermenu": {"favorites": []}}
-            }
-        }
+        settings = {"panel": {"order": ["whiskermenu"], "plugins": {"whiskermenu": {"favorites": []}}}}
         existing_types = {1: "whiskermenu"}
         logical_names = {(1, "whiskermenu"): "whiskermenu"}
         created = []
 
-        with patch("xfconf.get_plugin_ids", return_value=[1]), \
-             patch("xfconf.get_plugin_type", side_effect=lambda pid: existing_types.get(pid)), \
-             patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: logical_names.get((pid, t), t)), \
-             patch("xfconf.create_plugin", side_effect=lambda name: created.append(name) or 99), \
-             patch("xfconf.xfconf_set_array"):
+        with (
+            patch("xfconf.get_plugin_ids", return_value=[1]),
+            patch("xfconf.get_plugin_type", side_effect=lambda pid: existing_types.get(pid)),
+            patch("xfconf.plugin_logical_name", side_effect=lambda pid, t: logical_names.get((pid, t), t)),
+            patch("xfconf.create_plugin", side_effect=lambda name: created.append(name) or 99),
+            patch("xfconf.xfconf_set_array"),
+        ):
             xfconf.pull_panel(settings)
 
         assert created == []  # nothing should have been created

@@ -9,13 +9,13 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e85734ffda084555a2a4ffd960e4074c)](https://app.codacy.com/gh/martukas/dotfiles/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
-These are my dotfiles and bootstrap scripts for Linux and Windows systems.<br>
-The git/bash/ssh parts should work for Mac as well.
+These are my dotfiles and bootstrap scripts for Linux and Windows systems.<br> The git/bash/ssh parts should work for
+Mac as well.
 
 ## Bootstrapping
 
-Let's make as few assumptions as possible about what's available on the machine - no git, no Python.<br>
-These scripts will install the essentials, set up ssh credentials and clone this repo.
+Let's make as few assumptions as possible about what's available on the machine - no git, no Python.<br> These scripts
+will install the essentials, set up ssh credentials and clone this repo.
 
 ### Linux
 
@@ -27,7 +27,8 @@ bash <(wget -qO- https://github.com/martukas/dotfiles/raw/master/bootstrap/boots
 
 ### Windows
 
-Firstly, you want to prevent OneDrive from taking over your home directories as described [here](https://answers.microsoft.com/en-us/windows/forum/all/taking-back-control-of-your-folders-from-onedrive/7b7ad05e-8b05-4bcd-9772-9e4eee880346):
+Firstly, you want to prevent OneDrive from taking over your home directories as described in
+[this guide](https://answers.microsoft.com/en-us/windows/forum/all/taking-back-control-of-your-folders-from-onedrive/7b7ad05e-8b05-4bcd-9772-9e4eee880346):
 
 - Open 'gpedit' from the Start menu
 - Follow `Local Computer Policy` > `Computer Configuration` > `Administrative Templates`>`Windows Components`>`OneDrive`
@@ -51,7 +52,8 @@ For first-time setup:
 - go to `~/dev/dotfiles`
 - run either `install.ps1` or `install.sh` as per shell type
 
-These scripts will set up symlinks, command aliases and also run [SuperPack](https://github.com/martukas/superpack) to offer you installation of packages appropriate for your system.
+These scripts will set up symlinks, command aliases and also run [SuperPack](https://github.com/martukas/superpack) to
+offer you installation of packages appropriate for your system.
 
 ## Routine use
 
@@ -83,7 +85,8 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 
 - use the `df*` aliases above
 - symlinked files will stay up to date
-- "dirty" state in the `/private` subrepo will be ignored. Commit changes to that submodule separately, before you commit in parent dir
+- "dirty" state in the `/private` subrepo will be ignored. Commit changes to that submodule separately, before you
+  commit in parent dir
 
 <!-- markdownlint-disable no-space-in-emphasis -->
 
@@ -142,7 +145,7 @@ The following cannot be automated:
   - dotnet
   - jdk
   - optional sshd and remote-desktop config
-- Configure rustup shell completion [here](https://rust-lang.github.io/rustup/installation/index.html)
+- Configure rustup shell completion ([rustup docs](https://rust-lang.github.io/rustup/installation/index.html))
 - Try out [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
 - Set up conditional GPG things in `.gitconfig_local` or some such
 - Adopt <https://github.com/pop-os/shell> ?

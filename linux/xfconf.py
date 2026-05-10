@@ -59,8 +59,7 @@ PLUGIN_OWNED_PROPS = {
     "clock-local": ["digital-format", "digital-time-format", "digital-layout", "tooltip-format", "digital-time-font"],
     "xkb": [],
     "clock-vilnius": ["timezone", "digital-date-format", "digital-layout", "digital-time-format", "digital-time-font"],
-    "weather": ["msl", "cache-max-age", "power-saving", "round", "single-row",
-                "tooltip-style", "theme-dir"],
+    "weather": ["msl", "cache-max-age", "power-saving", "round", "single-row", "tooltip-style", "theme-dir"],
 }
 
 _PANEL_CHANNEL = "xfce4-panel"
@@ -131,12 +130,20 @@ def xfconf_get_array(channel, prop):
     result = run_xfconf_query("-c", channel, "-p", prop)
     if result.returncode != 0:
         return []
-    return [l for l in result.stdout.strip().splitlines() if l and not l.startswith("Value is")]
+    return [line for line in result.stdout.strip().splitlines() if line and not line.startswith("Value is")]
 
 
 def xfconf_set(channel, prop, value, type_str, create=False):
-    args = ["-c", channel, "-p", prop, "-t", type_str, "-s",
-            str(value).lower() if isinstance(value, bool) else str(value)]
+    args = [
+        "-c",
+        channel,
+        "-p",
+        prop,
+        "-t",
+        type_str,
+        "-s",
+        str(value).lower() if isinstance(value, bool) else str(value),
+    ]
     if create:
         args.append("--create")
     run_xfconf_query(*args)
@@ -155,7 +162,7 @@ def xfconf_list(channel):
     result = run_xfconf_query("-c", channel, "-l")
     if result.returncode != 0:
         return []
-    return [l.strip() for l in result.stdout.strip().splitlines() if l.strip()]
+    return [line.strip() for line in result.stdout.strip().splitlines() if line.strip()]
 
 
 def xfconf_reset_prefix(channel, prefix):
@@ -293,7 +300,7 @@ def push_keyboard_shortcuts(settings):
         for prop in all_props:
             if not prop.startswith(prefix):
                 continue
-            key = prop[len(prefix):]
+            key = prop[len(prefix) :]
             if "/" in key:
                 continue  # skip sub-properties like startup-notify
             val, type_str = xfconf_get(channel, prop)
@@ -354,7 +361,7 @@ def push_panel(settings):
                 prefix = f"/plugins/plugin-{pid}/{section}/"
                 for prop in all_panel_props:
                     if prop.startswith(prefix):
-                        key = prop[len(prefix):]
+                        key = prop[len(prefix) :]
                         val, type_str = xfconf_get(_PANEL_CHANNEL, prop)
                         if val is not None:
                             section_props[key] = coerce_value(val, type_str)
@@ -450,41 +457,40 @@ def pull_panel(settings):
 
         if logical == "whiskermenu":
             favorites = config.get("favorites", [])
-            xfconf_set_array(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/favorites",
-                             "string", favorites, create=True)
+            xfconf_set_array(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/favorites", "string", favorites, create=True)
         elif logical == "systemload":
             if config.get("uptime-enabled") is not None:
-                xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/uptime/enabled",
-                           config["uptime-enabled"], "bool", create=True)
+                xfconf_set(
+                    _PANEL_CHANNEL,
+                    f"/plugins/plugin-{pid}/uptime/enabled",
+                    config["uptime-enabled"],
+                    "bool",
+                    create=True,
+                )
             for sub in ("cpu", "memory", "swap", "network"):
                 key = f"{sub}-label"
                 if key in config:
-                    xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/{sub}/label",
-                               config[key], "string", create=True)
+                    xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/{sub}/label", config[key], "string", create=True)
         elif logical == "weather":
             owned = PLUGIN_OWNED_PROPS.get(logical, [])
             for k in owned:
                 if k in config:
                     type_str = yaml_type_to_xfconf(config[k])
-                    xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/{k}",
-                               config[k], type_str, create=True)
+                    xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/{k}", config[k], type_str, create=True)
             for section in ("units", "forecast", "scrollbox"):
                 if section in config:
                     for k, v in config[section].items():
                         type_str = yaml_type_to_xfconf(v)
-                        xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/{section}/{k}",
-                                   v, type_str, create=True)
+                        xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/{section}/{k}", v, type_str, create=True)
         else:
             owned = PLUGIN_OWNED_PROPS.get(logical, [])
             for k in owned:
                 if k in config:
                     type_str = yaml_type_to_xfconf(config[k])
-                    xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/{k}",
-                               config[k], type_str, create=True)
+                    xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/{k}", config[k], type_str, create=True)
 
     # Rebuild plugin-ids array in desired order
-    xfconf_set_array(_PANEL_CHANNEL, _PLUGIN_IDS_PROP, "int",
-                     [str(i) for i in final_order_ids], create=True)
+    xfconf_set_array(_PANEL_CHANNEL, _PLUGIN_IDS_PROP, "int", [str(i) for i in final_order_ids], create=True)
 
 
 def get_plugin_ids():
@@ -511,7 +517,7 @@ def get_plugin_props(plugin_id):
     for prop in all_props:
         if not prop.startswith(prefix):
             continue
-        key = prop[len(prefix):]
+        key = prop[len(prefix) :]
         if "/" in key:
             continue
         val, type_str = xfconf_get(_PANEL_CHANNEL, prop)
@@ -546,8 +552,9 @@ def create_plugin(logical_name):
     """Create a new panel plugin of the given logical type. Returns new plugin ID."""
     xfconf_type = PLUGIN_TYPE_MAP[logical_name]
     new_id = next_plugin_id()
-    run_xfconf_query("-c", _PANEL_CHANNEL, "-p", f"/plugins/plugin-{new_id}",
-                     "-t", "string", "-s", xfconf_type, "--create")
+    run_xfconf_query(
+        "-c", _PANEL_CHANNEL, "-p", f"/plugins/plugin-{new_id}", "-t", "string", "-s", xfconf_type, "--create"
+    )
     return new_id
 
 
@@ -561,6 +568,7 @@ def cmd_set_location():
         sys.exit(1)
 
     import time
+
     lat, lon = data["loc"].split(",")
     city = data.get("city", "")
     timezone = data["timezone"]
@@ -569,8 +577,7 @@ def cmd_set_location():
     print("Updating redshift config...")
     _set_location_redshift(lat, lon)
 
-    panel_was_running = subprocess.run(["pgrep", "-x", "xfce4-panel"],
-                                       capture_output=True).returncode == 0
+    panel_was_running = subprocess.run(["pgrep", "-x", "xfce4-panel"], capture_output=True).returncode == 0
     if panel_was_running:
         # The weather plugin writes its in-memory state (including stale location) back
         # to xfconf on graceful exit. SIGKILL prevents that write-back.
@@ -598,11 +605,9 @@ def _set_location_xfce(city, lat, lon, timezone):
     # clock-local: the clock that isn't the Vilnius one
     for pid in get_plugin_ids():
         if get_plugin_type(pid) == "clock":
-            tz = run_xfconf_query("-c", _PANEL_CHANNEL, "-p",
-                                  f"/plugins/plugin-{pid}/timezone").stdout.strip()
+            tz = run_xfconf_query("-c", _PANEL_CHANNEL, "-p", f"/plugins/plugin-{pid}/timezone").stdout.strip()
             if tz != "Europe/Vilnius":
-                xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/timezone",
-                           timezone, "string", create=True)
+                xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/timezone", timezone, "string", create=True)
                 print(f"  clock-local timezone → {timezone}")
                 break
     else:
@@ -634,13 +639,7 @@ def _set_location_redshift(lat, lon):
     temp_night = int(answer) if answer else current_temp
 
     dest.write_text(
-        f"[redshift]\n"
-        f"temp-night={temp_night}\n"
-        f"location-provider=manual\n"
-        f"\n"
-        f"[manual]\n"
-        f"lat={lat}\n"
-        f"lon={lon}\n"
+        f"[redshift]\ntemp-night={temp_night}\nlocation-provider=manual\n\n[manual]\nlat={lat}\nlon={lon}\n"
     )
     print(f"  redshift: location → ({lat}, {lon}), temp-night → {temp_night}")
 
