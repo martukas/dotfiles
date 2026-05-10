@@ -2,11 +2,6 @@
 - defaults:
     type: posix
   packages:
-    - id: dummy
-      descr: Dummy test package
-      category: xtras
-      check: which nonexistentscript
-      install: "../linux/packages.sh test"
     - id: logiops
       descr: Logiops mouse buttons hack
       category: GUI
@@ -79,7 +74,7 @@
       install: "../linux/packages.sh install-ms-edge"
     - id: prism-launcher
       descr: Prism Launcher (Minecraft)
-      category: gaming
+      category: multimedia
       check: "../linux/packages.sh check-prism-launcher"
       install: "../linux/packages.sh install-prism-launcher"
 
