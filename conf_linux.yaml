@@ -35,6 +35,7 @@
     ~/.config/mimeapps.list:
       path: linux/config/mimeapps.list
     ~/.local/bin/redshift-launch: linux/bin/redshift-launch
+    ~/.local/bin/kvm-display: linux/bin/kvm-display
     ~/.local/share/icons/hicolor/scalable/apps/guake-tray.svg:
       path: /usr/share/guake/pixmaps/guake-tray.svg
       if: "[ -f /usr/share/guake/pixmaps/guake-tray.svg ]"

@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+# kvm-display — drive display layout for the dock/KVM setup, and optionally
+# follow the KVM switch automatically.
+#
+#   kvm-display docked   external monitor only, laptop panel off
+#   kvm-display mobile   laptop panel only, external off   (blind-rescue target)
+#   kvm-display status   print detected state and exit
+#   kvm-display watch    apply the right layout now, then follow the KVM switch
+#                        for the rest of the session (USB add/remove of the hub)
+#
+# Why USB and not the display: the KVM holds the video hotplug line latched, so
+# the GPU never sees the switch — DP-0 stays "connected" even when the monitor
+# is on the other PC. The KVM's own USB hub (vendor 05e3), however, appears only
+# when the KVM is feeding this machine, and it routes through the dock, so its
+# presence means "docked AND switched here". That is the signal we follow.
+#
+# Output names are stable on this machine:
+#   DP-0    = external monitor (NVIDIA dGPU, dock HDMI -> KVM)
+#   eDP-1-1 = built-in laptop panel (Intel iGPU)
+# watch self-guards on these names, so it no-ops on any other machine.
+
+EXT="DP-0"
+INT="eDP-1-1"
+ANCHOR_VENDOR="05e3" # KVM hub; present iff the KVM is switched to this machine
+
+: "${DISPLAY:=:0}"
+export DISPLAY
+
+log() {
+  logger -t kvm-display -- "$*" 2>/dev/null
+  printf '%s kvm-display: %s\n' "$(date '+%H:%M:%S')" "$*" >&2
+}
+
+# True if an output of the given name exists at all (connected or not).
+has_output() { xrandr --query 2>/dev/null | grep -q "^$1 "; }
+
+# True if any connected USB device is the KVM hub.
+kvm_present() {
+  local f
+  for f in /sys/bus/usb/devices/*/idVendor; do
+    [ -r "$f" ] || continue
+    [ "$(cat "$f" 2>/dev/null)" = "$ANCHOR_VENDOR" ] && return 0
+  done
+  return 1
+}
+
+# True if the external output currently has a live mode (i.e. it is on).
+ext_active() {
+  xrandr --query 2>/dev/null | awk -v o="$EXT" '$1==o && /[0-9]+x[0-9]+\+[0-9]+/ {f=1} END{exit !f}'
+}
+
+# Enable the external, wait for it to actually come up (cold-plug race), and
+# only then turn the laptop off — never blind ourselves if EXT isn't ready.
+apply_docked() {
+  local i
+  for ((i = 0; i < 10; i++)); do
+    xrandr --output "$EXT" --auto --primary 2>/dev/null
+    ext_active && break
+    sleep 0.5
+  done
+  if ext_active; then
+    xrandr --output "$INT" --off 2>/dev/null
+    return 0
+  fi
+  log "WARNING: $EXT did not come up; keeping $INT on"
+  xrandr --output "$INT" --auto --primary 2>/dev/null
+  return 1
+}
+
+# Laptop panel is always physically present, so this can never blind us.
+apply_mobile() {
+  xrandr --output "$INT" --auto --primary 2>/dev/null
+  xrandr --output "$EXT" --off 2>/dev/null
+  return 0
+}
+
+apply() {
+  case "$1" in
+    docked) apply_docked ;;
+    mobile) apply_mobile ;;
+  esac
+}
+
+desired() { kvm_present && echo docked || echo mobile; }
+
+watch_loop() {
+  if ! has_output "$EXT" || ! has_output "$INT"; then
+    log "no $EXT/$INT outputs here — not the dock/KVM machine; exiting"
+    exit 0
+  fi
+  local last="" cur
+  cur="$(desired)"
+  log "watch start -> $cur"
+  apply "$cur" && last="$cur"
+  while true; do
+    while read -r _; do
+      while read -r -t 0.2 _; do :; done # drain the rest of the event burst
+      sleep 0.5                          # settle, let enumeration finish
+      cur="$(desired)"
+      if [ "$cur" != "$last" ]; then
+        log "USB change -> $cur"
+        if apply "$cur"; then last="$cur"; else log "deferred ($EXT not ready)"; fi
+      fi
+    done < <(stdbuf -oL udevadm monitor --udev --subsystem-match=usb 2>/dev/null)
+    log "udevadm monitor exited; restarting in 2s"
+    sleep 2
+  done
+}
+
+case "${1:-}" in
+  docked) apply_docked ;;
+  mobile) apply_mobile ;;
+  status)
+    if kvm_present; then echo "KVM hub ($ANCHOR_VENDOR): present -> docked"; else echo "KVM hub ($ANCHOR_VENDOR): absent -> mobile"; fi
+    printf 'EXT %s active: %s\n' "$EXT" "$(ext_active && echo yes || echo no)"
+    ;;
+  watch) watch_loop ;;
+  *)
+    echo "usage: kvm-display {docked|mobile|status|watch}" >&2
+    exit 2
+    ;;
+esac

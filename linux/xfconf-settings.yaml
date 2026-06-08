@@ -34,6 +34,7 @@ keyboard-shortcuts:
       <Super>m: exo-open --launch MailReader
       <Super>p: xfce4-display-settings --minimal
       <Super>r: xfrun4
+      <Super><Shift>m: kvm-display mobile
       <Super>t: exo-open --launch TerminalEmulator
       <Super>w: exo-open --launch WebBrowser
       XF86Calculator: mate-calc

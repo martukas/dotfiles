@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=KVM display follower
+Comment=Follow the dock/KVM switch: external-only when docked here, laptop-only otherwise
+Exec=kvm-display watch
+Terminal=false
+Categories=Utility;
+StartupNotify=false
+Hidden=false
+X-GNOME-Autostart-enabled=true
