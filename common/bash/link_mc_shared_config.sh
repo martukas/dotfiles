@@ -223,8 +223,15 @@ link_shared_item() {
   echo "Processing ${name}..."
 
   if [ -L "$target" ]; then
-    echo "  already a link. Skipping."
-    return 0
+    if [ -e "$target" ]; then
+      echo "  already a link. Skipping."
+      return 0
+    fi
+    # A dangling link (shared root moved/renamed) is still a link, so -L alone
+    # would skip it and leave the instance broken. Drop it and relink below;
+    # removing a broken symlink discards nothing.
+    echo "  Replacing broken link -> $(readlink "$target")"
+    rm -f "$target" || return 1
   fi
 
   if [ ! -e "$source" ]; then
