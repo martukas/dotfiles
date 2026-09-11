@@ -28,21 +28,36 @@ for arg in "$@"; do
 done
 
 # --- Pack profiles -----------------------------------------------------------
-# PACK_DIRS      directories to replace with links
+# PACK_DIRS      directories to replace with links; may be nested (config/jei/world)
 # PACK_FILES     individual files to replace with links (needs admin on Windows)
 # PACK_SEED_ONCE files copied once and then left alone -- see the servers.dat
 #                comment further down for why some files must not be linked
+# PACK_UNLINK    paths that USED to be shared and no longer should be; converted
+#                back into real local copies so a machine keeps what it has and
+#                simply stops syncing it
+#
+# Share only what is portable between machines. Worlds, map data and keybinds
+# travel fine. A whole config/ directory does not: it is hundreds of files of
+# per-launch mod state, and it silently couples both machines to the same mod
+# versions. Sharing it once left the title screen blank with unlabelled buttons,
+# because a GUI-customisation mod read settings written by a different build.
 pack_profile() {
   case "$1" in
     sevtech)
       PACK_DIRS="journeymap saves config"
       PACK_FILES=""
       PACK_SEED_ONCE="servers.dat"
+      PACK_UNLINK=""
       ;;
     atm10)
-      PACK_DIRS="saves config journeymap local"
+      # config/jei/world holds JEI bookmarks and lookup history, per world.
+      # local/ftbchunks holds map waypoints and claims. The rest of config/ and
+      # local/ is machine-specific churn -- local/crash_assistant in particular
+      # is PID-named lock files that two machines must not write concurrently.
+      PACK_DIRS="saves journeymap config/jei/world local/ftbchunks"
       PACK_FILES="options.txt"
       PACK_SEED_ONCE=""
+      PACK_UNLINK="config local"
       ;;
     *)
       return 1
@@ -148,19 +163,68 @@ fi
 # A link can silently degenerate into a real file (see the servers.dat note),
 # which looks fine but quietly stops syncing. This reports that rather than
 # letting it go unnoticed.
+
+# True if $1 is a link -- including a Windows junction or directory symlink, and
+# including one whose target no longer exists. Bash's -L does not see junctions
+# under MSYS, so a stale one would otherwise look like an ordinary directory.
+is_link() {
+  local target="$1"
+  [ -L "$target" ] && return 0
+  if [[ $OSTYPE == "msys" || $OSTYPE == "cygwin" ]]; then
+    local parent base
+    parent=$(cygpath -w "$(dirname "$target")") || return 1
+    base=$(basename "$target")
+    # dir /AL lists only reparse points (<JUNCTION>, <SYMLINK>, <SYMLINKD>).
+    cmd //c dir //al "$parent" 2>/dev/null | grep -qiF "$base" && return 0
+  fi
+  return 1
+}
+
+# Report where a link points, for messages. Junctions do not answer readlink.
+link_target() {
+  readlink "$1" 2>/dev/null || echo "(unresolved)"
+}
+
+# Remove the link itself, never the contents it points at. On Windows a junction
+# must go via rmdir: "rm -r" would delete straight through it into the shared
+# copy. rmdir removes only the reparse point.
+remove_link() {
+  local target="$1"
+  if [[ $OSTYPE == "msys" || $OSTYPE == "cygwin" ]]; then
+    local win_target
+    win_target=$(cygpath -w "$target")
+    cmd //c rmdir "$win_target" >/dev/null 2>&1 && return 0
+    cmd //c del //f //q "$win_target" >/dev/null 2>&1 && return 0
+    echo "  ERROR: could not remove link: $target" >&2
+    return 1
+  fi
+  rm -f "$target"
+}
+
 check_item() {
   local name="$1"
   local target="${GAME_DIR}/${name}"
-  if [ -L "$target" ]; then
+  if is_link "$target"; then
     if [ -e "$target" ]; then
-      printf '  %-14s OK (linked)\n' "$name"
+      printf '  %-24s OK (linked)\n' "$name"
     else
-      printf '  %-14s BROKEN LINK -> %s\n' "$name" "$(readlink "$target")"
+      printf '  %-24s BROKEN LINK -> %s\n' "$name" "$(link_target "$target")"
     fi
   elif [ -e "$target" ]; then
-    printf '  %-14s NOT LINKED (real file/dir) -- shared copy is NOT updating\n' "$name"
+    printf '  %-24s NOT LINKED (real file/dir) -- shared copy is NOT updating\n' "$name"
   else
-    printf '  %-14s absent\n' "$name"
+    printf '  %-24s absent\n' "$name"
+  fi
+}
+
+# Reports paths that should no longer be shared but still are.
+check_unlinked_item() {
+  local name="$1"
+  local target="${GAME_DIR}/${name}"
+  if is_link "$target"; then
+    printf '  %-24s STILL SHARED -- run without --check to un-share\n' "$name"
+  else
+    printf '  %-24s local only (correct)\n' "$name"
   fi
 }
 
@@ -170,7 +234,10 @@ if [ "$CHECK_ONLY" = true ]; then
     check_item "$name"
   done
   for name in $PACK_SEED_ONCE; do
-    printf '  %-14s (seed-once, never linked by design)\n' "$name"
+    printf '  %-24s (seed-once, never linked by design)\n' "$name"
+  done
+  for name in $PACK_UNLINK; do
+    check_unlinked_item "$name"
   done
   exit 0
 fi
@@ -222,16 +289,16 @@ link_shared_item() {
 
   echo "Processing ${name}..."
 
-  if [ -L "$target" ]; then
+  if is_link "$target"; then
     if [ -e "$target" ]; then
       echo "  already a link. Skipping."
       return 0
     fi
-    # A dangling link (shared root moved/renamed) is still a link, so -L alone
-    # would skip it and leave the instance broken. Drop it and relink below;
-    # removing a broken symlink discards nothing.
-    echo "  Replacing broken link -> $(readlink "$target")"
-    rm -f "$target" || return 1
+    # A dangling link (shared root moved/renamed) is still a link, so a plain
+    # existence test would skip it and leave the instance broken. Drop it and
+    # relink below; removing a broken link discards nothing.
+    echo "  Replacing broken link -> $(link_target "$target")"
+    remove_link "$target" || return 1
   fi
 
   if [ ! -e "$source" ]; then
@@ -251,11 +318,61 @@ link_shared_item() {
   fi
 
   echo "  Linking ${name}: $target -> $source"
+  # Nested names (config/jei/world) need their parent to exist before linking.
+  mkdir -p "$(dirname "$target")" || return 1
   create_link "$source" "$target" "$is_dir"
+}
+
+# --- Un-sharing --------------------------------------------------------------
+# Turns a previously shared path back into a real local copy holding whatever the
+# shared side currently has, so the machine keeps its content and merely stops
+# syncing it. Used to retire an over-broad share without losing anything.
+unlink_shared_item() {
+  local name="$1"
+  local target="${GAME_DIR}/${name}"
+  local source="${SHARED_DIR}/${name}"
+
+  echo "Un-sharing ${name}..."
+
+  if ! is_link "$target"; then
+    if [ -e "$target" ]; then
+      echo "  already a real local copy. Nothing to do."
+    else
+      echo "  absent. Nothing to do."
+    fi
+    return 0
+  fi
+
+  if [ ! -e "$source" ]; then
+    echo "  Link is broken and the shared copy is gone; removing the dead link."
+    remove_link "$target" || return 1
+    return 0
+  fi
+
+  # Copy first, so a failure here leaves the existing link untouched.
+  local staging="${target}.unsharing-$$"
+  echo "  Copying shared content to a local copy (this may take a moment)..."
+  if ! cp -a "$source" "$staging"; then
+    echo "  ERROR: copy failed; leaving the link in place." >&2
+    rm -rf "$staging"
+    return 1
+  fi
+  if ! remove_link "$target"; then
+    rm -rf "$staging"
+    return 1
+  fi
+  mv "$staging" "$target" || return 1
+  echo "  Done: ${name} is now local-only and no longer syncs."
 }
 
 echo "Setting up links for $PACK..."
 echo ""
+
+# Retire over-broad shares first, so a path being un-shared cannot collide with
+# a narrower path being linked underneath it (config -> config/jei/world).
+for name in $PACK_UNLINK; do
+  unlink_shared_item "$name"
+done
 
 for name in $PACK_DIRS; do
   link_shared_item "$name" true
