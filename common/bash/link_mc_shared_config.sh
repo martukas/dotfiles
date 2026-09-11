@@ -28,7 +28,6 @@ for arg in "$@"; do
 done
 
 # --- Pack profiles -----------------------------------------------------------
-# PACK_SUBDIR    where under the shared root this pack's files live ("" = root)
 # PACK_DIRS      directories to replace with links
 # PACK_FILES     individual files to replace with links (needs admin on Windows)
 # PACK_SEED_ONCE files copied once and then left alone -- see the servers.dat
@@ -36,13 +35,11 @@ done
 pack_profile() {
   case "$1" in
     sevtech)
-      PACK_SUBDIR=""
       PACK_DIRS="journeymap saves config"
       PACK_FILES=""
       PACK_SEED_ONCE="servers.dat"
       ;;
     atm10)
-      PACK_SUBDIR="atm10"
       PACK_DIRS="saves config journeymap local"
       PACK_FILES="options.txt"
       PACK_SEED_ONCE=""
@@ -132,11 +129,9 @@ resolve_game_dir() {
 }
 
 GAME_DIR=$(resolve_game_dir "$INSTANCE_DIR")
-if [ -n "$PACK_SUBDIR" ]; then
-  SHARED_DIR="${SHARED_ROOT}/${PACK_SUBDIR}"
-else
-  SHARED_DIR="$SHARED_ROOT"
-fi
+# Every pack gets its own subdirectory under the shared root, so packs never
+# collide on common names like saves/ or config/.
+SHARED_DIR="${SHARED_ROOT}/${PACK}"
 
 echo ""
 echo "Pack        : $PACK"
