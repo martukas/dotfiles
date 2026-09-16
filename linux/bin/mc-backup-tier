@@ -1,0 +1,291 @@
+#!/usr/bin/env bash
+# Promote Minecraft world backups into longer-lived tiers, and take one
+# conditional backup after a server restart. All machine-specific values come
+# from the config file; nothing here is specific to any host.
+set -uo pipefail
+
+CONFIG=${MC_BACKUP_TIER_CONFIG:-/etc/mc-backup-tier.conf}
+FAILURES=()
+
+log() {
+  printf '%s %s\n' "$(date -u +%FT%TZ)" "$*"
+}
+
+record_failure() {
+  FAILURES+=("$1")
+  log "FAILURE: $1"
+}
+
+usage() {
+  cat <<'EOF'
+Usage: mc-backup-tier --promote | --boot | --help
+
+  --promote  Hardlink eligible backups into daily and weekly tiers, prune them.
+  --boot     If anyone played since the newest backup, trigger one backup.
+
+Configuration is read from $MC_BACKUP_TIER_CONFIG, default
+/etc/mc-backup-tier.conf.
+EOF
+}
+
+load_config() {
+  if [ ! -r "$CONFIG" ]; then
+    log "config not readable: $CONFIG"
+    exit 1
+  fi
+  # shellcheck source=/dev/null
+  . "$CONFIG"
+  local missing=()
+  local v
+  for v in BACKUP_DIR TIER_ROOT DAILY_KEEP WEEKLY_KEEP RCON_BIN RCON_HOST \
+    RCON_PORT RCON_PASS MC_UNIT NOTIFY_ADDR MIN_FREE_MB; do
+    if [ -z "${!v:-}" ]; then
+      missing+=("$v")
+    fi
+  done
+  if [ ${#missing[@]} -gt 0 ]; then
+    log "config is missing: ${missing[*]}"
+    exit 1
+  fi
+  RCON_WAIT_SECS=${RCON_WAIT_SECS:-600}
+  RCON_POLL_SECS=${RCON_POLL_SECS:-5}
+  MAIL_CMD=${MAIL_CMD:-"mail -s 'minecraft backup tiering: problems detected' $NOTIFY_ADDR"}
+  # $since is expanded later, by played_since
+  # shellcheck disable=SC2016
+  JOURNAL_CMD=${JOURNAL_CMD:-'journalctl -u "$MC_UNIT" --no-pager --since "$since"'}
+}
+
+report_failures() {
+  if [ ${#FAILURES[@]} -eq 0 ]; then
+    return 0
+  fi
+  {
+    echo "mc-backup-tier found problems on $(hostname) at $(date -u +%FT%TZ):"
+    echo
+    printf '  - %s\n' "${FAILURES[@]}"
+  } | eval "$MAIL_CMD"
+  return 1
+}
+
+stamp_of() {
+  local base
+  base=$(basename "$1" .zip)
+  printf '%s' "${base##*--world--}"
+}
+
+day_of() {
+  local stamp
+  stamp=$(stamp_of "$1")
+  printf '%s' "${stamp%%--*}"
+}
+
+eligible_backups() {
+  local zip info
+  for zip in "$BACKUP_DIR"/Backup--world--*.zip; do
+    [ -e "$zip" ] || continue
+    info=${zip%.zip}.backupinfo
+    if [ ! -s "$info" ]; then
+      continue
+    fi
+    printf '%s\n' "$zip"
+  done | sort
+}
+
+promote_one() {
+  local src=$1 dir=$2
+  local name dst
+  name=$(basename "$src")
+  dst="$dir/$name"
+  mkdir -p "$dir"
+  if [ -e "$dst" ]; then
+    return 0
+  fi
+  if ! ln "$src" "$dst" 2>/dev/null; then
+    if [ -e "$src" ]; then
+      record_failure "could not hardlink $src into $dir"
+    fi
+    return 1
+  fi
+  log "promoted $name -> $dir"
+}
+
+promote_daily() {
+  local zip day seen=""
+  while read -r zip; do
+    [ -n "$zip" ] || continue
+    day=$(day_of "$zip")
+    case " $seen " in
+      *" $day "*) continue ;;
+    esac
+    seen="$seen $day"
+    if ! find "$TIER_ROOT/daily" -name "Backup--world--$day--*.zip" 2>/dev/null | grep -q .; then
+      promote_one "$zip" "$TIER_ROOT/daily"
+    fi
+  done < <(eligible_backups)
+}
+
+week_of() {
+  local day
+  day=$(day_of "$1")
+  date -u -d "$day" +%G-W%V
+}
+
+promote_weekly() {
+  local zip week seen="" existing found
+  while read -r zip; do
+    [ -n "$zip" ] || continue
+    week=$(week_of "$zip")
+    case " $seen " in
+      *" $week "*) continue ;;
+    esac
+    seen="$seen $week"
+    found=""
+    while read -r existing; do
+      [ -n "$existing" ] || continue
+      if [ "$(week_of "$existing")" = "$week" ]; then
+        found=yes
+        break
+      fi
+    done < <(find "$TIER_ROOT/weekly" -name '*.zip' 2>/dev/null | sort)
+    if [ -z "$found" ]; then
+      promote_one "$zip" "$TIER_ROOT/weekly"
+    fi
+  done < <(find "$TIER_ROOT/daily" -name '*.zip' 2>/dev/null | sort)
+}
+
+prune_tier() {
+  local dir=$1 keep=$2 total drop victim
+  total=$(find "$dir" -name '*.zip' 2>/dev/null | wc -l)
+  drop=$((total - keep))
+  if [ "$drop" -le 0 ]; then
+    return 0
+  fi
+  while read -r victim; do
+    [ -n "$victim" ] || continue
+    if rm -f "$victim"; then
+      log "pruned $(basename "$victim") from $dir"
+    else
+      record_failure "could not prune $victim"
+    fi
+  done < <(find "$dir" -name '*.zip' 2>/dev/null | sort | head -n "$drop")
+}
+
+check_zero_byte() {
+  local f
+  while read -r f; do
+    [ -n "$f" ] || continue
+    record_failure "zero-byte artifact: $f"
+  done < <(find "$BACKUP_DIR" "$TIER_ROOT" -type f -size 0 2>/dev/null | sort)
+}
+
+free_mb() {
+  df -Pm "$1" | awk 'NR == 2 { print $4 }'
+}
+
+check_free_space() {
+  local free
+  free=$(free_mb "$BACKUP_DIR")
+  if [ -z "$free" ]; then
+    record_failure "could not determine free space for $BACKUP_DIR"
+    return 1
+  fi
+  if [ "$free" -lt "$MIN_FREE_MB" ]; then
+    record_failure "free space ${free}MB is below the floor of ${MIN_FREE_MB}MB"
+    return 1
+  fi
+}
+
+wait_for_rcon() {
+  local waited=0
+  while [ "$waited" -lt "$RCON_WAIT_SECS" ]; do
+    if "$RCON_BIN" -H "$RCON_HOST" -P "$RCON_PORT" -p "$RCON_PASS" list >/dev/null 2>&1; then
+      log "rcon answered after ${waited}s"
+      return 0
+    fi
+    sleep "$RCON_POLL_SECS"
+    waited=$((waited + RCON_POLL_SECS))
+  done
+  record_failure "rcon did not answer within ${RCON_WAIT_SECS}s; no backup taken"
+  return 1
+}
+
+newest_backup() {
+  eligible_backups | tail -1
+}
+
+since_iso() {
+  # 2026-09-14--18-40 -> "2026-09-14 18:40:00"
+  local stamp=$1 date_part time_part
+  date_part=${stamp%%--*}
+  time_part=$(printf '%s' "${stamp##*--}" | tr '-' ':')
+  printf '%s %s:00' "$date_part" "$time_part"
+}
+
+played_since() {
+  local since=$1
+  # JOURNAL_CMD references $since; it is expanded here, at call time.
+  eval "$JOURNAL_CMD" 2>/dev/null | grep -q 'joined the game'
+}
+
+trigger_backup() {
+  local out rc
+  out=$("$RCON_BIN" -H "$RCON_HOST" -P "$RCON_PORT" -p "$RCON_PASS" backup 2>&1)
+  rc=$?
+  log "rcon backup: $out"
+  case "$out" in
+    *"already running"*) return 0 ;;
+  esac
+  if [ "$rc" -ne 0 ]; then
+    record_failure "rcon backup trigger failed (exit $rc): $out"
+    return 1
+  fi
+}
+
+boot_mode() {
+  local newest since
+  if ! wait_for_rcon; then
+    return 1
+  fi
+  newest=$(newest_backup)
+  if [ -z "$newest" ]; then
+    log "no eligible backups present; nothing to compare against"
+    return 0
+  fi
+  since=$(since_iso "$(stamp_of "$newest")")
+  if ! played_since "$since"; then
+    log "nobody played since $since; not triggering"
+    return 0
+  fi
+  log "play detected since $since; triggering a backup"
+  trigger_backup
+}
+
+main() {
+  case "${1:-}" in
+    --help | -h)
+      usage
+      exit 0
+      ;;
+    --promote)
+      load_config
+      check_free_space || true
+      promote_daily
+      promote_weekly
+      prune_tier "$TIER_ROOT/daily" "$DAILY_KEEP"
+      prune_tier "$TIER_ROOT/weekly" "$WEEKLY_KEEP"
+      check_zero_byte
+      ;;
+    --boot)
+      load_config
+      boot_mode
+      check_zero_byte
+      ;;
+    *)
+      usage >&2
+      exit 2
+      ;;
+  esac
+  report_failures
+}
+
+main "$@"
