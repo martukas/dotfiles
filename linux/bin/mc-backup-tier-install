@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+# Install mc-backup-tier: the script, its systemd units, and a config file.
+# Generic: every host-specific value is an option or is derived from the
+# Minecraft unit. Run from a checkout of the repo that contains it.
+set -uo pipefail
+
+PREFIX=""
+DRY=""
+BACKUP_DIR=""
+TIER_ROOT=""
+RCON_BIN=""
+RCON_PASS=""
+MC_UNIT="minecraft.service"
+RCON_HOST="127.0.0.1"
+RCON_PORT="25575"
+DAILY_KEEP=7
+WEEKLY_KEEP=4
+NOTIFY_ADDR="root"
+MIN_FREE_MB=20000
+
+usage() {
+  cat <<'USAGE'
+Usage: mc-backup-tier-install --backup-dir DIR --tier-root DIR --rcon-bin PATH [options]
+
+Required:
+  --backup-dir DIR   Where the backup mod writes its archives
+  --tier-root DIR    Where promoted tiers live; must be on the same filesystem
+                     as --backup-dir, and outside the mod's own directory
+  --rcon-bin PATH    Path to the mcrcon binary
+
+Options (defaults shown):
+  --mc-unit NAME       minecraft.service
+  --rcon-host HOST     127.0.0.1
+  --rcon-port PORT     25575
+  --rcon-pass PASS     derived from the Minecraft unit's ExecStop line
+  --daily-keep N       7
+  --weekly-keep N      4
+  --notify ADDR        root
+  --min-free-mb N      20000
+  --prefix DIR         "" -- prepended to every install path, for testing
+  --dry-run            Print what would happen, change nothing
+USAGE
+}
+
+say() { printf '  %s\n' "$*"; }
+run() {
+  if [ -n "$DRY" ]; then
+    say "would run: $*"
+  else
+    "$@" || return 1
+  fi
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --backup-dir) BACKUP_DIR=$2 && shift 2 ;;
+    --tier-root) TIER_ROOT=$2 && shift 2 ;;
+    --rcon-bin) RCON_BIN=$2 && shift 2 ;;
+    --mc-unit) MC_UNIT=$2 && shift 2 ;;
+    --rcon-host) RCON_HOST=$2 && shift 2 ;;
+    --rcon-port) RCON_PORT=$2 && shift 2 ;;
+    --rcon-pass) RCON_PASS=$2 && shift 2 ;;
+    --daily-keep) DAILY_KEEP=$2 && shift 2 ;;
+    --weekly-keep) WEEKLY_KEEP=$2 && shift 2 ;;
+    --notify) NOTIFY_ADDR=$2 && shift 2 ;;
+    --min-free-mb) MIN_FREE_MB=$2 && shift 2 ;;
+    --prefix) PREFIX=$2 && shift 2 ;;
+    --dry-run) DRY=yes && shift ;;
+    --help | -h)
+      usage
+      exit 0
+      ;;
+    *)
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+for v in BACKUP_DIR TIER_ROOT RCON_BIN; do
+  if [ -z "${!v}" ]; then
+    printf 'missing required option for %s\n' "$v" >&2
+    usage >&2
+    exit 2
+  fi
+done
+
+SRC=$(cd "$(dirname "$0")/.." && pwd)
+BIN_DIR="$PREFIX/usr/local/bin"
+UNIT_DIR="$PREFIX/etc/systemd/system"
+CONF="$PREFIX/etc/mc-backup-tier.conf"
+
+if [ ! -f "$SRC/bin/mc-backup-tier" ]; then
+  printf 'cannot find bin/mc-backup-tier next to this installer (looked in %s)\n' "$SRC" >&2
+  exit 1
+fi
+
+echo "Installing mc-backup-tier"
+say "from      : $SRC"
+say "script to : $BIN_DIR"
+say "units to  : $UNIT_DIR"
+say "config    : $CONF"
+
+if [ -z "$RCON_PASS" ]; then
+  RCON_PASS=$(grep -oP '(?<=-p )\S+' "$UNIT_DIR/$MC_UNIT" 2>/dev/null | head -1)
+  if [ -z "$RCON_PASS" ]; then
+    printf 'could not derive the rcon password from %s; pass --rcon-pass\n' \
+      "$UNIT_DIR/$MC_UNIT" >&2
+    exit 1
+  fi
+  say "rcon pass : derived from $MC_UNIT"
+else
+  say "rcon pass : supplied on the command line"
+fi
+
+run install -d -m755 "$BIN_DIR" || exit 1
+run install -m755 "$SRC/bin/mc-backup-tier" "$BIN_DIR/" || exit 1
+run install -d -m755 "$UNIT_DIR" || exit 1
+for u in mc-backup-tier.service mc-backup-tier-boot.service mc-backup-tier.timer; do
+  run install -m644 "$SRC/systemd/$u" "$UNIT_DIR/" || exit 1
+done
+
+if [ -n "$DRY" ]; then
+  say "would write config to $CONF (mode 600)"
+else
+  install -d -m755 "$(dirname "$CONF")" || exit 1
+  (
+    umask 077
+    cat >"$CONF" <<CONFEOF
+# Written by mc-backup-tier-install on $(date -u +%FT%TZ).
+# Host-specific; deliberately not in the dotfiles repo.
+BACKUP_DIR="$BACKUP_DIR"
+TIER_ROOT="$TIER_ROOT"
+DAILY_KEEP=$DAILY_KEEP
+WEEKLY_KEEP=$WEEKLY_KEEP
+RCON_BIN="$RCON_BIN"
+RCON_HOST="$RCON_HOST"
+RCON_PORT="$RCON_PORT"
+RCON_PASS="$RCON_PASS"
+MC_UNIT="$MC_UNIT"
+NOTIFY_ADDR="$NOTIFY_ADDR"
+MIN_FREE_MB=$MIN_FREE_MB
+CONFEOF
+  ) || exit 1
+  chmod 600 "$CONF"
+  say "config written, mode $(stat -c %a "$CONF")"
+fi
+
+if [ -z "$PREFIX" ]; then
+  run systemctl daemon-reload
+  echo
+  echo "Installed. To activate:"
+  say "systemctl enable --now mc-backup-tier.timer"
+  say "systemctl enable mc-backup-tier-boot.service"
+else
+  echo
+  say "prefix set, so systemd was not reloaded"
+fi

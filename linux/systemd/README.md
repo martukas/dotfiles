@@ -14,16 +14,28 @@ not manage, giving one restore point per play-day and one per played week.
 
 ### Install
 
-As root, from a checkout of this repo:
+Run the installer from a checkout of this repo, as root:
 
 ```sh
-install -m755 linux/bin/mc-backup-tier /usr/local/bin/
-install -m644 linux/systemd/mc-backup-tier.service \
-              linux/systemd/mc-backup-tier-boot.service \
-              linux/systemd/mc-backup-tier.timer /etc/systemd/system/
-systemctl daemon-reload
-systemctl enable --now mc-backup-tier.timer
-systemctl enable mc-backup-tier-boot.service
+sudo linux/bin/mc-backup-tier-install \
+  --backup-dir /opt/minecraft/server/backups/world \
+  --tier-root  /opt/minecraft/tiers \
+  --rcon-bin   /opt/minecraft/tools/mcrcon/mcrcon
+```
+
+It installs the script to `/usr/local/bin`, the three units to `/etc/systemd/system`, writes `/etc/mc-backup-tier.conf`
+at mode 600, and reloads systemd. The RCON password is **derived from the Minecraft unit's `ExecStop` line**, so it
+never has to be typed or pasted; override with `--rcon-pass` if your setup differs.
+
+`--dry-run` prints what it would do. `--prefix DIR` redirects every path under DIR, which is how the installer is tested
+without root. `--help` lists the rest: `--mc-unit`, `--rcon-host`, `--rcon-port`, `--daily-keep`, `--weekly-keep`,
+`--notify`, `--min-free-mb`.
+
+Then activate:
+
+```sh
+sudo systemctl enable --now mc-backup-tier.timer
+sudo systemctl enable mc-backup-tier-boot.service
 ```
 
 The script is installed to `/usr/local/bin` rather than symlinked from a checkout, because systemd units should not
@@ -32,33 +44,15 @@ depend on a user's home directory being present and readable. This is why it doe
 
 It runs as root because a server directory is typically not traversable by an ordinary account.
 
-### Configure
+`TIER_ROOT` must be on the same filesystem as `BACKUP_DIR`, since promotion uses hardlinks. Keep it *outside* the backup
+mod's own directory so the mod never scans it.
 
-Write `/etc/mc-backup-tier.conf`, mode 600, owner root:
-
-```ini
-BACKUP_DIR="/path/to/server/backups/world"
-TIER_ROOT="/path/to/tiers"
-DAILY_KEEP=7
-WEEKLY_KEEP=4
-RCON_BIN="/path/to/mcrcon"
-RCON_HOST="127.0.0.1"
-RCON_PORT="25575"
-RCON_PASS="..."
-MC_UNIT="minecraft.service"
-NOTIFY_ADDR="root"
-MIN_FREE_MB=20000
-```
-
-Optional, with defaults shown:
+Optional config keys, with defaults, that the installer does not currently set:
 
 ```ini
 RCON_WAIT_SECS=600   # how long --boot waits for the server to answer
 RCON_POLL_SECS=5     # interval between those attempts
 ```
-
-`TIER_ROOT` must be on the same filesystem as `BACKUP_DIR`, since promotion uses hardlinks. Keep it *outside* the backup
-mod's own directory so the mod never scans it.
 
 ### Behaviour
 

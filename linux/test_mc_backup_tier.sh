@@ -3,6 +3,7 @@
 set -uo pipefail
 
 SCRIPT=$(dirname "$0")/bin/mc-backup-tier
+INSTALLER=$(dirname "$0")/bin/mc-backup-tier-install
 PASS=0
 FAIL=0
 ROOT=""
@@ -248,6 +249,34 @@ stub_rcon "ok" 0
 MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --boot >"$ROOT/boot.out" 2>&1
 check "rcon answers -> proceeds to trigger" "1" \
   "$(grep -c 'triggering a backup' "$ROOT/boot.out")"
+
+echo "== task 6b: installer =="
+
+T=$(mktemp -d)
+mkdir -p "$T/etc/systemd/system"
+printf 'ExecStop=/x/mcrcon -H 127.0.0.1 -P 25575 -p derivedsecret stop\n' \
+  >"$T/etc/systemd/system/minecraft.service"
+"$INSTALLER" --prefix "$T" --backup-dir /b --tier-root /t --rcon-bin /x/mcrcon >/dev/null 2>&1
+check "installer exits 0" "0" "$?"
+check "script installed" "1" "$(find "$T/usr/local/bin" -name mc-backup-tier | wc -l)"
+check "three units installed" "3" "$(find "$T/etc/systemd/system" -name 'mc-backup-tier*' | wc -l)"
+check "config is mode 600" "600" "$(stat -c %a "$T/etc/mc-backup-tier.conf")"
+check "rcon password derived from the unit" "1" \
+  "$(grep -c 'derivedsecret' "$T/etc/mc-backup-tier.conf")"
+check "installed config is loadable by the script" "0" \
+  "$(
+    MC_BACKUP_TIER_CONFIG="$T/etc/mc-backup-tier.conf" "$SCRIPT" --help >/dev/null 2>&1
+    echo $?
+  )"
+rm -rf "$T"
+
+T=$(mktemp -d)
+"$INSTALLER" --prefix "$T" --backup-dir /b --tier-root /t --rcon-bin /x/mcrcon >/dev/null 2>&1
+check "missing rcon password is an error" "1" "$?"
+rm -rf "$T"
+
+"$INSTALLER" --prefix /nonexistent >/dev/null 2>&1
+check "missing required options is an error" "2" "$?"
 
 echo
 echo "passed: $PASS  failed: $FAIL"
