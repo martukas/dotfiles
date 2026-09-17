@@ -49,9 +49,9 @@ When changing what gets symlinked, edit the relevant `conf_*.yaml`. Don't modify
 
 ### Submodules
 
-`dotbot`, `superpack`, `private`, `common/bash/plugins/dircolors-solarized`, `common/bash-git-prompt`, `linux/logiops`.
-All initialized by `install.sh`. `private/` is treated as "dirty-ignored" in the parent — commit changes inside the
-submodule first, then bump the parent pointer in a separate commit.
+`dotbot`, `superpack`, `private`, `common/bash-git-prompt`. All initialized by `install.sh`. `private/` is treated as
+"dirty-ignored" in the parent — commit changes inside the submodule first, then bump the parent pointer in a separate
+commit.
 
 ### Test infrastructure (`test_infra/`)
 

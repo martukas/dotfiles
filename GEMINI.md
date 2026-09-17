@@ -13,7 +13,7 @@ This project is a cross-platform (Windows & Linux) dotfiles management system. I
   - `dotbot`: The linking engine.
   - `superpack`: The package manager.
   - `private`: A private submodule for sensitive/personal configurations (SSH keys, private gitconfig, etc.).
-  - Various shell plugins (e.g., `bash-git-prompt`, `dircolors-solarized`).
+  - `common/bash-git-prompt`: The git-aware bash prompt.
 
 ## Core Components
 

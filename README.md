@@ -107,8 +107,6 @@ The following cannot be automated:
 <details>
 <summary>Linux manual steps</summary>
 
-- flameshot kbd shortcut
-- panel items layout
 - movable window manager tabs
 - mugshot avatar
 - Enable Ubuntu Pro via superpack (`dev-admin` category) — requires Ubuntu account login to retrieve token
