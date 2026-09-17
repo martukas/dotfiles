@@ -115,6 +115,9 @@ panel:
   order:
     - whiskermenu
     - separator
+    - clock-ref-1
+    - separator-line
+    - clock-ref-2
     - systemload
     - tasklist
     - spring
@@ -123,9 +126,8 @@ panel:
     - indicator
     - power-manager-plugin
     - pulseaudio
-    - clock-local
     - xkb
-    - clock-vilnius
+    - clock-local
     - weather
   plugins:
     whiskermenu:
@@ -141,6 +143,9 @@ panel:
         - xfce4-terminal-emulator.desktop
         - guake.desktop
         - org.prismlauncher.PrismLauncher.desktop
+    separator-line:
+      style: 1
+      expand: false
     separator:
       style: 0
       expand: false
@@ -176,7 +181,11 @@ panel:
       tooltip-format: "%x"
       digital-time-font: Sans 10
     xkb: {}
-    clock-vilnius:
+    clock-ref-2:
+      digital-date-format: "%d %b %Y"
+      digital-layout: 3
+      digital-time-font: Sans 10
+    clock-ref-1:
       timezone: Europe/Vilnius
       digital-date-format: "%d %b %Y"
       digital-layout: 3

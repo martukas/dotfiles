@@ -1,0 +1,7 @@
+[Unit]
+Description=Promote Minecraft backups into daily and weekly tiers
+Documentation=file:/usr/local/bin/mc-backup-tier
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/mc-backup-tier --promote

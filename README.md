@@ -58,27 +58,34 @@ offer you installation of packages appropriate for your system.
 
 The following aliases have (nearly) identical behaviour in bash and Powershell, Linux and Windows.
 
-| Alias                       | Function                                                                 |
-| --------------------------- | ------------------------------------------------------------------------ |
-| dfu                         | **dotfiles update:** pulls this repo and runs appropriate install script |
-| df-upgrade                  | **dotfiles upgrade:** upgrades git sub-modules in this repo              |
-| dnb `new_branch_name`       | **git new branch:** creates and pushes new branch                        |
-| commit-push "message"       | add everything, commit with "message", push                              |
-| commit-push-bypass-hooks    | same as above, but skips pre-commit hooks                                |
-| git-rm-submodule            | actually removes a git sub-module                                        |
-| upd                         | update all (`apt` and `snap`) or `winget` packages, cleanup              |
-| missue `123_something`      | creates and pushes branch `issue_123_something`                          |
-| issue "message"             | `commit-push` appending "; updates #123" (on an `issue_123` branch)      |
-| la                          | list directory contents, including hidden files                          |
-| cdgr                        | cd to git root                                                           |
-| mcd                         | make directory and cd into it                                            |
-| up `num`                    | go up `num` directories                                                  |
-| :penguin: mx                | `make executable:` chmod 775                                             |
-| :penguin: mw                | `make writable:` chmod 664                                               |
-| :penguin: own               | take ownership as user:user                                              |
-| :penguin: rm-ext            | remove all files recursively with given extension (asks to confirm)      |
-| :penguin: create-user       | create user with sudo privileges, home directory, authorized ssh key     |
-| :window: Test-Administrator | Return true if in elevated session                                       |
+| Alias                       | Function                                                                    |
+| --------------------------- | --------------------------------------------------------------------------- |
+| dfu                         | **dotfiles update:** pulls this repo and runs appropriate install script    |
+| df-upgrade                  | **dotfiles upgrade:** upgrades git sub-modules in this repo                 |
+| dnb `new_branch_name`       | **git new branch:** creates and pushes new branch                           |
+| missue `123_something`      | creates and pushes branch `issue_123_something`                             |
+| commit-push "message"       | add everything, commit with "message", push                                 |
+| commit-push-bypass-hooks    | same as above, but skips pre-commit hooks                                   |
+| issue "message"             | `commit-push` appending "; updates #123" (on an `issue_123` branch)         |
+| git-rm-submodule            | actually removes a git sub-module                                           |
+| cdgr                        | cd to git root                                                              |
+| upd                         | update all (`apt` and `snap`) or `winget` packages, cleanup                 |
+| syspip                      | `pip` outside a virtualenv                                                  |
+| dmake / rmake               | `cmake` preconfigured for Debug / Release                                   |
+| la                          | list directory contents, including hidden files                             |
+| mcd                         | make directory and cd into it                                               |
+| up `num`                    | go up `num` directories                                                     |
+| :penguin: mx                | `make executable:` chmod 775                                                |
+| :penguin: mw                | `make writable:` chmod 664                                                  |
+| :penguin: own               | take ownership as user:user                                                 |
+| :penguin: rm-ext            | remove all files recursively with given extension (asks to confirm)         |
+| :penguin: df-set-location   | detect location by IP; set system timezone, panel clocks, weather, redshift |
+| :penguin: df-power-docked   | switch to the docked XFCE power profile                                     |
+| :penguin: df-power-mobile   | switch to the mobile XFCE power profile                                     |
+| :penguin: xubu-push         | snapshot current XFCE settings into this repo                               |
+| :penguin: xubu-pull         | apply XFCE settings from this repo                                          |
+| :penguin: create-user       | create user with sudo privileges, home directory, authorized ssh key        |
+| :window: Test-Administrator | Return true if in elevated session                                          |
 
 ### Keeping repo up to date
 

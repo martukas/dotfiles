@@ -1,0 +1,15 @@
+[Unit]
+Description=Conditional Minecraft backup after server start
+Documentation=file:/usr/local/bin/mc-backup-tier
+# Requisite, not Requires: if the server is deliberately stopped, do not start
+# it -- just skip. The script waits for RCON itself, because the unit is
+# Type=simple and reports active long before the world has finished loading.
+Requisite=minecraft.service
+After=minecraft.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/mc-backup-tier --boot
+
+[Install]
+WantedBy=multi-user.target

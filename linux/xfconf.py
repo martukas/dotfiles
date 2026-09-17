@@ -30,6 +30,7 @@ _SETTINGS_HEADER = """\
 PLUGIN_TYPE_MAP = {
     "whiskermenu": "whiskermenu",
     "separator": "separator",
+    "separator-line": "separator",
     "systemload": "systemload",
     "tasklist": "tasklist",
     "spring": "separator",
@@ -39,8 +40,9 @@ PLUGIN_TYPE_MAP = {
     "power-manager-plugin": "power-manager-plugin",
     "pulseaudio": "pulseaudio",
     "clock-local": "clock",
+    "clock-ref-1": "clock",
+    "clock-ref-2": "clock",
     "xkb": "xkb",
-    "clock-vilnius": "clock",
     "weather": "weather",
 }
 
@@ -526,14 +528,64 @@ def get_plugin_props(plugin_id):
     return result
 
 
+# Timezones this machine cares about, and the three-letter labels their clocks carry.
+# The local clock follows wherever we physically are; the two reference clocks show
+# the places we are not. UTC fills a slot when a reference would duplicate local.
+_TZ_HOME = "Europe/Vilnius"
+_TZ_HQ = "America/Los_Angeles"
+_TZ_UTC = "UTC"
+_CLOCK_LABELS = {_TZ_HOME: "VNO", _TZ_HQ: "SFO", _TZ_UTC: "UTC"}
+_REF_FORMAT_RE = re.compile(r"^[A-Z]{3} ")
+
+
+def reference_zones(local_tz):
+    """The two reference clocks to show, given where we physically are.
+
+    In one of the two usual zones, the other one plus UTC; anywhere else, both.
+    """
+    if local_tz == _TZ_HOME:
+        return [_TZ_HQ, _TZ_UTC]
+    if local_tz == _TZ_HQ:
+        return [_TZ_HOME, _TZ_UTC]
+    return [_TZ_HQ, _TZ_HOME]
+
+
+def clock_label(tz):
+    """Three-letter label for a reference clock, falling back to the city name."""
+    if tz in _CLOCK_LABELS:
+        return _CLOCK_LABELS[tz]
+    return tz.rsplit("/", 1)[-1][:3].upper()
+
+
+def is_reference_clock(props):
+    """A reference clock's time format carries a three-letter prefix; the local one's does not."""
+    fmt = props.get("digital-time-format") or props.get("digital-format") or ""
+    return bool(_REF_FORMAT_RE.match(fmt.strip()))
+
+
+def clock_plugin_ids():
+    """Clock plugin ids in panel order."""
+    return [pid for pid in get_plugin_ids() if get_plugin_type(pid) == "clock"]
+
+
 def plugin_logical_name(plugin_id, plugin_type):
     """Map a plugin's xfconf type to its logical name, disambiguating multi-instance types."""
     if plugin_type == "separator":
         props = get_plugin_props(plugin_id)
-        return "spring" if props.get("expand") else "separator"
+        if props.get("expand"):
+            return "spring"
+        # Disambiguate by style, so a visible divider and an invisible spacer
+        # do not collide on one name in the settings file.
+        return "separator" if not props.get("style") else "separator-line"
     if plugin_type == "clock":
         props = get_plugin_props(plugin_id)
-        return "clock-vilnius" if props.get("timezone") == "Europe/Vilnius" else "clock-local"
+        if not is_reference_clock(props):
+            return "clock-local"
+        refs = [pid for pid in clock_plugin_ids() if is_reference_clock(get_plugin_props(pid))]
+        try:
+            return f"clock-ref-{refs.index(plugin_id) + 1}"
+        except ValueError:
+            return "clock-ref-1"
     return plugin_type
 
 
@@ -574,6 +626,9 @@ def cmd_set_location():
     timezone = data["timezone"]
     print(f"Location: {city}, tz: {timezone}, coords: {lat},{lon}")
 
+    print("Updating system timezone...")
+    _set_system_timezone(timezone)
+
     print("Updating redshift config...")
     _set_location_redshift(lat, lon)
 
@@ -598,20 +653,77 @@ def cmd_set_location():
         subprocess.run(["pkill", "-f", "wrapper.*libweather"], capture_output=True)  # nosec
         print("Weather plugin bounced.")
 
+    print("Restarting redshift...")
+    _restart_redshift()
+
     print("Done.")
 
 
-def _set_location_xfce(city, lat, lon, timezone):
-    # clock-local: the clock that isn't the Vilnius one
-    for pid in get_plugin_ids():
-        if get_plugin_type(pid) == "clock":
-            tz = run_xfconf_query("-c", _PANEL_CHANNEL, "-p", f"/plugins/plugin-{pid}/timezone").stdout.strip()
-            if tz != "Europe/Vilnius":
-                xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{pid}/timezone", timezone, "string", create=True)
-                print(f"  clock-local timezone → {timezone}")
-                break
+def _set_location_clocks(local_tz):
+    """Fill three clock slots: local, plus two references chosen by reference_zones()."""
+    clocks = clock_plugin_ids()
+    props = {pid: get_plugin_props(pid) for pid in clocks}
+    local_ids = [pid for pid in clocks if not is_reference_clock(props[pid])]
+    ref_ids = [pid for pid in clocks if is_reference_clock(props[pid])]
+
+    if not local_ids:
+        print("  WARNING: no local clock found (none lacking a 3-letter prefix)", file=sys.stderr)
     else:
-        print("  WARNING: clock-local plugin not found", file=sys.stderr)
+        xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{local_ids[0]}/timezone", local_tz, "string", create=True)
+        print(f"  clock-local timezone → {local_tz}")
+
+    zones = reference_zones(local_tz)
+    while len(ref_ids) < len(zones):
+        new_id = create_plugin("clock-ref-1")
+        order = get_plugin_ids() + [new_id]
+        xfconf_set_array(_PANEL_CHANNEL, _PLUGIN_IDS_PROP, "int", [str(i) for i in order], create=True)
+        # Match the siblings, or the new clock renders in a different font.
+        for prop, value, vtype in (
+            ("digital-layout", 3, "int"),
+            ("digital-time-font", "Sans 10", "string"),
+            ("digital-date-format", "%d %b %Y", "string"),
+        ):
+            xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{new_id}/{prop}", value, vtype, create=True)
+        ref_ids.append(new_id)
+        print(f"  created reference clock plugin-{new_id}")
+
+    for pid, tz in zip(ref_ids, zones):
+        label = clock_label(tz)
+        base = f"/plugins/plugin-{pid}"
+        xfconf_set(_PANEL_CHANNEL, f"{base}/timezone", tz, "string", create=True)
+        xfconf_set(_PANEL_CHANNEL, f"{base}/digital-time-format", f"{label} %R", "string", create=True)
+        print(f"  clock {label} → {tz}")
+
+
+def _set_system_timezone(tz):
+    """Keep the system clock true to where we physically are."""
+    current = subprocess.run(  # nosec
+        ["timedatectl", "show", "-p", "Timezone", "--value"], capture_output=True, text=True
+    ).stdout.strip()
+    if current == tz:
+        print(f"  system timezone already {tz}")
+        return
+    print(f"  system timezone: {current} → {tz}")
+    for cmd in (["sudo", "-n", "timedatectl", "set-timezone", tz], ["timedatectl", "set-timezone", tz]):
+        if subprocess.run(cmd, capture_output=True).returncode == 0:  # nosec
+            return
+    print(f"  WARNING: could not set it; run: sudo timedatectl set-timezone {tz}", file=sys.stderr)
+
+
+def _restart_redshift():
+    """redshift reads its config only at startup, so the new coordinates need a relaunch."""
+    launcher = Path.home() / ".local/bin/redshift-launch"
+    if not launcher.exists():
+        print("  WARNING: redshift-launch not found; redshift not restarted", file=sys.stderr)
+        return
+    subprocess.Popen(  # nosec
+        [str(launcher)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True
+    )
+    print("  redshift restarted")
+
+
+def _set_location_xfce(city, lat, lon, timezone):
+    _set_location_clocks(timezone)
 
     for pid in get_plugin_ids():
         if get_plugin_type(pid) == "weather":

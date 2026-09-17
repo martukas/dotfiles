@@ -1,0 +1,9 @@
+[Unit]
+Description=Hourly Minecraft backup tier promotion
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+
+[Install]
+WantedBy=timers.target

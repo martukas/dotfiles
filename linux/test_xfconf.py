@@ -260,11 +260,59 @@ class TestPluginLogicalName:
             name = xfconf.plugin_logical_name(4, "separator")
         assert name == "spring"
 
-    def test_clock_vilnius(self):
+    def test_clock_reference_identified_by_format_prefix(self):
+        # Identity comes from the 3-letter prefix, not the timezone: the timezone
+        # changes as we travel, and once it matched local the old test broke.
         props = {"timezone": "Europe/Vilnius", "digital-time-format": "VNO %R"}
         with patch("xfconf.get_plugin_props", return_value=props):
-            name = xfconf.plugin_logical_name(12, "clock")
-        assert name == "clock-vilnius"
+            with patch("xfconf.clock_plugin_ids", return_value=[12]):
+                name = xfconf.plugin_logical_name(12, "clock")
+        assert name == "clock-ref-1"
+
+    def test_clock_local_even_when_it_matches_a_reference_zone(self):
+        # The case that broke the old implementation: local clock set to Vilnius.
+        props = {"timezone": "Europe/Vilnius", "digital-time-format": "%d %b, %H:%M"}
+        with patch("xfconf.get_plugin_props", return_value=props):
+            name = xfconf.plugin_logical_name(10, "clock")
+        assert name == "clock-local"
+
+    def test_second_reference_clock_numbered_by_panel_order(self):
+        props = {
+            16: {"digital-time-format": "VNO %R"},
+            18: {"digital-time-format": "SFO %R"},
+        }
+        with patch("xfconf.get_plugin_props", side_effect=lambda pid: props[pid]):
+            with patch("xfconf.clock_plugin_ids", return_value=[16, 18]):
+                assert xfconf.plugin_logical_name(16, "clock") == "clock-ref-1"
+                assert xfconf.plugin_logical_name(18, "clock") == "clock-ref-2"
+
+
+class TestReferenceZones:
+    def test_at_home_shows_hq_and_utc(self):
+        assert xfconf.reference_zones("Europe/Vilnius") == ["America/Los_Angeles", "UTC"]
+
+    def test_at_hq_shows_home_and_utc(self):
+        assert xfconf.reference_zones("America/Los_Angeles") == ["Europe/Vilnius", "UTC"]
+
+    def test_elsewhere_in_europe_shows_both(self):
+        assert xfconf.reference_zones("Europe/Berlin") == ["America/Los_Angeles", "Europe/Vilnius"]
+
+
+class TestClockLabel:
+    def test_known_zone_and_unknown_fallback(self):
+        assert xfconf.clock_label("Europe/Vilnius") == "VNO"
+        assert xfconf.clock_label("Asia/Tokyo") == "TOK"
+
+    def test_unknown_zone_falls_back_to_city(self):
+        assert xfconf.clock_label("Asia/Tokyo") == "TOK"
+
+
+class TestIsReferenceClock:
+    def test_prefixed_format_is_a_reference(self):
+        assert xfconf.is_reference_clock({"digital-time-format": "VNO %R"})
+
+    def test_unprefixed_format_is_local(self):
+        assert not xfconf.is_reference_clock({"digital-format": " %d %b, %H:%M "})
 
     def test_clock_local(self):
         props = {"digital-format": " %d %b, %H:%M "}
