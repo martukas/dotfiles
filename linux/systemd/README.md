@@ -15,8 +15,8 @@ sudo linux/bin/mc-backup-tier-install \
   --backup-dir  /opt/minecraft/server/backups/world \
   --tier-root   /opt/minecraft/tiers \
   --rcon-bin    /opt/minecraft/tools/mcrcon/mcrcon \
-  --state-paths "server.properties ops.json whitelist.json usercache.json \
-usernamecache.json banned-players.json banned-ips.json prestige \
+  --state-paths "server.properties server-icon.png ops.json whitelist.json \
+usercache.json usernamecache.json banned-players.json banned-ips.json prestige \
 local/local_mercurius.cfg astralsorcery/gatewayFilter/worldFilter.dat"
 
 sudo systemctl enable --now mc-backup-tier.timer
@@ -46,6 +46,12 @@ archives `world/` and nothing else, but a world is not restorable without the se
 Daily builds the sidecar; weekly hardlinks the daily one, so both entries describe the same moment. Pruning removes a
 sidecar with its archive. That state is only rewritten at server start and stop, so a snapshot taken at promotion time
 is internally consistent.
+
+The split the paths follow, since it is not obvious from a list of filenames: a **pack** is whatever runs *any* server
+of that modpack and belongs in your pack archive; a **sidecar** is what identifies *this* instance --
+`server.properties`, the server icon, ops, whitelist, prestige -- and combines with a world archive to reproduce one
+particular server at one particular moment. Anything instance-specific belongs in exactly one of the two, and it is the
+sidecar. A pack carrying a server's own properties is not the stateless artifact it claims to be.
 
 Failures are mailed to `NOTIFY_ADDR` as one message. **Successful runs are silent**, so mail from this means something
 needs attention.
