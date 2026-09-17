@@ -147,3 +147,21 @@ The following cannot be automated:
 
 </details>
 <!-- markdownlint-enable no-space-in-emphasis -->
+
+### Location, timezone and screen colour
+
+`df-set-location` — detects where you are from your IP and applies it:
+
+- **system timezone** follows your physical location
+- **panel clocks**: the local clock shows where you are; two reference clocks show the places you are not. In Vilnius
+  you get SFO and UTC; in California, VNO and UTC; anywhere else, SFO and VNO. A third clock plugin is created on first
+  run if the panel only has two.
+- **weather plugin** location and timezone
+- **redshift** coordinates, then restarts it so the new ones take effect
+
+It prompts for `temp-night`, defaulting to whatever your redshift config already has. The panel is killed with `SIGKILL`
+rather than stopped politely, because the weather plugin writes its stale location back to xfconf on a graceful exit —
+so expect the panel to vanish and reappear.
+
+It is a shell function in `common/bash/aliases.sh`, not a script in `linux/bin/`, wrapping
+`linux/xfconf.py set-location`.
