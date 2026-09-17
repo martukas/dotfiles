@@ -35,7 +35,26 @@ Usage: mc-world-pull [--check] [--force] [--help]
   --force     Pull even when the newest archive is the one already held.
 
 Configuration is read from $MC_WORLD_PULL_CONFIG, default
-~/.config/mc-world-pull.conf.
+~/.config/mc-world-pull.conf, which is host-specific and not in the dotfiles
+repo. Required keys:
+
+  REMOTE           ssh target holding the archives
+  REMOTE_TIER_DIR  tier root on that host, as mc-backup-tier's TIER_ROOT
+  DEST             local directory to keep current/ and previous/ in
+
+Optional:
+
+  TIER             which tier to pull from (default: daily)
+  MIN_FREE_MB      refuse to pull below this much free space (default: 4000)
+
+Example:
+
+  REMOTE="server.example.com"
+  REMOTE_TIER_DIR="/opt/minecraft/tiers"
+  DEST="$HOME/cloud/MC/worlds/myworld"
+
+The tier directory is normally root-only, so transfers run through sudo on the
+remote. If that host has no passwordless grant you are prompted once per pull.
 EOF
 }
 
