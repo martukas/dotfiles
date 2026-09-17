@@ -1,0 +1,224 @@
+#!/usr/bin/env bash
+# Pull the newest tiered Minecraft world archive, and the state sidecar beside
+# it, off a server and into local storage -- keeping the previous pull so a bad
+# transfer cannot clobber the only good copy. On demand; there is no schedule.
+# All machine-specific values come from the config file; nothing here is
+# specific to any host.
+set -uo pipefail
+
+CONFIG=${MC_WORLD_PULL_CONFIG:-$HOME/.config/mc-world-pull.conf}
+MODE="pull"
+
+log() {
+  printf '%s %s\n' "$(date -u +%FT%TZ)" "$*"
+}
+
+warn() {
+  # verify_one is called in a command substitution, so anything it says on
+  # stdout would be captured as the hash rather than shown.
+  printf '%s %s\n' "$(date -u +%FT%TZ)" "$*" >&2
+}
+
+die() {
+  printf '%s ERROR: %s\n' "$(date -u +%FT%TZ)" "$*" >&2
+  exit 1
+}
+
+usage() {
+  cat <<'EOF'
+Usage: mc-world-pull [--check] [--force] [--help]
+
+  (no flags)  Pull the newest archive and its sidecar, verify, then rotate
+              current -> previous.
+  --check     Report what the server has and what is already held. Changes
+              nothing.
+  --force     Pull even when the newest archive is the one already held.
+
+Configuration is read from $MC_WORLD_PULL_CONFIG, default
+~/.config/mc-world-pull.conf.
+EOF
+}
+
+load_config() {
+  [ -r "$CONFIG" ] || die "config not readable: $CONFIG"
+  # shellcheck source=/dev/null
+  . "$CONFIG"
+  local missing=() v
+  for v in REMOTE REMOTE_TIER_DIR DEST; do
+    [ -n "${!v:-}" ] || missing+=("$v")
+  done
+  [ ${#missing[@]} -eq 0 ] || die "config is missing: ${missing[*]}"
+  TIER=${TIER:-daily}
+  MIN_FREE_MB=${MIN_FREE_MB:-4000}
+  # $rcmd and $rfile are expanded later, at call time, by remote_run/remote_cat.
+  # Overridable so the test harness can exercise this without a server.
+  # shellcheck disable=SC2016
+  REMOTE_RUN=${REMOTE_RUN:-'ssh "$REMOTE" "sudo -n $rcmd"'}
+  # shellcheck disable=SC2016
+  REMOTE_CAT=${REMOTE_CAT:-'ssh "$REMOTE" "sudo -n cat \"$rfile\""'}
+  # shellcheck disable=SC2016
+  REMOTE_PRIME=${REMOTE_PRIME:-'ssh -t "$REMOTE" "sudo -v"'}
+}
+
+remote_run() {
+  # shellcheck disable=SC2034  # consumed by REMOTE_RUN, which is eval'd below
+  local rcmd=$1
+  eval "$REMOTE_RUN" 2>/dev/null
+}
+
+remote_cat() {
+  # shellcheck disable=SC2034  # consumed by REMOTE_CAT, which is eval'd below
+  local rfile=$1
+  eval "$REMOTE_CAT"
+}
+
+sidecar_of() {
+  printf '%s' "${1%.zip}.state.tar.gz"
+}
+
+newest_remote() {
+  # Names sort chronologically (Backup--world--YYYY-MM-DD--HH-MM.zip), so the
+  # newest is simply the last.
+  remote_run "ls -1 '$REMOTE_TIER_DIR/$TIER'/*.zip 2>/dev/null" | sort | tail -1
+}
+
+held_archive() {
+  [ -f "$DEST/current/MANIFEST" ] || return 0
+  sed -n 's/^archive=//p' "$DEST/current/MANIFEST"
+}
+
+free_mb() {
+  df -Pm "$1" | awk 'NR == 2 { print $4 }'
+}
+
+verify_one() {
+  # A transfer is only as good as the comparison: hash on the server, hash what
+  # landed, and refuse to rotate unless they match.
+  local remote_path=$1 local_path=$2
+  local want got
+  want=$(remote_run "sha256sum '$remote_path'" | awk '{print $1}')
+  [ -n "$want" ] || {
+    warn "could not hash $remote_path on the server"
+    return 1
+  }
+  got=$(sha256sum "$local_path" | awk '{print $1}')
+  if [ "$want" != "$got" ]; then
+    warn "checksum mismatch for $(basename "$remote_path")"
+    warn "  server: $want"
+    warn "  local : $got"
+    return 1
+  fi
+  printf '%s' "$want"
+}
+
+do_check() {
+  local newest held
+  newest=$(newest_remote)
+  [ -n "$newest" ] || die "no archives found in $REMOTE_TIER_DIR/$TIER on $REMOTE"
+  held=$(held_archive)
+  log "server newest : $(basename "$newest")"
+  log "already held  : ${held:-none}"
+  if [ -d "$DEST/previous" ]; then
+    log "previous      : $(sed -n 's/^archive=//p' "$DEST/previous/MANIFEST" 2>/dev/null || echo unknown)"
+  fi
+  if [ "$(basename "$newest")" = "$held" ]; then
+    log "up to date; a pull would do nothing without --force"
+  else
+    log "a pull would fetch $(basename "$newest") and its sidecar"
+  fi
+}
+
+do_pull() {
+  local newest base sc_remote stage zip_sum sc_sum free
+  newest=$(newest_remote)
+  [ -n "$newest" ] || die "no archives found in $REMOTE_TIER_DIR/$TIER on $REMOTE"
+  base=$(basename "$newest")
+  sc_remote=$(sidecar_of "$newest")
+
+  if [ "$base" = "$(held_archive)" ] && [ -z "${FORCE:-}" ]; then
+    log "already holding $base; nothing to do (use --force to pull anyway)"
+    return 0
+  fi
+
+  mkdir -p "$DEST" || die "cannot create $DEST"
+  free=$(free_mb "$DEST")
+  [ -n "$free" ] || die "could not determine free space for $DEST"
+  [ "$free" -ge "$MIN_FREE_MB" ] \
+    || die "free space ${free}MB is below the floor of ${MIN_FREE_MB}MB"
+
+  # Stage beside the destination, never into it: current/ must never contain a
+  # partial transfer, and a staging dir on the same filesystem rotates by rename.
+  stage="$DEST/.staging"
+  rm -rf "$stage"
+  mkdir -p "$stage" || die "cannot create staging directory"
+
+  log "fetching $base"
+  remote_cat "$newest" >"$stage/$base" || die "transfer failed for $base"
+  log "fetching $(basename "$sc_remote")"
+  remote_cat "$sc_remote" >"$stage/$(basename "$sc_remote")" \
+    || die "transfer failed for the state sidecar"
+
+  zip_sum=$(verify_one "$newest" "$stage/$base") \
+    || {
+      rm -rf "$stage"
+      die "archive failed verification; nothing was rotated"
+    }
+  sc_sum=$(verify_one "$sc_remote" "$stage/$(basename "$sc_remote")") \
+    || {
+      rm -rf "$stage"
+      die "sidecar failed verification; nothing was rotated"
+    }
+  log "both files verified against the server"
+
+  cat >"$stage/MANIFEST" <<MEOF
+archive=$base
+sidecar=$(basename "$sc_remote")
+archive_sha256=$zip_sum
+sidecar_sha256=$sc_sum
+source=$REMOTE:$REMOTE_TIER_DIR/$TIER
+pulled_at=$(date -u +%FT%TZ)
+MEOF
+
+  # Rotation happens only now, after both files have been proven good.
+  if [ -d "$DEST/current" ]; then
+    rm -rf "$DEST/previous"
+    mv "$DEST/current" "$DEST/previous" || die "could not rotate current -> previous"
+    log "rotated previous holding $(sed -n 's/^archive=//p' "$DEST/previous/MANIFEST" 2>/dev/null)"
+  fi
+  mv "$stage" "$DEST/current" || die "could not place the new copy"
+  log "current is now $base"
+}
+
+main() {
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --help | -h)
+        usage
+        exit 0
+        ;;
+      --check)
+        MODE="check"
+        shift
+        ;;
+      --force)
+        FORCE=1
+        shift
+        ;;
+      *)
+        usage >&2
+        exit 2
+        ;;
+    esac
+  done
+  load_config
+  if [ "$MODE" = check ]; then
+    do_check
+    return 0
+  fi
+  # Prime sudo once through a tty so the non-interactive fetches below succeed
+  # even when the server has no passwordless grant.
+  eval "$REMOTE_PRIME" >/dev/null 2>&1 || true
+  do_pull
+}
+
+main "$@"
