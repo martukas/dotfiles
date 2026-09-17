@@ -77,9 +77,12 @@ sidecar_of() {
 }
 
 newest_remote() {
+  # find, not a glob: the tier directory is unreadable to the login user, so a
+  # shell glob would be expanded by that user, fail to match, and be passed
+  # through literally. find does its own matching, under sudo, where it can see.
   # Names sort chronologically (Backup--world--YYYY-MM-DD--HH-MM.zip), so the
   # newest is simply the last.
-  remote_run "ls -1 '$REMOTE_TIER_DIR/$TIER'/*.zip 2>/dev/null" | sort | tail -1
+  remote_run "find '$REMOTE_TIER_DIR/$TIER' -name '*.zip' 2>/dev/null" | sort | tail -1
 }
 
 held_archive() {
