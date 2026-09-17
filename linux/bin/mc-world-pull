@@ -131,6 +131,18 @@ do_check() {
   fi
 }
 
+prime_remote_sudo() {
+  # Only prime when the server actually needs it. 'sudo -v' prompts for a
+  # password even on a host whose rules are NOPASSWD -- being in a
+  # password-requiring group is enough -- so priming unconditionally makes a
+  # working setup hang. Worse, hiding that prompt's output hangs it silently.
+  if remote_run "true" >/dev/null 2>&1; then
+    return 0
+  fi
+  log "$REMOTE needs a sudo password; prompting once for this transfer"
+  eval "$REMOTE_PRIME" || die "could not authenticate sudo on $REMOTE"
+}
+
 do_pull() {
   local newest base sc_remote stage zip_sum sc_sum free
   newest=$(newest_remote)
@@ -218,9 +230,7 @@ main() {
     do_check
     return 0
   fi
-  # Prime sudo once through a tty so the non-interactive fetches below succeed
-  # even when the server has no passwordless grant.
-  eval "$REMOTE_PRIME" >/dev/null 2>&1 || true
+  prime_remote_sudo
   do_pull
 }
 

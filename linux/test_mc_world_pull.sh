@@ -18,7 +18,7 @@ DEST="$ROOT/dest"
 MIN_FREE_MB=1
 REMOTE_RUN='eval "\$rcmd"'
 REMOTE_CAT='cat "\$rfile"'
-REMOTE_PRIME='true'
+REMOTE_PRIME="touch $ROOT/primed"
 EOF
 }
 
@@ -109,6 +109,23 @@ check "no previous was created by the failed pull" "0" \
   "$([ -d "$ROOT/dest/previous" ] && echo 1 || echo 0)"
 check "the corrupt staging copy is discarded" "0" \
   "$([ -e "$ROOT/dest/.staging" ] && echo 1 || echo 0)"
+
+echo "== sudo priming =="
+
+# Priming unconditionally hangs a host that does not need it: 'sudo -v' prompts
+# even where NOPASSWD rules apply, and the prompt was being sent to /dev/null.
+fixture
+make_remote "2026-09-17--08-42"
+MC_WORLD_PULL_CONFIG="$ROOT/conf" "$SCRIPT" >/dev/null 2>&1
+check "a server that allows sudo already is not primed" "0" \
+  "$([ -e "$ROOT/primed" ] && echo 1 || echo 0)"
+
+fixture
+make_remote "2026-09-17--08-42"
+sed -i "s|^REMOTE_RUN=.*|REMOTE_RUN='false'|" "$ROOT/conf"
+MC_WORLD_PULL_CONFIG="$ROOT/conf" "$SCRIPT" >/dev/null 2>&1
+check "a server that needs a password is primed" "1" \
+  "$([ -e "$ROOT/primed" ] && echo 1 || echo 0)"
 
 echo "== free space floor =="
 
