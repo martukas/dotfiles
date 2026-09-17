@@ -187,7 +187,7 @@ check "no play since last backup -> does not trigger" "0" \
 
 fixture
 make_backup "2026-09-14--10-00"
-echo "DoCaixao joined the game" >"$ROOT/journal.txt"
+echo "Steve joined the game" >"$ROOT/journal.txt"
 MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --boot >"$ROOT/boot.out" 2>&1
 check "play since last backup -> triggers" "1" \
   "$(grep -c 'triggering a backup' "$ROOT/boot.out")"
@@ -199,21 +199,21 @@ check "no backups at all -> no crash" "0" "$?"
 
 fixture
 make_backup "2026-09-14--10-00"
-echo "DoCaixao joined the game" >"$ROOT/journal.txt"
+echo "Steve joined the game" >"$ROOT/journal.txt"
 MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --boot >/dev/null 2>&1
 check "journal query is time-bounded to the newest backup" "2026-09-14 10:00:00" \
   "$(cat "$ROOT/since.seen" 2>/dev/null)"
 
 fixture
 make_backup "2026-09-14--10-00"
-echo "DoCaixao joined the game" >"$ROOT/journal.txt"
+echo "Steve joined the game" >"$ROOT/journal.txt"
 stub_rcon "A backup is already running." 0
 MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --boot >/dev/null 2>&1
 check "'already running' is not a failure" "0" "$(wc -c <"$ROOT/mail.out" | tr -d ' ')"
 
 fixture
 make_backup "2026-09-14--10-00"
-echo "DoCaixao joined the game" >"$ROOT/journal.txt"
+echo "Steve joined the game" >"$ROOT/journal.txt"
 stub_rcon "Connection refused" 1
 MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --boot >/dev/null 2>&1
 check "a failed rcon trigger is reported" "1" "$(grep -c 'rcon' "$ROOT/mail.out")"
@@ -222,7 +222,7 @@ echo "== task 6a: waiting for the server to be ready =="
 
 fixture
 make_backup "2026-09-14--10-00"
-echo "DoCaixao joined the game" >"$ROOT/journal.txt"
+echo "Steve joined the game" >"$ROOT/journal.txt"
 stub_rcon "Connection refused" 1
 MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --boot >"$ROOT/boot.out" 2>&1
 check "rcon never answers -> reported" "1" "$(grep -c 'did not answer' "$ROOT/mail.out")"
@@ -231,7 +231,7 @@ check "rcon never answers -> no trigger attempted" "0" \
 
 fixture
 make_backup "2026-09-14--10-00"
-echo "DoCaixao joined the game" >"$ROOT/journal.txt"
+echo "Steve joined the game" >"$ROOT/journal.txt"
 stub_rcon "ok" 0
 MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --boot >"$ROOT/boot.out" 2>&1
 check "rcon answers -> proceeds to trigger" "1" \
@@ -260,7 +260,7 @@ echo "== task 7: play that continues past the last backup =="
 # playing after it, so only the leave event is newer than the backup.
 fixture
 make_backup "2026-09-16--23-45"
-echo "DoCaixao left the game" >"$ROOT/journal.txt"
+echo "Steve left the game" >"$ROOT/journal.txt"
 MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --boot >"$ROOT/boot.out" 2>&1
 check "a leave after the newest backup triggers" "1" \
   "$(grep -c 'triggering a backup' "$ROOT/boot.out")"
