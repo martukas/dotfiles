@@ -278,6 +278,31 @@ rm -rf "$T"
 "$INSTALLER" --prefix /nonexistent >/dev/null 2>&1
 check "missing required options is an error" "2" "$?"
 
+echo "== task 7: play that continues past the last backup =="
+
+# The case a join-only check misses: joined before the newest backup, kept
+# playing after it, so only the leave event is newer than the backup.
+fixture
+make_backup "2026-09-16--23-45"
+echo "DoCaixao left the game" >"$ROOT/journal.txt"
+MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --boot >"$ROOT/boot.out" 2>&1
+check "a leave after the newest backup triggers" "1" \
+  "$(grep -c 'triggering a backup' "$ROOT/boot.out")"
+
+fixture
+make_backup "2026-09-16--23-45"
+printf 'DoCaixao joined the game\nDoCaixao left the game\n' >"$ROOT/journal.txt"
+MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --boot >"$ROOT/boot.out" 2>&1
+check "join and leave together still trigger once" "1" \
+  "$(grep -c 'triggering a backup' "$ROOT/boot.out")"
+
+fixture
+make_backup "2026-09-16--23-45"
+echo "Some unrelated server chatter" >"$ROOT/journal.txt"
+MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --boot >"$ROOT/boot.out" 2>&1
+check "unrelated log lines do not trigger" "0" \
+  "$(grep -c 'triggering a backup' "$ROOT/boot.out")"
+
 echo
 echo "passed: $PASS  failed: $FAIL"
 [ "$FAIL" -eq 0 ]

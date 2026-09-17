@@ -223,8 +223,13 @@ since_iso() {
 
 played_since() {
   local since=$1
+  # Both join and leave count. A join alone misses the common case: you joined
+  # long ago, a scheduled backup ran mid-session, and you kept playing past it --
+  # that tail is unbacked, and only the later leave event reveals it. A reboot
+  # that disconnects a player logs the leave during shutdown, which this query
+  # still spans, because it filters by time rather than by boot.
   # JOURNAL_CMD references $since; it is expanded here, at call time.
-  eval "$JOURNAL_CMD" 2>/dev/null | grep -q 'joined the game'
+  eval "$JOURNAL_CMD" 2>/dev/null | grep -qE 'joined the game|left the game'
 }
 
 trigger_backup() {
