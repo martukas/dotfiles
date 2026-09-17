@@ -17,6 +17,12 @@ DAILY_KEEP=7
 WEEKLY_KEEP=4
 NOTIFY_ADDR="root"
 MIN_FREE_MB=20000
+SERVER_DIR=""
+# The vanilla server-level state that describes a world's players. Packs that
+# keep more outside world/ (prestige trees, per-mod dat files) add them with
+# --state-paths; paths that do not exist are skipped, not an error.
+STATE_PATHS="server.properties ops.json whitelist.json usercache.json \
+usernamecache.json banned-players.json banned-ips.json"
 
 usage() {
   cat <<'USAGE'
@@ -33,6 +39,10 @@ Options (defaults shown):
   --rcon-host HOST     127.0.0.1
   --rcon-port PORT     25575
   --rcon-pass PASS     derived from the Minecraft unit's ExecStop line
+  --server-dir DIR     the server root; default is --backup-dir's grandparent
+  --state-paths LIST   space-separated paths under --server-dir to snapshot
+                       beside each promoted archive; default is the vanilla
+                       server-level state files
   --daily-keep N       7
   --weekly-keep N      4
   --notify ADDR        root
@@ -64,6 +74,8 @@ while [ $# -gt 0 ]; do
     --weekly-keep) WEEKLY_KEEP=$2 && shift 2 ;;
     --notify) NOTIFY_ADDR=$2 && shift 2 ;;
     --min-free-mb) MIN_FREE_MB=$2 && shift 2 ;;
+    --server-dir) SERVER_DIR=$2 && shift 2 ;;
+    --state-paths) STATE_PATHS=$2 && shift 2 ;;
     --prefix) PREFIX=$2 && shift 2 ;;
     --dry-run) DRY=yes && shift ;;
     --help | -h)
@@ -76,6 +88,11 @@ while [ $# -gt 0 ]; do
       ;;
   esac
 done
+
+# /opt/minecraft/server/backups/world -> /opt/minecraft/server
+if [ -z "$SERVER_DIR" ] && [ -n "$BACKUP_DIR" ]; then
+  SERVER_DIR=$(dirname "$(dirname "$BACKUP_DIR")")
+fi
 
 for v in BACKUP_DIR TIER_ROOT RCON_BIN; do
   if [ -z "${!v}" ]; then
@@ -140,6 +157,8 @@ RCON_PASS="$RCON_PASS"
 MC_UNIT="$MC_UNIT"
 NOTIFY_ADDR="$NOTIFY_ADDR"
 MIN_FREE_MB=$MIN_FREE_MB
+SERVER_DIR="$SERVER_DIR"
+STATE_PATHS="$STATE_PATHS"
 CONFEOF
   ) || exit 1
   chmod 600 "$CONF"

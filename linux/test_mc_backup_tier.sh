@@ -10,7 +10,7 @@ ROOT=""
 
 fixture() {
   ROOT=$(mktemp -d)
-  mkdir -p "$ROOT/backups/world" "$ROOT/tiers"
+  mkdir -p "$ROOT/backups/world" "$ROOT/tiers" "$ROOT/server/prestige"
   cat >"$ROOT/conf" <<EOF
 BACKUP_DIR="$ROOT/backups/world"
 TIER_ROOT="$ROOT/tiers"
@@ -23,6 +23,8 @@ RCON_PASS="x"
 MC_UNIT="minecraft.service"
 NOTIFY_ADDR="root"
 MIN_FREE_MB=100
+SERVER_DIR="$ROOT/server"
+STATE_PATHS="server.properties ops.json prestige"
 RCON_WAIT_SECS=1
 RCON_POLL_SECS=1
 MAIL_CMD="cat >>$ROOT/mail.out"
@@ -30,6 +32,9 @@ JOURNAL_CMD='printf "%s" "\$since" >$ROOT/since.seen; cat $ROOT/journal.txt'
 EOF
   : >"$ROOT/journal.txt"
   : >"$ROOT/mail.out"
+  echo "level-name=world" >"$ROOT/server/server.properties"
+  echo '[{"uuid":"x"}]' >"$ROOT/server/ops.json"
+  echo "prestigedata" >"$ROOT/server/prestige/player.dat"
 }
 
 # make_backup <YYYY-MM-DD--HH-MM> [zero|ok]
@@ -264,6 +269,58 @@ echo "Steve left the game" >"$ROOT/journal.txt"
 MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --boot >"$ROOT/boot.out" 2>&1
 check "a leave after the newest backup triggers" "1" \
   "$(grep -c 'triggering a backup' "$ROOT/boot.out")"
+
+echo "== task 8: state sidecars travel with the promoted archive =="
+
+# A world is not restorable without the server-level state describing its
+# players, and the mod archives only world/.
+fixture
+make_backup "2026-09-14--10-00"
+MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --promote >/dev/null 2>&1
+SC="$ROOT/tiers/daily/Backup--world--2026-09-14--10-00.state.tar.gz"
+check "daily promotion writes a sidecar" "1" "$([ -s "$SC" ] && echo 1 || echo 0)"
+check "the sidecar carries the state files" "3" \
+  "$(tar -tzf "$SC" 2>/dev/null | grep -cE 'server.properties|ops.json|prestige/player.dat')"
+
+# Weekly promotes from daily, so the sidecar is shared rather than rebuilt --
+# the weekly entry must describe the same moment as the archive beside it.
+check "weekly shares the daily sidecar by hardlink" "1" \
+  "$(
+    a=$(stat -c %i "$SC" 2>/dev/null)
+    b=$(stat -c %i "$ROOT/tiers/weekly/Backup--world--2026-09-14--10-00.state.tar.gz" 2>/dev/null)
+    [ -n "$a" ] && [ "$a" = "$b" ] && echo 1 || echo 0
+  )"
+
+# An orphaned sidecar left behind after its archive is pruned would accumulate
+# forever and misreport which restore points exist.
+fixture
+sed -i 's/^DAILY_KEEP=.*/DAILY_KEEP=1/' "$ROOT/conf"
+make_backup "2026-09-14--10-00"
+make_backup "2026-09-15--10-00"
+MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --promote >/dev/null 2>&1
+check "pruning takes the sidecar with the archive" "1" \
+  "$(find "$ROOT/tiers/daily" -name '*.state.tar.gz' | wc -l)"
+check "pruning leaves exactly one archive" "1" \
+  "$(find "$ROOT/tiers/daily" -name '*.zip' | wc -l)"
+
+# Tier entries promoted before sidecars existed must gain one, or the archives
+# already on the server would stay world-only forever.
+fixture
+make_backup "2026-09-14--10-00"
+MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --promote >/dev/null 2>&1
+rm -f "$ROOT/tiers"/*/*.state.tar.gz
+MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --promote >/dev/null 2>&1
+check "an already-promoted archive gets a sidecar backfilled" "2" \
+  "$(find "$ROOT/tiers" -name '*.state.tar.gz' | wc -l)"
+
+fixture
+sed -i 's|^STATE_PATHS=.*|STATE_PATHS="no_such_path"|' "$ROOT/conf"
+make_backup "2026-09-14--10-00"
+MC_BACKUP_TIER_CONFIG="$ROOT/conf" "$SCRIPT" --promote >/dev/null 2>&1
+# Daily and weekly each attempt it, so the same root cause is reported twice.
+# What matters is that it is reported at all; the count is an accident.
+check "a sidecar that cannot be written is reported" "1" \
+  "$([ "$(grep -c 'sidecar' "$ROOT/mail.out")" -ge 1 ] && echo 1 || echo 0)"
 
 echo
 echo "passed: $PASS  failed: $FAIL"

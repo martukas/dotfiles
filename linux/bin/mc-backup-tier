@@ -38,7 +38,7 @@ load_config() {
   local missing=()
   local v
   for v in BACKUP_DIR TIER_ROOT DAILY_KEEP WEEKLY_KEEP RCON_BIN RCON_HOST \
-    RCON_PORT RCON_PASS MC_UNIT NOTIFY_ADDR MIN_FREE_MB; do
+    RCON_PORT RCON_PASS MC_UNIT NOTIFY_ADDR MIN_FREE_MB SERVER_DIR STATE_PATHS; do
     if [ -z "${!v:-}" ]; then
       missing+=("$v")
     fi
@@ -91,6 +91,62 @@ eligible_backups() {
   done | sort
 }
 
+sidecar_of() {
+  printf '%s' "${1%.zip}.state.tar.gz"
+}
+
+write_sidecar() {
+  # The mod archives world/ and nothing else, but a world is not restorable
+  # without the server-level state that describes its players -- ops, whitelist,
+  # prestige and friends. Those live outside world/, total a couple of KB, and
+  # are only rewritten at server start/stop, so a snapshot taken at promotion
+  # time is internally consistent. STATE_PATHS is config, not code: which mods
+  # keep state outside world/ is a property of the pack, not of this script.
+  local dst=$1 tmp p
+  local present=()
+  # A pack that keeps no prestige data should not mail a failure every hour, so
+  # absent paths are skipped rather than passed to tar. All of them missing is
+  # still a failure: it means STATE_PATHS or SERVER_DIR is wrong.
+  # shellcheck disable=SC2086  # STATE_PATHS is a deliberate word-split list
+  for p in $STATE_PATHS; do
+    [ -e "$SERVER_DIR/$p" ] && present+=("$p")
+  done
+  if [ ${#present[@]} -eq 0 ]; then
+    record_failure "no STATE_PATHS exist under $SERVER_DIR; no sidecar written"
+    return 1
+  fi
+  tmp="$dst.partial.$$"
+  if tar -czf "$tmp" -C "$SERVER_DIR" "${present[@]}" 2>/dev/null && [ -s "$tmp" ]; then
+    mv -f "$tmp" "$dst"
+    log "wrote state sidecar $(basename "$dst")"
+    return 0
+  fi
+  rm -f "$tmp"
+  record_failure "could not write state sidecar $dst"
+  return 1
+}
+
+promote_sidecar() {
+  # Daily promotes from the mod's directory, which has no sidecar, so one is
+  # made. Weekly promotes from daily, which does, so it is hardlinked -- the
+  # weekly entry then describes the same moment as the archive beside it.
+  local src=$1 dst=$2
+  local sc_src sc_dst
+  sc_src=$(sidecar_of "$src")
+  sc_dst=$(sidecar_of "$dst")
+  if [ -e "$sc_dst" ]; then
+    return 0
+  fi
+  if [ -s "$sc_src" ]; then
+    if ! ln "$sc_src" "$sc_dst" 2>/dev/null; then
+      record_failure "could not hardlink state sidecar into $(dirname "$dst")"
+      return 1
+    fi
+    return 0
+  fi
+  write_sidecar "$sc_dst"
+}
+
 promote_one() {
   local src=$1 dir=$2
   local name dst
@@ -107,6 +163,7 @@ promote_one() {
     return 1
   fi
   log "promoted $name -> $dir"
+  promote_sidecar "$src" "$dst"
 }
 
 promote_daily() {
@@ -153,6 +210,29 @@ promote_weekly() {
   done < <(find "$TIER_ROOT/daily" -name '*.zip' 2>/dev/null | sort)
 }
 
+backfill_sidecars() {
+  # Archives promoted before sidecars existed are never revisited by
+  # promote_daily/promote_weekly, which skip any period already represented.
+  # Sweep both tiers so those entries gain one. A backfilled sidecar holds
+  # *current* state rather than the state at the archive's own moment -- the
+  # older pairing is unrecoverable, and state that only moves at start/stop is a
+  # far better companion than none at all.
+  local dir z sc daily_sc
+  for dir in "$TIER_ROOT/daily" "$TIER_ROOT/weekly"; do
+    [ -d "$dir" ] || continue
+    while read -r z; do
+      [ -n "$z" ] || continue
+      sc=$(sidecar_of "$z")
+      [ -e "$sc" ] && continue
+      daily_sc=$(sidecar_of "$TIER_ROOT/daily/$(basename "$z")")
+      if [ "$dir" != "$TIER_ROOT/daily" ] && [ -s "$daily_sc" ]; then
+        ln "$daily_sc" "$sc" 2>/dev/null && continue
+      fi
+      write_sidecar "$sc"
+    done < <(find "$dir" -name '*.zip' 2>/dev/null | sort)
+  done
+}
+
 prune_tier() {
   local dir=$1 keep=$2 total drop victim
   total=$(find "$dir" -name '*.zip' 2>/dev/null | wc -l)
@@ -162,7 +242,7 @@ prune_tier() {
   fi
   while read -r victim; do
     [ -n "$victim" ] || continue
-    if rm -f "$victim"; then
+    if rm -f "$victim" "$(sidecar_of "$victim")"; then
       log "pruned $(basename "$victim") from $dir"
     else
       record_failure "could not prune $victim"
@@ -276,6 +356,7 @@ main() {
       check_free_space || true
       promote_daily
       promote_weekly
+      backfill_sidecars
       prune_tier "$TIER_ROOT/daily" "$DAILY_KEEP"
       prune_tier "$TIER_ROOT/weekly" "$WEEKLY_KEEP"
       check_zero_byte
