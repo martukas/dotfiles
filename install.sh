@@ -55,6 +55,15 @@ case ${answer:0:1} in
   *) ;;
 esac
 
+# The private submodule holds tokens and passwords, and rc.bash sources
+# private_profile.sh straight out of it on every login. Git records only the
+# executable bit, so a fresh clone lands these files at whatever the umask
+# gives -- world-readable under the common 002. There is nothing to commit that
+# would fix that, so reassert the mode here, unconditionally and idempotently.
+if [[ -d "${BASEDIR}/private" ]]; then
+  chmod -R go-rwx "${BASEDIR}/private"
+fi
+
 if [[ $OS == "GNU/Linux" ]]; then
   read -rp "[Linux] Install base packages (apt + flatpak + pipx)? " answer
   case ${answer:0:1} in
