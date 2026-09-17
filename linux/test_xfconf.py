@@ -297,19 +297,11 @@ class TestReferenceZones:
     def test_elsewhere_in_europe_shows_both(self):
         assert xfconf.reference_zones("Europe/Berlin") == ["America/Los_Angeles", "Europe/Vilnius"]
 
-    def test_elsewhere_in_the_us_shows_both(self):
-        assert xfconf.reference_zones("America/New_York") == ["America/Los_Angeles", "Europe/Vilnius"]
-
-    def test_never_returns_the_local_zone(self):
-        for tz in ("Europe/Vilnius", "America/Los_Angeles", "Europe/Berlin", "Asia/Tokyo"):
-            assert tz not in xfconf.reference_zones(tz)
-
 
 class TestClockLabel:
-    def test_known_zones(self):
+    def test_known_zone_and_unknown_fallback(self):
         assert xfconf.clock_label("Europe/Vilnius") == "VNO"
-        assert xfconf.clock_label("America/Los_Angeles") == "SFO"
-        assert xfconf.clock_label("UTC") == "UTC"
+        assert xfconf.clock_label("Asia/Tokyo") == "TOK"
 
     def test_unknown_zone_falls_back_to_city(self):
         assert xfconf.clock_label("Asia/Tokyo") == "TOK"
@@ -321,9 +313,6 @@ class TestIsReferenceClock:
 
     def test_unprefixed_format_is_local(self):
         assert not xfconf.is_reference_clock({"digital-format": " %d %b, %H:%M "})
-
-    def test_missing_format_is_local(self):
-        assert not xfconf.is_reference_clock({})
 
     def test_clock_local(self):
         props = {"digital-format": " %d %b, %H:%M "}

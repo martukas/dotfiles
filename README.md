@@ -58,27 +58,34 @@ offer you installation of packages appropriate for your system.
 
 The following aliases have (nearly) identical behaviour in bash and Powershell, Linux and Windows.
 
-| Alias                       | Function                                                                 |
-| --------------------------- | ------------------------------------------------------------------------ |
-| dfu                         | **dotfiles update:** pulls this repo and runs appropriate install script |
-| df-upgrade                  | **dotfiles upgrade:** upgrades git sub-modules in this repo              |
-| dnb `new_branch_name`       | **git new branch:** creates and pushes new branch                        |
-| commit-push "message"       | add everything, commit with "message", push                              |
-| commit-push-bypass-hooks    | same as above, but skips pre-commit hooks                                |
-| git-rm-submodule            | actually removes a git sub-module                                        |
-| upd                         | update all (`apt` and `snap`) or `winget` packages, cleanup              |
-| missue `123_something`      | creates and pushes branch `issue_123_something`                          |
-| issue "message"             | `commit-push` appending "; updates #123" (on an `issue_123` branch)      |
-| la                          | list directory contents, including hidden files                          |
-| cdgr                        | cd to git root                                                           |
-| mcd                         | make directory and cd into it                                            |
-| up `num`                    | go up `num` directories                                                  |
-| :penguin: mx                | `make executable:` chmod 775                                             |
-| :penguin: mw                | `make writable:` chmod 664                                               |
-| :penguin: own               | take ownership as user:user                                              |
-| :penguin: rm-ext            | remove all files recursively with given extension (asks to confirm)      |
-| :penguin: create-user       | create user with sudo privileges, home directory, authorized ssh key     |
-| :window: Test-Administrator | Return true if in elevated session                                       |
+| Alias                       | Function                                                                    |
+| --------------------------- | --------------------------------------------------------------------------- |
+| dfu                         | **dotfiles update:** pulls this repo and runs appropriate install script    |
+| df-upgrade                  | **dotfiles upgrade:** upgrades git sub-modules in this repo                 |
+| :penguin: df-set-location   | detect location by IP; set system timezone, panel clocks, weather, redshift |
+| :penguin: df-power-docked   | switch to the docked XFCE power profile                                     |
+| :penguin: df-power-mobile   | switch to the mobile XFCE power profile                                     |
+| :penguin: xubu-push         | snapshot current XFCE settings into this repo                               |
+| :penguin: xubu-pull         | apply XFCE settings from this repo                                          |
+| dnb `new_branch_name`       | **git new branch:** creates and pushes new branch                           |
+| commit-push "message"       | add everything, commit with "message", push                                 |
+| commit-push-bypass-hooks    | same as above, but skips pre-commit hooks                                   |
+| git-rm-submodule            | actually removes a git sub-module                                           |
+| upd                         | update all (`apt` and `snap`) or `winget` packages, cleanup                 |
+| missue `123_something`      | creates and pushes branch `issue_123_something`                             |
+| issue "message"             | `commit-push` appending "; updates #123" (on an `issue_123` branch)         |
+| la                          | list directory contents, including hidden files                             |
+| cdgr                        | cd to git root                                                              |
+| mcd                         | make directory and cd into it                                               |
+| up `num`                    | go up `num` directories                                                     |
+| :penguin: mx                | `make executable:` chmod 775                                                |
+| :penguin: mw                | `make writable:` chmod 664                                                  |
+| :penguin: own               | take ownership as user:user                                                 |
+| syspip                      | `pip` outside a virtualenv                                                  |
+| dmake / rmake               | `cmake` preconfigured for Debug / Release                                   |
+| :penguin: rm-ext            | remove all files recursively with given extension (asks to confirm)         |
+| :penguin: create-user       | create user with sudo privileges, home directory, authorized ssh key        |
+| :window: Test-Administrator | Return true if in elevated session                                          |
 
 ### Keeping repo up to date
 
@@ -147,21 +154,3 @@ The following cannot be automated:
 
 </details>
 <!-- markdownlint-enable no-space-in-emphasis -->
-
-### Location, timezone and screen colour
-
-`df-set-location` — detects where you are from your IP and applies it:
-
-- **system timezone** follows your physical location
-- **panel clocks**: the local clock shows where you are; two reference clocks show the places you are not. In Vilnius
-  you get SFO and UTC; in California, VNO and UTC; anywhere else, SFO and VNO. A third clock plugin is created on first
-  run if the panel only has two.
-- **weather plugin** location and timezone
-- **redshift** coordinates, then restarts it so the new ones take effect
-
-It prompts for `temp-night`, defaulting to whatever your redshift config already has. The panel is killed with `SIGKILL`
-rather than stopped politely, because the weather plugin writes its stale location back to xfconf on a graceful exit —
-so expect the panel to vanish and reappear.
-
-It is a shell function in `common/bash/aliases.sh`, not a script in `linux/bin/`, wrapping
-`linux/xfconf.py set-location`.
