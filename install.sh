@@ -68,7 +68,7 @@ if [[ $OS == "GNU/Linux" ]]; then
   read -rp "[Linux] Install base packages (apt + flatpak + pipx)? " answer
   case ${answer:0:1} in
     y | Y)
-      sudo apt --yes install aptitude snapd pipx flatpak keychain
+      sudo apt --yes install aptitude snapd pipx flatpak keychain sysstat
       sudo apt -y purge parole
       flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
@@ -78,6 +78,8 @@ if [[ $OS == "GNU/Linux" ]]; then
       pipx_ensure compiledb
       pipx_ensure uv
       pre-commit install
+
+      "$BASEDIR/linux/setup-sysstat.sh"
       ;;
     *) ;;
   esac
