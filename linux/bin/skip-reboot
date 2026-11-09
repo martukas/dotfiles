@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# skip-reboot -- skip the next nightly reboot, once.
+#
+# The nightly reboot is a line in root's crontab:
+#   00 00 * * * /usr/sbin/shutdown -r +5
+# cron schedules it at 00:00 and it fires at 00:05. Rather than editing the
+# crontab (and having to remember to restore it), this cancels the reboot after
+# cron has scheduled it. The night after, the reboot happens as usual.
+#
+#   skip-reboot           cancel the reboot now if cron has already scheduled
+#                         it; otherwise arm a one-shot cancel for the next 00:01
+#   skip-reboot --undo    disarm the one-shot cancel
+#   skip-reboot --status  show what is pending; changes nothing
+set -uo pipefail
+
+UNIT="skip-reboot"
+# One minute after the crontab's 00:00, inside its +5 window. Tied to that
+# crontab line: if the line's time changes, this must change with it.
+CANCEL_AT="00:01"
+SCHEDULED="/run/systemd/shutdown/scheduled" # exists while logind has one pending
+
+SUDO=""
+[ "$(id -u)" -eq 0 ] || SUDO="sudo"
+
+usage() {
+  sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'
+}
+
+pending() {
+  [ -e "$SCHEDULED" ] || return 1
+  local usec mode
+  usec=$(sed -n 's/^USEC=//p' "$SCHEDULED" 2>/dev/null)
+  mode=$(sed -n 's/^MODE=//p' "$SCHEDULED" 2>/dev/null)
+  printf 'Pending %s at %s\n' "${mode:-shutdown}" \
+    "$(date -d "@$((${usec:-0} / 1000000))" '+%F %T %Z')"
+}
+
+armed() {
+  systemctl is-active --quiet "$UNIT.timer"
+}
+
+status() {
+  pending || echo "No reboot pending."
+  if armed; then
+    systemctl list-timers --no-pager "$UNIT.timer"
+  else
+    echo "No one-shot cancel armed."
+  fi
+}
+
+case "${1:-}" in
+  "") ;;
+  --status)
+    status
+    exit 0
+    ;;
+  --undo)
+    if armed; then
+      $SUDO systemctl stop "$UNIT.timer" && echo "Disarmed; tonight's reboot will happen."
+    else
+      echo "Nothing armed."
+    fi
+    exit 0
+    ;;
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  *)
+    usage >&2
+    exit 2
+    ;;
+esac
+
+if pending; then
+  $SUDO shutdown -c && echo "Cancelled."
+  exit
+fi
+
+if armed; then
+  echo "Already armed:"
+  systemctl list-timers --no-pager "$UNIT.timer"
+  exit 0
+fi
+
+# Computed in the system timezone (cron's and systemd's), not the shell's TZ.
+when=$(env -u TZ date -d "tomorrow $CANCEL_AT" '+%F %T')
+# RemainAfterElapse=no unloads the timer once it fires, so the unit name is free
+# for the next use; --collect does the same for the service if it fails.
+$SUDO systemd-run --quiet --collect --unit="$UNIT" \
+  --timer-property=RemainAfterElapse=no \
+  --on-calendar="$when" /usr/sbin/shutdown -c || exit 1
+systemctl list-timers --no-pager "$UNIT.timer"
+echo "Armed. The 00:00 cron mail will still say a reboot is scheduled."

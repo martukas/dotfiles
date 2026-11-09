@@ -86,6 +86,7 @@ The following aliases have (nearly) identical behaviour in bash and Powershell, 
 | :penguin: xubu-pull         | apply XFCE settings from this repo                                           |
 | :penguin: create-user       | create user with sudo privileges, home directory, authorized ssh key         |
 | :penguin: mc-world-pull     | pull the newest Minecraft world archive off a server; `--check` to look only |
+| :penguin: skip-reboot       | skip the next nightly reboot once; `--status`, `--undo`                      |
 | :window: Test-Administrator | Return true if in elevated session                                           |
 
 ### Keeping repo up to date
