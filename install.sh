@@ -106,7 +106,8 @@ if [[ $OS == "GNU/Linux" ]]; then
       gsettings set org.xfce.mousepad.preferences.view color-scheme 'xubuntu_dark'
       echo "Applying xfce settings"
       "$BASEDIR/linux/xfconf.py" pull
-      if gsettings list-schemas | grep -qE "^(org\.)?guake$"; then
+      # here-string, not a pipe: under pipefail, grep -q exiting early SIGPIPEs gsettings (rc 141)
+      if grep -qE "^(org\.)?guake$" <<<"$(gsettings list-schemas)"; then
         echo "Enforcing guake settings"
         dconf load /org/guake/ <linux/dconf-guake-dump.txt
       fi

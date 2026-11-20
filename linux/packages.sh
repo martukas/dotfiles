@@ -97,13 +97,18 @@ function install_platformio() {
 function install_insync() {
   # see https://www.insynchq.com/downloads/linux
   local version='3.9.8.60034'
-  local url="https://cdn.insynchq.com/builds/linux/${version}/insync_${version}-${DISTRO_CODENAME}_amd64.deb"
+  # Newest codename with a published build; used when this distro's isn't up yet
+  local fallback_codename='resolute'
+  local base="https://cdn.insynchq.com/builds/linux/${version}/insync_${version}"
 
   local tmp
   tmp=$(mktemp -d)
   trap 'rm -rf "$tmp"' RETURN
 
-  wget -O "$tmp/insync.deb" "$url"
+  if ! wget -O "$tmp/insync.deb" "${base}-${DISTRO_CODENAME}_amd64.deb"; then
+    echo "No insync build for ${DISTRO_CODENAME}; falling back to ${fallback_codename}"
+    wget -O "$tmp/insync.deb" "${base}-${fallback_codename}_amd64.deb"
+  fi
   sudo apt --yes install "$tmp/insync.deb"
 }
 
@@ -143,15 +148,17 @@ function install_jetbrains() {
   url=$(curl -sSfILw "%{url_effective}" -o /dev/null \
     "https://data.services.jetbrains.com/products/download?code=TBA&platform=linux")
   echo "JetBrains Toolbox URL: $url"
+  # The redirect target is a signed CDN URL; strip the query for the filename and checksum
+  local base_url="${url%%\?*}"
 
   local tarball
-  tarball="$tmp/$(basename "$url")"
+  tarball="$tmp/$(basename "$base_url")"
   echo -e "\e[94mDownloading\e[39m"
   wget -O "$tarball" "$url"
 
   echo -e "\e[94mVerifying SHA-256\e[39m"
   local expected actual
-  expected=$(curl -sSfL "${url}.sha256" | awk '{print $1}')
+  expected=$(curl -sSfL "${base_url}.sha256" | awk '{print $1}')
   actual=$(sha256sum "$tarball" | awk '{print $1}')
   [ "$expected" = "$actual" ] || {
     echo "Checksum mismatch: expected $expected, got $actual"

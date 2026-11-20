@@ -33,7 +33,7 @@ window-width=100
 
 [keybindings/global]
 show-focus='disabled'
-show-hide='F11'
+show-hide='disabled'
 
 [keybindings/local]
 close-tab='<Primary><Alt><Super>Delete'

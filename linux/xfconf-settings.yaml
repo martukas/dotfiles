@@ -17,6 +17,7 @@ keyboard-shortcuts:
       <Alt>F3: xfce4-appfinder
       <Alt>Pause: xfce4-popup-whiskermenu
       <Alt><Super>s: orca
+      F11: dbus-send --session --type=method_call --dest=org.guake3.RemoteControl /org/guake3/RemoteControl org.guake3.RemoteControl.show_hide
       HomePage: exo-open --launch WebBrowser
       override: true
       <Primary><Alt>Delete: xfce4-session-logout

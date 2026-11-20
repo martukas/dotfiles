@@ -95,6 +95,8 @@
       install: sudo apt --yes install redshift*
     - id: flameshot
       descr: Flameshot screenshot utility
+      # Flameshot 14+ captures via the portal; XFCE routes Screenshot to xapp, which isn't installed by default
+      install: sudo apt --yes install xdg-desktop-portal-xapp
     - id: keepass2
       descr: Keepass password manager
       install: "../linux/packages.sh install-keepass-plugins"
