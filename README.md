@@ -104,6 +104,8 @@ The following cannot be automated:
 
 - [Jetbrains remote](https://www.jetbrains.com/help/idea/remote-development-overview.html)
 - [CLion + PlatformIO integration](https://docs.platformio.org/en/latest/integration/ide/clion.html)
+- Claude Code auto mode (work machines): copy the `autoMode` block (rules and environment description) from
+  `private/common/claude/automode-rules.json` into `~/.claude/settings.json`; auto mode reads it only from there
 
 <details>
 <summary>Linux manual steps</summary>
