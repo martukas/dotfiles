@@ -10,5 +10,6 @@
   "theme": "dark",
   "enabledPlugins": {
     "superpowers@claude-plugins-official": true
-  }
+  },
+  "cleanupPeriodDays": 3650
 }
