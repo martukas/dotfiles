@@ -31,3 +31,4 @@
     ~/.ssh/config: "private/common/ssh/config"
     ~/.gitconfig_private: "private/common/gitconfig_private"
     ~/.claude/CLAUDE.md: "private/common/claude/CLAUDE.md"
+    ~/.claude/skills/slack-read: "private/common/claude/skills/slack-read"
