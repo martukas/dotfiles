@@ -187,10 +187,8 @@ panel:
       digital-layout: 3
       digital-time-font: Sans 10
     clock-ref-1:
-      timezone: Europe/Vilnius
       digital-date-format: "%d %b %Y"
       digital-layout: 3
-      digital-time-format: VNO %R
       digital-time-font: Sans 10
     weather:
       msl: 100

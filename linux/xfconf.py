@@ -50,6 +50,7 @@ PLUGIN_TYPE_MAP = {
 PLUGIN_OWNED_PROPS = {
     "whiskermenu": None,  # handled specially (favorites array)
     "separator": ["style", "expand"],
+    "separator-line": ["style", "expand"],
     "systemload": None,  # handled specially (nested labels)
     "tasklist": ["show-handle", "flat-buttons", "sort-order"],
     "spring": ["style", "expand"],
@@ -60,7 +61,9 @@ PLUGIN_OWNED_PROPS = {
     "pulseaudio": [],
     "clock-local": ["digital-format", "digital-time-format", "digital-layout", "tooltip-format", "digital-time-font"],
     "xkb": [],
-    "clock-vilnius": ["timezone", "digital-date-format", "digital-layout", "digital-time-format", "digital-time-font"],
+    # Reference clocks' timezone and labelled time format follow location (apply_clock_zones), not the YAML
+    "clock-ref-1": ["digital-date-format", "digital-layout", "digital-time-font"],
+    "clock-ref-2": ["digital-date-format", "digital-layout", "digital-time-font"],
     "weather": ["msl", "cache-max-age", "power-saving", "round", "single-row", "tooltip-style", "theme-dir"],
 }
 
@@ -494,6 +497,14 @@ def pull_panel(settings):
     # Rebuild plugin-ids array in desired order
     xfconf_set_array(_PANEL_CHANNEL, _PLUGIN_IDS_PROP, "int", [str(i) for i in final_order_ids], create=True)
 
+    # Clock zones follow where we are (the system timezone), not the YAML. Pass the ids we just
+    # matched or created: a freshly created reference clock has no label yet to be recognised by.
+    local_ids = [logical_to_id["clock-local"]] if "clock-local" in logical_to_id else []
+    ref_ids = [logical_to_id[n] for n in ("clock-ref-1", "clock-ref-2") if n in logical_to_id]
+    local_tz = system_timezone()
+    print(f"  clocks for system timezone {local_tz}:")
+    apply_clock_zones(local_ids, ref_ids, local_tz)
+
 
 def get_plugin_ids():
     return [int(v) for v in xfconf_get_array(_PANEL_CHANNEL, _PLUGIN_IDS_PROP)]
@@ -668,9 +679,6 @@ def _set_location_clocks(local_tz):
 
     if not local_ids:
         print("  WARNING: no local clock found (none lacking a 3-letter prefix)", file=sys.stderr)
-    else:
-        xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{local_ids[0]}/timezone", local_tz, "string", create=True)
-        print(f"  clock-local timezone → {local_tz}")
 
     zones = reference_zones(local_tz)
     while len(ref_ids) < len(zones):
@@ -687,7 +695,23 @@ def _set_location_clocks(local_tz):
         ref_ids.append(new_id)
         print(f"  created reference clock plugin-{new_id}")
 
-    for pid, tz in zip(ref_ids, zones):
+    apply_clock_zones(local_ids, ref_ids, local_tz)
+
+
+def system_timezone():
+    """The system timezone (offline), or UTC when it can't be read."""
+    tz = subprocess.run(  # nosec
+        ["timedatectl", "show", "-p", "Timezone", "--value"], check=False, capture_output=True, text=True
+    ).stdout.strip()
+    return tz or _TZ_UTC
+
+
+def apply_clock_zones(local_ids, ref_ids, local_tz):
+    """Point the local clock at local_tz and label the reference clocks per reference_zones()."""
+    if local_ids:
+        xfconf_set(_PANEL_CHANNEL, f"/plugins/plugin-{local_ids[0]}/timezone", local_tz, "string", create=True)
+        print(f"  clock-local timezone → {local_tz}")
+    for pid, tz in zip(ref_ids, reference_zones(local_tz)):
         label = clock_label(tz)
         base = f"/plugins/plugin-{pid}"
         xfconf_set(_PANEL_CHANNEL, f"{base}/timezone", tz, "string", create=True)
