@@ -1,0 +1,14 @@
+{
+  "idleCompaction": false,
+  "feedbackDrafts": "off",
+  "voice": {
+    "enabled": true,
+    "mode": "tap"
+  },
+  "voiceEnabled": true,
+  "skipWorkflowUsageWarning": true,
+  "theme": "dark",
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true
+  }
+}

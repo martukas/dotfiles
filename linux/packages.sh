@@ -348,6 +348,42 @@ function install_claude_code() {
   npm install -g @anthropic-ai/claude-code
 }
 
+CLAUDE_PLUGINS=("superpowers@claude-plugins-official")
+
+# claude may come from npm under nvm rather than the native installer
+function load_nvm() {
+  export NVM_DIR="$HOME/.nvm"
+  # shellcheck disable=SC1091
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  return 0
+}
+
+# superpack treats any stdout as "installed": diagnostics go to stderr, stdout only on success
+function check_claude_config() {
+  load_nvm
+  local ok=$SUCCESS plugins p
+  python3 ../common/claude/apply-settings.py check || ok=$FAILURE
+  plugins=$(claude plugin list --json 2>/dev/null) || plugins=""
+  for p in "${CLAUDE_PLUGINS[@]}"; do
+    if ! grep -qF "\"$p\"" <<<"$plugins"; then
+      echo "plugin missing: $p" >&2
+      ok=$FAILURE
+    fi
+  done
+  [ $ok -eq $SUCCESS ] && echo "claude config applied"
+  return $ok
+}
+
+function install_claude_config() {
+  load_nvm
+  python3 ../common/claude/apply-settings.py apply
+  local plugins p
+  plugins=$(claude plugin list --json 2>/dev/null) || plugins=""
+  for p in "${CLAUDE_PLUGINS[@]}"; do
+    grep -qF "\"$p\"" <<<"$plugins" || claude plugin install "$p" --scope user
+  done
+}
+
 # Script will run in its own path no matter where it's called from.
 pushd "$(dirname "$0")"
 
@@ -513,6 +549,14 @@ elif [ "$1" == "check-claude-code" ]; then
 
 elif [ "$1" == "install-claude-code" ]; then
   install_claude_code
+  prompt_exit
+
+elif [ "$1" == "check-claude-config" ]; then
+  check_claude_config
+  exit $?
+
+elif [ "$1" == "install-claude-config" ]; then
+  install_claude_config
   prompt_exit
 
 elif [ "$1" == "check-ubuntu-pro" ]; then

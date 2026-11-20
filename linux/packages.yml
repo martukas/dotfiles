@@ -27,6 +27,11 @@
       category: dev
       check: "../linux/packages.sh check-claude-code"
       install: "../linux/packages.sh install-claude-code"
+    - id: claude-config
+      descr: Claude Code durable settings + plugins (common/claude/settings.json)
+      category: dev
+      check: "../linux/packages.sh check-claude-config"
+      install: "../linux/packages.sh install-claude-config"
     - id: platformio
       descr: PlatformIO embedded toolchain
       category: dev
